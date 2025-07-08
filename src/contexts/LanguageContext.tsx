@@ -89,6 +89,19 @@ const translations = {
     'loyalty.level4': 'De la 30.001 lei - 8% reducere',
     'loyalty.level5': 'De la 50.001 lei - 10% reducere',
     
+    // Courses
+    'courses.title': 'Cursuri Beauty',
+    'courses.intro1': 'La Adress Beauty credem în puterea educației de calitate.',
+    'courses.intro2': 'Cursurile noastre sunt concepute pentru a oferi nu doar informații, ci și o transformare profesională reală.',
+    'courses.view_details': 'Vezi Detalii',
+    'courses.coming_soon': 'În curând',
+    'courses.book_visit': 'Programează o Vizită',
+    'courses.comparison': 'Comparație Cursuri',
+    'courses.cta.title': 'Gata să-ți începi transformarea profesională?',
+    'courses.cta.subtitle': 'Alege cursul potrivit pentru tine și fă primul pas către o carieră de succes în beauty!',
+    'courses.call_now': 'Sună acum',
+    'courses.email_us': 'Scrie-ne',
+    
     // Common
     'common.loading': 'Se încarcă...',
     'common.error': 'Eroare',
@@ -176,6 +189,19 @@ const translations = {
     'loyalty.level3': 'От 20.001 лей - 7% скидка',
     'loyalty.level4': 'От 30.001 лей - 8% скидка',
     'loyalty.level5': 'От 50.001 лей - 10% скидка',
+    
+    // Courses
+    'courses.title': 'Beauty Курсы',
+    'courses.intro1': 'В Adress Beauty мы верим в силу качественного образования.',
+    'courses.intro2': 'Наши курсы созданы для того, чтобы предоставить не только информацию, но и реальную профессиональную трансформацию.',
+    'courses.view_details': 'Подробнее',
+    'courses.coming_soon': 'Скоро',
+    'courses.book_visit': 'Записаться на Визит',
+    'courses.comparison': 'Сравнение Курсов',
+    'courses.cta.title': 'Готов начать свою профессиональную трансформацию?',
+    'courses.cta.subtitle': 'Выбери подходящий курс и сделай первый шаг к успешной карьере в beauty!',
+    'courses.call_now': 'Звони сейчас',
+    'courses.email_us': 'Напиши нам',
     
     // Common
     'common.loading': 'Загрузка...',
