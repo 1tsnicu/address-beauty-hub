@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu,
@@ -18,17 +20,18 @@ import {
 import { Menu, User, Globe, ShoppingBag } from 'lucide-react';
 
 const Header = () => {
-  const [language, setLanguage] = useState('RO');
+  const { language, setLanguage, t } = useLanguage();
+  const { user, isAuthenticated } = useAuth();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
 
   const navigationItems = [
-    { name: 'Acasă', path: '/', nameRu: 'Главная' },
-    { name: 'Magazin online', path: '/magazin', nameRu: 'Онлайн магазин' },
-    { name: 'Cursuri', path: '/cursuri', nameRu: 'Курсы' },
-    { name: 'Livrare / Achitare', path: '/livrare', nameRu: 'Доставка / Оплата' },
-    { name: 'Contact', path: '/contact', nameRu: 'Контакт' },
+    { name: t('header.home'), path: '/' },
+    { name: t('header.shop'), path: '/magazin' },
+    { name: t('header.courses'), path: '/cursuri' },
+    { name: t('header.delivery'), path: '/livrare' },
+    { name: t('header.contact'), path: '/contact' },
   ];
 
   return (
@@ -58,24 +61,44 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" className="gap-2">
               <ShoppingBag className="h-4 w-4" />
-              <span className="hidden sm:inline">Coș</span>
+              <span className="hidden sm:inline">{t('header.cart')}</span>
             </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">Contul meu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  Înregistrare
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Autentificare
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">{user?.name}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    {t('header.account')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Deconectare
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">{t('header.account')}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    {t('header.register')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {t('header.login')}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
 
@@ -87,7 +110,7 @@ const Header = () => {
               Adress Beauty
             </Link>
             <p className="text-sm text-muted-foreground hidden md:block">
-              Inspirație, educație și produse într-un singur loc!
+              {t('header.motto')}
             </p>
           </div>
 
@@ -103,7 +126,7 @@ const Header = () => {
                     : 'text-foreground'
                 }`}
               >
-                {language === 'RO' ? item.name : item.nameRu}
+                {item.name}
               </Link>
             ))}
           </nav>
@@ -120,7 +143,7 @@ const Header = () => {
               <SheetHeader>
                 <SheetTitle className="font-heading text-primary">Adress Beauty</SheetTitle>
                 <SheetDescription>
-                  Inspirație, educație și produse într-un singur loc!
+                  {t('header.motto')}
                 </SheetDescription>
               </SheetHeader>
               <nav className="flex flex-col space-y-4 mt-8">
@@ -134,7 +157,7 @@ const Header = () => {
                         : 'hover:bg-accent hover:text-accent-foreground'
                     }`}
                   >
-                    {language === 'RO' ? item.name : item.nameRu}
+                    {item.name}
                   </Link>
                 ))}
               </nav>

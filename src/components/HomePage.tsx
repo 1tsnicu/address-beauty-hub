@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, GraduationCap, Phone } from 'lucide-react';
 import heroImage from '@/assets/hero-beauty.jpg';
 
 const HomePage = () => {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -19,12 +21,12 @@ const HomePage = () => {
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
           {/* Logo */}
           <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-4">
-            Adress Beauty
+            {t('home.hero.title')}
           </h1>
           
           {/* Motto */}
           <p className="text-xl md:text-2xl text-foreground mb-12 font-medium">
-            Inspirație, educație și produse într-un singur loc!
+            {t('home.hero.motto')}
           </p>
 
           {/* Main Action Buttons */}
@@ -32,21 +34,21 @@ const HomePage = () => {
             <Link to="/magazin">
               <Button variant="hero" size="hero" className="group min-w-[250px]">
                 <ShoppingBag className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                Magazin Online
+                {t('home.hero.shop')}
               </Button>
             </Link>
             
             <Link to="/cursuri">
               <Button variant="hero" size="hero" className="group min-w-[250px]">
                 <GraduationCap className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                Cursuri Profesionale
+                {t('home.hero.courses')}
               </Button>
             </Link>
             
             <Link to="/contact">
               <Button variant="hero" size="hero" className="group min-w-[250px]">
                 <Phone className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                Contacte
+                {t('home.hero.contact')}
               </Button>
             </Link>
           </div>
@@ -58,10 +60,10 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
-              De ce să alegi Adress Beauty?
+              {t('home.why.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Suntem mai mult decât un brand – suntem o misiune de a oferi cele mai bune produse și servicii beauty din Moldova.
+              {t('home.why.subtitle')}
             </p>
           </div>
 
@@ -72,14 +74,14 @@ const HomePage = () => {
                 <ShoppingBag className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-xl font-semibold text-primary mb-4">
-                Magazin Profesional
+                {t('home.shop.title')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Peste 1000 de produse premium pentru extensii de gene, sprâncene și cosmetice profesionale.
+                {t('home.shop.description')}
               </p>
               <Link to="/magazin">
                 <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                  Explorează Produsele
+                  {t('home.shop.button')}
                 </Button>
               </Link>
             </div>
@@ -90,14 +92,14 @@ const HomePage = () => {
                 <GraduationCap className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-xl font-semibold text-primary mb-4">
-                Educație de Calitate
+                {t('home.education.title')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                6 programe de cursuri, de la începători la nivel profesional. Diplomă recunoscută și suport continuu.
+                {t('home.education.description')}
               </p>
               <Link to="/cursuri">
                 <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                  Vezi Cursurile
+                  {t('home.education.button')}
                 </Button>
               </Link>
             </div>
@@ -108,14 +110,14 @@ const HomePage = () => {
                 <Phone className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-xl font-semibold text-primary mb-4">
-                Servicii Salon
+                {t('home.services.title')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Servicii profesionale în salonul nostru fizic cu cele mai noi tehnici și produse premium.
+                {t('home.services.description')}
               </p>
               <Link to="/contact">
                 <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                  Programează-te
+                  {t('home.services.button')}
                 </Button>
               </Link>
             </div>
@@ -127,20 +129,20 @@ const HomePage = () => {
       <section className="py-20 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-6">
-            Începe transformarea ta profesională astăzi
+            {t('home.cta.title')}
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Alătură-te comunității noastre de profesioniști beauty și descoperă tot ce ai nevoie pentru succesul tău.
+            {t('home.cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/cursuri">
               <Button variant="hero" size="hero">
-                Rezervă un Curs
+                {t('home.cta.course')}
               </Button>
             </Link>
             <Link to="/magazin">
               <Button variant="outline" size="lg" className="px-8 py-4 text-lg hover:bg-primary hover:text-primary-foreground">
-                Explorează Produsele
+                {t('home.cta.products')}
               </Button>
             </Link>
           </div>
