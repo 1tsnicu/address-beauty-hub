@@ -61,7 +61,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Beauty brand colors
+				'light-blue': 'hsl(var(--light-blue))',
+				'electric-blue': 'hsl(var(--electric-blue))',
+				'soft-blue': 'hsl(var(--soft-blue))'
+			},
+			fontFamily: {
+				'heading': ['Playfair Display', 'serif'],
+				'body': ['Lato', 'Poppins', 'sans-serif'],
+				'sans': ['Lato', 'Poppins', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
