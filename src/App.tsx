@@ -9,6 +9,8 @@ import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import OnlineStore from "./components/OnlineStore";
 import CoursesPage from "./components/CoursesPage";
+import AboutPage from "./components/AboutPage";
+import ContactPage from "./components/ContactPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,8 +30,9 @@ const App = () => (
                   <Route path="/" element={<HomePage />} />
                   <Route path="/magazin" element={<OnlineStore />} />
                   <Route path="/cursuri" element={<CoursesPage />} />
+                  <Route path="/despre" element={<AboutPage />} />
                   <Route path="/livrare" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="font-heading text-3xl font-bold text-primary">Livrare și Achitare - În curând</h1></div>} />
-                  <Route path="/contact" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="font-heading text-3xl font-bold text-primary">Contact - În curând</h1></div>} />
+                  <Route path="/contact" element={<ContactPage />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
