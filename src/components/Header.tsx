@@ -17,7 +17,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Menu, User, Globe, ShoppingBag } from 'lucide-react';
+import { Menu, User, Globe } from 'lucide-react';
+import ShoppingCart from './ShoppingCart';
+import AuthModal from './AuthModal';
 
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -60,46 +62,18 @@ const Header = () => {
 
           {/* Account section */}
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <ShoppingBag className="h-4 w-4" />
-              <span className="hidden sm:inline">{t('header.cart')}</span>
-            </Button>
+            <ShoppingCart />
             
-            {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <User className="h-4 w-4" />
-                    <span className="hidden sm:inline">{user?.name}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    {t('header.account')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Deconectare
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <User className="h-4 w-4" />
-                    <span className="hidden sm:inline">{t('header.account')}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    {t('header.register')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    {t('header.login')}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+            <AuthModal 
+              trigger={
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">
+                    {isAuthenticated ? user?.name : t('header.account')}
+                  </span>
+                </Button>
+              }
+            />
           </div>
         </div>
 
