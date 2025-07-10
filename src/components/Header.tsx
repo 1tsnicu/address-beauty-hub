@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -25,6 +25,7 @@ const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { user, isAuthenticated } = useAuth();
   const location = useLocation();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -64,15 +65,21 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <ShoppingCart />
             
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="gap-2"
+              onClick={() => setAuthModalOpen(true)}
+            >
+              <User className="h-4 w-4" />
+              <span className="hidden sm:inline">
+                {isAuthenticated ? user?.name : t('header.account')}
+              </span>
+            </Button>
+            
             <AuthModal 
-              trigger={
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">
-                    {isAuthenticated ? user?.name : t('header.account')}
-                  </span>
-                </Button>
-              }
+              open={authModalOpen}
+              onOpenChange={setAuthModalOpen}
             />
           </div>
         </div>
