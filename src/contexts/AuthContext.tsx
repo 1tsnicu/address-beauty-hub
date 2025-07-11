@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 export interface User {
   id: string;
@@ -34,7 +34,33 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  // Load user data from local storage on component mount
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUserData = localStorage.getItem('addressBeautyUser');
+    if (savedUserData) {
+      try {
+        const parsedUser = JSON.parse(savedUserData);
+        // Convert string date back to Date object if registration bonus exists
+        if (parsedUser.registrationBonus && parsedUser.registrationBonus.expiresAt) {
+          parsedUser.registrationBonus.expiresAt = new Date(parsedUser.registrationBonus.expiresAt);
+        }
+        return parsedUser;
+      } catch (error) {
+        console.error('Failed to parse user data from localStorage', error);
+        return null;
+      }
+    }
+    return null;
+  });
+
+  // Save user data to local storage whenever it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('addressBeautyUser', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('addressBeautyUser');
+    }
+  }, [user]);
 
   const calculateLoyaltyLevel = (totalSpent: number): { level: number; discount: number } => {
     if (totalSpent >= 50001) return { level: 5, discount: 10 };

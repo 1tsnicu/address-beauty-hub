@@ -3,7 +3,7 @@ import { Product } from '@/types/Product';
 export const products: Product[] = [
   {
     id: 1,
-    name: 'Gene false 3D Volume',
+    name: 'Gene false 3D Volume Negre',
     price: 45.99,
     originalPrice: 59.99,
     image: '/placeholder.svg',
@@ -12,11 +12,23 @@ export const products: Product[] = [
     inStock: true,
     isNew: true,
     category: 'lashes',
-    sales: 300
+    subcategories: ['lashes-black'],
+    sales: 300,
+    description: 'Gene false voluminoase 3D de culoare neagră pentru un look dramatic și expresiv.',
+    attributes: {
+      color: 'black',
+      style: '3D',
+    },
+    variants: [
+      { id: 101, size: 'S', length: '8mm', price: 45.99, stockQuantity: 25, inStock: true },
+      { id: 102, size: 'M', length: '10mm', price: 45.99, stockQuantity: 30, inStock: true },
+      { id: 103, size: 'L', length: '12mm', price: 47.99, stockQuantity: 20, inStock: true },
+      { id: 104, size: 'XL', length: '14mm', price: 49.99, stockQuantity: 15, inStock: true },
+    ]
   },
   {
     id: 2,
-    name: 'Kit Sprâncene Professional',
+    name: 'Kit Sprâncene Professional Complet',
     price: 89.99,
     originalPrice: null,
     image: '/placeholder.svg',
@@ -25,7 +37,12 @@ export const products: Product[] = [
     inStock: true,
     isNew: false,
     category: 'brows',
-    sales: 250
+    subcategories: ['brows-kits'],
+    sales: 250,
+    description: 'Kit complet pentru sprâncene cu tot ce ai nevoie pentru un look perfect.',
+    attributes: {
+      type: 'kit',
+    }
   },
   {
     id: 3,
@@ -38,7 +55,8 @@ export const products: Product[] = [
     inStock: true,
     isNew: false,
     category: 'lamination',
-    sales: 120
+    sales: 120,
+    description: 'Gel premium pentru laminarea genelor și sprâncenelor cu efect de lungă durată.'
   },
   {
     id: 4,
@@ -51,11 +69,12 @@ export const products: Product[] = [
     inStock: true,
     isNew: true,
     category: 'cosmetics',
-    sales: 80
+    sales: 80,
+    description: 'Serum inovator care stimulează creșterea genelor pentru un look natural și expresiv.'
   },
   {
     id: 5,
-    name: 'Gene false volum natural',
+    name: 'Gene false Naturale Cafenii',
     price: 29.99,
     originalPrice: 39.99,
     image: '/placeholder.svg',
@@ -64,7 +83,18 @@ export const products: Product[] = [
     inStock: true,
     isNew: false,
     category: 'lashes',
-    sales: 400
+    subcategories: ['lashes-brown'],
+    sales: 400,
+    description: 'Gene false cafenii pentru un look natural și subtil.',
+    attributes: {
+      color: 'brown',
+      style: 'natural'
+    },
+    variants: [
+      { id: 201, size: 'S', length: '8mm', price: 29.99, stockQuantity: 35, inStock: true },
+      { id: 202, size: 'M', length: '10mm', price: 29.99, stockQuantity: 40, inStock: true },
+      { id: 203, size: 'L', length: '12mm', price: 31.99, stockQuantity: 25, inStock: true },
+    ]
   },
   {
     id: 6,
@@ -77,7 +107,8 @@ export const products: Product[] = [
     inStock: true,
     isNew: false,
     category: 'lamination',
-    sales: 150
+    sales: 150,
+    description: 'Kit complet pentru laminarea sprâncenelor cu toate instrumentele și produsele necesare.'
   },
   {
     id: 7,
@@ -90,11 +121,12 @@ export const products: Product[] = [
     inStock: true,
     isNew: true,
     category: 'cosmetics',
-    sales: 220
+    sales: 220,
+    description: 'Cremă hidratantă pentru toate tipurile de piele, cu ingrediente naturale și efect de lungă durată.'
   },
   {
     id: 8,
-    name: 'Ceară pentru sprâncene',
+    name: 'Gel pentru sprâncene',
     price: 35.99,
     originalPrice: 45.99,
     image: '/placeholder.svg',
@@ -103,6 +135,11 @@ export const products: Product[] = [
     inStock: true,
     isNew: false,
     category: 'brows',
-    sales: 180
+    subcategories: ['brows-gels'],
+    sales: 180,
+    description: 'Gel pentru fixarea și colorarea sprâncenelor, cu efect natural și de lungă durată.',
+    attributes: {
+      type: 'gel'
+    }
   }
 ];

@@ -67,17 +67,52 @@ const Header = () => {
             <CurrencySelector />
             <ShoppingCart />
             
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="gap-2"
-              onClick={() => setAuthModalOpen(true)}
-            >
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">
-                {isAuthenticated ? user?.name : t('header.account')}
-              </span>
-            </Button>
+            {isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {user.name}
+                      {user.discountPercentage > 0 && (
+                        <span className="ml-1 text-xs bg-primary/20 text-primary px-1 py-0.5 rounded-full">
+                          {user.discountPercentage}%
+                        </span>
+                      )}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem disabled className="flex flex-col items-start">
+                    <span className="font-medium">{user.name}</span>
+                    <span className="text-xs text-muted-foreground">{user.email}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled className="flex flex-col items-start">
+                    <span className="text-xs">Nivel fidelitate: {user.loyaltyLevel}</span>
+                    <span className="text-xs">Reducere: {user.discountPercentage}%</span>
+                    <span className="text-xs">Total achiziții: {user.totalSpent.toLocaleString()} MDL</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setAuthModalOpen(true)}>
+                    Contul meu
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => useAuth().logout()}>
+                    Deconectare
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="gap-2"
+                onClick={() => setAuthModalOpen(true)}
+              >
+                <User className="h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {t('header.account')}
+                </span>
+              </Button>
+            )}
             
             <AuthModal 
               open={authModalOpen}

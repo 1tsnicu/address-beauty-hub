@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 const ShoppingCart: React.FC = () => {
   const { t } = useLanguage();
   const { user, isAuthenticated, calculateDiscount } = useAuth();
-  const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice } = useCart();
+  const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice, checkout, isCheckingOut } = useCart();
   const { formatPrice } = useCurrency();
   
   const totalItems = getTotalItems();
@@ -22,13 +22,53 @@ const ShoppingCart: React.FC = () => {
   const discount = isAuthenticated ? calculateDiscount(totalPrice) : 0;
   const finalPrice = totalPrice - discount;
 
-  const handleCheckout = () => {
-    if (!isAuthenticated) {
-      toast.error('Trebuie să te autentifici pentru a finaliza comanda');
-      return;
+  // Calculate how much more the user needs to spend to reach the next loyalty level
+  const getNextLoyaltyLevelInfo = () => {
+    if (!user) return null;
+    
+    const currentTotal = user.totalSpent;
+    
+    if (currentTotal < 5001) {
+      return {
+        nextLevel: 1,
+        nextDiscount: 5,
+        amountNeeded: 5001 - currentTotal,
+        threshold: 5001
+      };
+    } else if (currentTotal < 10001) {
+      return {
+        nextLevel: 2,
+        nextDiscount: 6,
+        amountNeeded: 10001 - currentTotal,
+        threshold: 10001
+      };
+    } else if (currentTotal < 20001) {
+      return {
+        nextLevel: 3,
+        nextDiscount: 7,
+        amountNeeded: 20001 - currentTotal,
+        threshold: 20001
+      };
+    } else if (currentTotal < 30001) {
+      return {
+        nextLevel: 4,
+        nextDiscount: 8,
+        amountNeeded: 30001 - currentTotal,
+        threshold: 30001
+      };
+    } else if (currentTotal < 50001) {
+      return {
+        nextLevel: 5,
+        nextDiscount: 10,
+        amountNeeded: 50001 - currentTotal,
+        threshold: 50001
+      };
     }
-    toast.success('Funcționalitatea de plată va fi implementată în curând!');
+    
+    return null; // User has reached the highest loyalty level
   };
+  
+  const nextLevelInfo = isAuthenticated ? getNextLoyaltyLevelInfo() : null;
 
   return (
     <Sheet>
@@ -136,10 +176,15 @@ const ShoppingCart: React.FC = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full" size="lg" onClick={handleCheckout}>
-                    <CreditCard className="mr-2 h-4 w-4" />
-                    Finalizează comanda
-                  </Button>
+                  <Button 
+                  className="w-full" 
+                  size="lg" 
+                  onClick={checkout} 
+                  disabled={isCheckingOut || items.length === 0}
+                >
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  {isCheckingOut ? 'Se procesează...' : 'Finalizează comanda'}
+                </Button>
                   <Button
                     variant="outline"
                     className="w-full"
@@ -149,12 +194,40 @@ const ShoppingCart: React.FC = () => {
                   </Button>
                 </div>
 
-                {/* Registration bonus info */}
+                {/* Registration bonus info for non-authenticated users */}
                 {!isAuthenticated && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                     <p className="text-sm text-green-800">
                       💰 Creează cont și primești 15% reducere la prima comandă!
                     </p>
+                  </div>
+                )}
+                
+                {/* Loyalty program info for authenticated users */}
+                {isAuthenticated && user && (
+                  <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 mt-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Nivel fidelitate:</span>
+                      <span className="font-semibold text-primary">{user.loyaltyLevel} ({user.discountPercentage}%)</span>
+                    </div>
+                    
+                    <div className="text-xs text-muted-foreground">
+                      Total cumpărături: {formatPrice(user.totalSpent)}
+                    </div>
+                    
+                    {nextLevelInfo && (
+                      <div className="mt-2 text-xs">
+                        <p>Mai ai nevoie de {formatPrice(nextLevelInfo.amountNeeded)} pentru a atinge nivelul {nextLevelInfo.nextLevel} ({nextLevelInfo.nextDiscount}% reducere)</p>
+                        <div className="w-full bg-muted h-1.5 rounded-full mt-1">
+                          <div 
+                            className="bg-primary h-1.5 rounded-full" 
+                            style={{ 
+                              width: `${Math.min(100, (user.totalSpent / nextLevelInfo.threshold) * 100)}%` 
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

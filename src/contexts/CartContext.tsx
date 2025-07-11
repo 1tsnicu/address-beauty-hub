@@ -1,7 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 interface CartItem {
   id: number;
+  variantId?: number; // Added to support product variants
   name: string;
   price: number;
   quantity: number;
@@ -16,6 +19,8 @@ interface CartContextType {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  checkout: () => void;
+  isCheckingOut: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -33,7 +38,9 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+  const { user, isAuthenticated, updateUser, calculateDiscount } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const addItem = (newItem: Omit<CartItem, 'quantity'>) => {
     setItems(prev => {
@@ -77,6 +84,48 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return items.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
+  const checkout = async () => {
+    if (!isAuthenticated) {
+      toast.error('Trebuie să vă autentificați pentru a finaliza comanda');
+      return;
+    }
+    
+    if (items.length === 0) {
+      toast.error('Coșul este gol');
+      return;
+    }
+    
+    setIsCheckingOut(true);
+    
+    try {
+      // Calculate total price and discount
+      const totalPrice = getTotalPrice();
+      const discount = isAuthenticated ? calculateDiscount(totalPrice) : 0;
+      const finalPrice = totalPrice - discount;
+      
+      // In a real application, we would process payment here
+      // For now, we'll just update the user's total spent
+      
+      // Simulate a network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      if (user) {
+        const newTotalSpent = user.totalSpent + finalPrice;
+        updateUser({
+          totalSpent: newTotalSpent
+        });
+        
+        toast.success('Comandă finalizată cu succes!');
+        clearCart();
+      }
+    } catch (error) {
+      toast.error('A apărut o eroare la procesarea comenzii');
+      console.error('Checkout error:', error);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
   const value: CartContextType = {
     items,
     addItem,
@@ -85,6 +134,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     clearCart,
     getTotalItems,
     getTotalPrice,
+    checkout,
+    isCheckingOut,
   };
 
   return (

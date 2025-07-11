@@ -7,6 +7,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
+import { CategoriesProvider } from "./contexts/CategoriesContext";
 import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import OnlineStore from "./components/OnlineStore";
@@ -24,7 +25,8 @@ const App = () => (
       <AuthProvider>
         <CartProvider>
           <CurrencyProvider>
-            <TooltipProvider>
+            <CategoriesProvider>
+              <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -45,6 +47,7 @@ const App = () => (
             </div>
           </BrowserRouter>
             </TooltipProvider>
+            </CategoriesProvider>
           </CurrencyProvider>
         </CartProvider>
       </AuthProvider>
