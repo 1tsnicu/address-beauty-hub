@@ -3,16 +3,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useCurrency } from '@/contexts/CurrencyContext';
 
 const CurrencySelector = () => {
-  const { currency, setCurrency } = useCurrency();
+  const { currency, setCurrency, getCurrencySymbol } = useCurrency();
 
   return (
     <Select value={currency} onValueChange={(value: 'LEI' | 'RON' | 'EUR') => setCurrency(value)}>
       <SelectTrigger className="w-20">
-        <SelectValue />
+        <SelectValue>{getCurrencySymbol()}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="LEI">LEI</SelectItem>
-        <SelectItem value="RON">RON</SelectItem>
+        <SelectItem value="LEI">MDL (Lei Moldovenești)</SelectItem>
+        <SelectItem value="RON">RON (Lei Românești)</SelectItem>
         <SelectItem value="EUR">EUR</SelectItem>
       </SelectContent>
     </Select>

@@ -13,10 +13,11 @@ interface CurrencyContextType {
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 // Exchange rates (mock data - in real app would come from API)
+// Base currency: LEI (Moldovan Leu)
 const exchangeRates = {
-  LEI: 1,
-  RON: 1, // Same as LEI
-  EUR: 0.2, // 1 EUR = 5 LEI (approximate)
+  LEI: 1, // Moldovan Leu (MDL) - base currency
+  RON: 0.25, // Romanian Leu - 1 MDL ≈ 0.25 RON
+  EUR: 0.05, // Euro - 1 MDL ≈ 0.05 EUR
 };
 
 export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -30,24 +31,26 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
     const convertedPrice = convertPrice(price);
     switch (currency) {
       case 'LEI':
+        return `${convertedPrice.toFixed(2)} MDL`; // Moldovan Leu
       case 'RON':
-        return `${convertedPrice.toFixed(2)} ${currency}`;
+        return `${convertedPrice.toFixed(2)} RON`; // Romanian Leu
       case 'EUR':
         return `€${convertedPrice.toFixed(2)}`;
       default:
-        return `${convertedPrice.toFixed(2)} LEI`;
+        return `${convertedPrice.toFixed(2)} MDL`;
     }
   };
 
   const getCurrencySymbol = (): string => {
     switch (currency) {
       case 'LEI':
+        return 'MDL'; // Moldovan Leu
       case 'RON':
-        return currency;
+        return 'RON'; // Romanian Leu
       case 'EUR':
         return '€';
       default:
-        return 'LEI';
+        return 'MDL';
     }
   };
 
