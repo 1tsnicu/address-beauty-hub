@@ -68,9 +68,9 @@ export default {
 				'soft-blue': 'hsl(var(--soft-blue))'
 			},
 			fontFamily: {
-				'heading': ['Playfair Display', 'serif'],
-				'body': ['Lato', 'Poppins', 'sans-serif'],
-				'sans': ['Lato', 'Poppins', 'sans-serif']
+				'heading': ['Source Serif Pro', 'serif'],
+				'body': ['Inter', 'sans-serif'],
+				'sans': ['Inter', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
