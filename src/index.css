@@ -153,13 +153,28 @@ All colors MUST be HSL.
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-kerning: auto;
+    font-synthesis: none;
     font-variant-numeric: oldstyle-nums;
   }
   
-  /* Specific Romanian character support */
-  *[lang="ro"], *[lang="ru"] {
+  /* Force same font family for all Romanian characters including diacritics */
+  body, * {
+    font-family: 'Lato', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  
+  /* Specific font override for Romanian diacritics to prevent fallback fonts */
+  *:lang(ro), *[lang="ro"] {
+    font-family: 'Lato', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "dlig" 1;
     font-variant-ligatures: common-ligatures discretionary-ligatures;
+    font-synthesis: none;
+  }
+  
+  /* Ensure headings use consistent font for diacritics */
+  .font-heading, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
 }
 
