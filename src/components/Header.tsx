@@ -20,6 +20,7 @@ import {
 import { Menu, User, Globe } from 'lucide-react';
 import ShoppingCart from './ShoppingCart';
 import AuthModal from './AuthModal';
+import CurrencySelector from './CurrencySelector';
 
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -63,6 +64,7 @@ const Header = () => {
 
           {/* Account section */}
           <div className="flex items-center gap-4">
+            <CurrencySelector />
             <ShoppingCart />
             
             <Button 

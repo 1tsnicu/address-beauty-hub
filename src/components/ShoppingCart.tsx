@@ -7,24 +7,19 @@ import { ShoppingBag, Plus, Minus, X, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from 'sonner';
 
 const ShoppingCart: React.FC = () => {
   const { t } = useLanguage();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, calculateDiscount } = useAuth();
   const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice } = useCart();
+  const { formatPrice } = useCurrency();
   
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
   
-  // Simple discount calculation based on total
-  const getDiscount = (total: number) => {
-    if (total >= 10001) return total * 0.1; // 10%
-    if (total >= 5001) return total * 0.05; // 5%
-    return 0;
-  };
-  
-  const discount = isAuthenticated ? getDiscount(totalPrice) : 0;
+  const discount = isAuthenticated ? calculateDiscount(totalPrice) : 0;
   const finalPrice = totalPrice - discount;
 
   const handleCheckout = () => {
@@ -81,9 +76,9 @@ const ShoppingCart: React.FC = () => {
                     />
                     <div className="flex-1">
                       <h4 className="font-medium text-sm">{item.name}</h4>
-                      <p className="font-semibold text-primary">
-                        {item.price.toFixed(2)} lei
-                      </p>
+                       <p className="font-semibold text-primary">
+                         {formatPrice(item.price)}
+                       </p>
                       
                       <div className="flex items-center gap-2 mt-2">
                         <Button
@@ -120,24 +115,24 @@ const ShoppingCart: React.FC = () => {
               {/* Cart Summary */}
               <div className="border-t pt-4 space-y-4">
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Subtotal:</span>
-                    <span>{totalPrice.toFixed(2)} lei</span>
-                  </div>
-                  
-                  {discount > 0 && (
-                    <div className="flex justify-between text-sm text-green-600">
-                      <span>Reducere client fidel:</span>
-                      <span>-{discount.toFixed(2)} lei</span>
-                    </div>
-                  )}
-                  
-                  <Separator />
-                  
-                  <div className="flex justify-between font-semibold">
-                    <span>Total:</span>
-                    <span className="text-primary">{finalPrice.toFixed(2)} lei</span>
-                  </div>
+                   <div className="flex justify-between text-sm">
+                     <span>Subtotal:</span>
+                     <span>{formatPrice(totalPrice)}</span>
+                   </div>
+                   
+                   {discount > 0 && (
+                     <div className="flex justify-between text-sm text-green-600">
+                       <span>Reducere client fidel:</span>
+                       <span>-{formatPrice(discount)}</span>
+                     </div>
+                   )}
+                   
+                   <Separator />
+                   
+                   <div className="flex justify-between font-semibold">
+                     <span>Total:</span>
+                     <span className="text-primary">{formatPrice(finalPrice)}</span>
+                   </div>
                 </div>
 
                 <div className="space-y-2">

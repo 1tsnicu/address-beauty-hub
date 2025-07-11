@@ -16,10 +16,10 @@ const OnlineStore = () => {
 
   const categories = [
     { id: 'all', name: 'Toate produsele' },
-    { id: 'lashes', name: 'Gene false' },
-    { id: 'tools', name: 'Instrumente' },
-    { id: 'adhesives', name: 'Adezivi' },
-    { id: 'care', name: 'Îngrijire' },
+    { id: 'lashes', name: 'Gene' },
+    { id: 'brows', name: 'Sprâncene' },
+    { id: 'lamination', name: 'Laminarea' },
+    { id: 'cosmetics', name: 'Cosmetice & îngrijire personală' },
   ];
 
   const sortOptions = [

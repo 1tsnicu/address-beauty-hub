@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Heart, Star, Search } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from 'sonner';
 
 interface ProductGridProps {
@@ -18,6 +19,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   sortBy = 'newest' 
 }) => {
   const { addItem } = useCart();
+  const { formatPrice } = useCurrency();
 
   const products = [
     {
@@ -35,7 +37,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     },
     {
       id: 2,
-      name: 'Adeziv profesional Premium',
+      name: 'Kit Sprâncene Professional',
       price: 89.99,
       originalPrice: null,
       image: '/placeholder.svg',
@@ -43,20 +45,20 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       reviews: 98,
       inStock: true,
       isNew: false,
-      category: 'adhesives',
+      category: 'brows',
       sales: 250
     },
     {
       id: 3,
-      name: 'Pensete de precizie titanium',
+      name: 'Gel de Laminare Premium',
       price: 159.99,
       originalPrice: 189.99,
       image: '/placeholder.svg',
       rating: 4.7,
       reviews: 76,
-      inStock: false,
+      inStock: true,
       isNew: false,
-      category: 'tools',
+      category: 'lamination',
       sales: 120
     },
     {
@@ -69,7 +71,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       reviews: 45,
       inStock: true,
       isNew: true,
-      category: 'care',
+      category: 'cosmetics',
       sales: 80
     },
     {
@@ -87,7 +89,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     },
     {
       id: 6,
-      name: 'Kit complet pentru începători',
+      name: 'Kit Laminare Sprâncene Complet',
       price: 299.99,
       originalPrice: 399.99,
       image: '/placeholder.svg',
@@ -95,8 +97,34 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       reviews: 89,
       inStock: true,
       isNew: false,
-      category: 'tools',
+      category: 'lamination',
       sales: 150
+    },
+    {
+      id: 7,
+      name: 'Cremă hidratantă pentru față',
+      price: 75.99,
+      originalPrice: null,
+      image: '/placeholder.svg',
+      rating: 4.8,
+      reviews: 156,
+      inStock: true,
+      isNew: true,
+      category: 'cosmetics',
+      sales: 220
+    },
+    {
+      id: 8,
+      name: 'Ceară pentru sprâncene',
+      price: 35.99,
+      originalPrice: 45.99,
+      image: '/placeholder.svg',
+      rating: 4.6,
+      reviews: 87,
+      inStock: true,
+      isNew: false,
+      category: 'brows',
+      sales: 180
     }
   ];
 
@@ -209,17 +237,17 @@ const ProductGrid: React.FC<ProductGridProps> = ({
               </span>
             </div>
             
-            {/* Price */}
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-lg text-primary">
-                {product.price} lei
-              </span>
-              {product.originalPrice && (
-                <span className="text-sm text-muted-foreground line-through">
-                  {product.originalPrice} lei
-                </span>
-              )}
-            </div>
+             {/* Price */}
+             <div className="flex items-center gap-2">
+               <span className="font-bold text-lg text-primary">
+                 {formatPrice(product.price)}
+               </span>
+               {product.originalPrice && (
+                 <span className="text-sm text-muted-foreground line-through">
+                   {formatPrice(product.originalPrice)}
+                 </span>
+               )}
+             </div>
           </CardContent>
           
           <CardFooter className="p-4 pt-0">

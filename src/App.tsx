@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
+import { CurrencyProvider } from "./contexts/CurrencyContext";
 import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import OnlineStore from "./components/OnlineStore";
@@ -22,7 +23,8 @@ const App = () => (
     <LanguageProvider>
       <AuthProvider>
         <CartProvider>
-          <TooltipProvider>
+          <CurrencyProvider>
+            <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -42,7 +44,8 @@ const App = () => (
               </main>
             </div>
           </BrowserRouter>
-          </TooltipProvider>
+            </TooltipProvider>
+          </CurrencyProvider>
         </CartProvider>
       </AuthProvider>
     </LanguageProvider>
