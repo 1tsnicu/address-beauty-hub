@@ -55,95 +55,47 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-light-blue/30">
+      {/* Visual Features Section */}
+      <section className="py-12 bg-gradient-to-b from-background to-light-blue/20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
-              {t('home.why.title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('home.why.subtitle')}
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Magazine Online */}
-            <div className="card-beauty text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-6">
-                <ShoppingBag className="h-8 w-8 text-white" />
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {/* Magazin - Visual Card */}
+            <Link to="/magazin" className="group">
+              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10">
+                <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
+                  <ShoppingBag className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-primary mb-2">
+                  {t('home.hero.shop')}
+                </h3>
+                <div className="text-sm text-muted-foreground">1000+ produse</div>
               </div>
-              <h3 className="font-heading text-xl font-semibold text-primary mb-4">
-                {t('home.shop.title')}
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                {t('home.shop.description')}
-              </p>
-              <Link to="/magazin">
-                <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                  {t('home.shop.button')}
-                </Button>
-              </Link>
-            </div>
-
-            {/* Cursuri */}
-            <div className="card-beauty text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-6">
-                <GraduationCap className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="font-heading text-xl font-semibold text-primary mb-4">
-                {t('home.education.title')}
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                {t('home.education.description')}
-              </p>
-              <Link to="/cursuri">
-                <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                  {t('home.education.button')}
-                </Button>
-              </Link>
-            </div>
-
-            {/* Servicii */}
-            <div className="card-beauty text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Phone className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="font-heading text-xl font-semibold text-primary mb-4">
-                {t('home.services.title')}
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                {t('home.services.description')}
-              </p>
-              <Link to="/contact">
-                <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                  {t('home.services.button')}
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-6">
-            {t('home.cta.title')}
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            {t('home.cta.subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/cursuri">
-              <Button variant="hero" size="hero">
-                {t('home.cta.course')}
-              </Button>
             </Link>
-            <Link to="/magazin">
-              <Button variant="outline" size="lg" className="px-8 py-4 text-lg hover:bg-primary hover:text-primary-foreground">
-                {t('home.cta.products')}
-              </Button>
+
+            {/* Cursuri - Visual Card */}
+            <Link to="/cursuri" className="group">
+              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10">
+                <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
+                  <GraduationCap className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-primary mb-2">
+                  {t('home.hero.courses')}
+                </h3>
+                <div className="text-sm text-muted-foreground">6 programe</div>
+              </div>
+            </Link>
+
+            {/* Contact - Visual Card */}
+            <Link to="/contact" className="group">
+              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10">
+                <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
+                  <Phone className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-primary mb-2">
+                  {t('home.hero.contact')}
+                </h3>
+                <div className="text-sm text-muted-foreground">Salon fizic</div>
+              </div>
             </Link>
           </div>
         </div>
