@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, GraduationCap, Phone } from 'lucide-react';
-import heroImage from '@/assets/hero-lashes.jpg';
+import heroImage from '@/assets/hero-lashes-new.jpg';
 import lashesImage from '@/assets/lashes-beauty-1.jpg';
 import beautyToolsImage from '@/assets/beauty-tools.jpg';
 import beautyProductsImage from '@/assets/beauty-products.jpg';
