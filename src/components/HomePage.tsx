@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, GraduationCap, Phone } from 'lucide-react';
-import heroImage from '@/assets/hero-beauty.jpg';
+import heroImage from '@/assets/hero-lashes.jpg';
+import lashesImage from '@/assets/lashes-beauty-1.jpg';
+import beautyToolsImage from '@/assets/beauty-tools.jpg';
+import beautyProductsImage from '@/assets/beauty-products.jpg';
+import beautyCourseImage from '@/assets/beauty-course.jpg';
 
 const HomePage = () => {
   const { t } = useLanguage();
@@ -61,40 +65,61 @@ const HomePage = () => {
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {/* Magazin - Visual Card */}
             <Link to="/magazin" className="group">
-              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10">
-                <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
-                  <ShoppingBag className="h-10 w-10 text-white" />
+              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10 overflow-hidden">
+                <div className="relative h-32 mb-4 overflow-hidden rounded-t-lg">
+                  <img 
+                    src={beautyProductsImage} 
+                    alt="Beauty products" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 </div>
-                <h3 className="font-heading text-lg font-semibold text-primary mb-2">
-                  {t('home.hero.shop')}
-                </h3>
-                <div className="text-sm text-muted-foreground">1000+ produse</div>
+                <div className="px-4 pb-4">
+                  <h3 className="font-heading text-lg font-semibold text-primary mb-2">
+                    {t('home.hero.shop')}
+                  </h3>
+                  <div className="text-sm text-muted-foreground">1000+ produse</div>
+                </div>
               </div>
             </Link>
 
             {/* Cursuri - Visual Card */}
             <Link to="/cursuri" className="group">
-              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10">
-                <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
-                  <GraduationCap className="h-10 w-10 text-white" />
+              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10 overflow-hidden">
+                <div className="relative h-32 mb-4 overflow-hidden rounded-t-lg">
+                  <img 
+                    src={beautyCourseImage} 
+                    alt="Beauty course" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 </div>
-                <h3 className="font-heading text-lg font-semibold text-primary mb-2">
-                  {t('home.hero.courses')}
-                </h3>
-                <div className="text-sm text-muted-foreground">6 programe</div>
+                <div className="px-4 pb-4">
+                  <h3 className="font-heading text-lg font-semibold text-primary mb-2">
+                    {t('home.hero.courses')}
+                  </h3>
+                  <div className="text-sm text-muted-foreground">6 programe</div>
+                </div>
               </div>
             </Link>
 
             {/* Contact - Visual Card */}
             <Link to="/contact" className="group">
-              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10">
-                <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
-                  <Phone className="h-10 w-10 text-white" />
+              <div className="card-beauty text-center h-full hover:scale-105 transition-transform duration-300 cursor-pointer bg-gradient-to-br from-white via-light-blue/30 to-primary/10 overflow-hidden">
+                <div className="relative h-32 mb-4 overflow-hidden rounded-t-lg">
+                  <img 
+                    src={lashesImage} 
+                    alt="Professional lashes" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 </div>
-                <h3 className="font-heading text-lg font-semibold text-primary mb-2">
-                  {t('home.hero.contact')}
-                </h3>
-                <div className="text-sm text-muted-foreground">Salon fizic</div>
+                <div className="px-4 pb-4">
+                  <h3 className="font-heading text-lg font-semibold text-primary mb-2">
+                    {t('home.hero.contact')}
+                  </h3>
+                  <div className="text-sm text-muted-foreground">Salon fizic</div>
+                </div>
               </div>
             </Link>
           </div>
