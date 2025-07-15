@@ -28,6 +28,7 @@ export interface Product {
   categories?: string[]; // Multiple categories
   subcategories?: string[]; // Subcategories
   sales: number;
+  discount?: number; // Discount percentage
   cloudShopId?: string; // Added for Cloud Shop integration
   description?: string; // Detailed product description
   specifications?: Record<string, string>; // Technical specifications

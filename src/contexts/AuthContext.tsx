@@ -15,6 +15,7 @@ export interface User {
   totalSpent: number;
   loyaltyLevel: number;
   discountPercentage: number;
+  isAdmin?: boolean; // Add admin flag
   registrationBonus?: {
     percentage: number;
     expiresAt: Date;
@@ -23,12 +24,13 @@ export interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, isAdmin?: boolean) => Promise<void>;
   register: (userData: Omit<User, 'id' | 'totalSpent' | 'loyaltyLevel' | 'discountPercentage'>) => Promise<void>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
   calculateDiscount: (amount: number) => number;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -71,8 +73,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return { level: 0, discount: 0 };
   };
 
-  const login = async (email: string, password: string) => {
-    // Mock login - in real app, this would be an API call
+  const login = async (email: string, password: string, isAdmin = false) => {
+    // Check admin credentials
+    if (isAdmin) {
+      if (email === 'admin@addressbeauty.md' && password === 'admin123') {
+        const adminUser: User = {
+          id: 'admin',
+          name: 'Administrator',
+          email,
+          phone: '+37368882490',
+          birthdate: '1990-01-01',
+          experience: 'trainer',
+          country: 'Moldova',
+          city: 'Chișinău',
+          address: 'Address Beauty Hub',
+          totalSpent: 0,
+          loyaltyLevel: 5,
+          discountPercentage: 0,
+          isAdmin: true,
+        };
+        setUser(adminUser);
+        return;
+      } else {
+        throw new Error('Credențiale admin invalide');
+      }
+    }
+
+    // Regular user login
     const mockUser: User = {
       id: '1',
       name: 'Test User',
@@ -86,6 +113,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       totalSpent: 15000,
       loyaltyLevel: 2,
       discountPercentage: 6,
+      isAdmin: false,
     };
     
     const loyaltyInfo = calculateLoyaltyLevel(mockUser.totalSpent);
@@ -147,6 +175,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       updateUser,
       calculateDiscount,
       isAuthenticated: !!user,
+      isAdmin: !!user?.isAdmin,
     }}>
       {children}
     </AuthContext.Provider>

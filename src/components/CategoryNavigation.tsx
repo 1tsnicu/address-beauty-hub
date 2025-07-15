@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCategories } from '@/contexts/CategoriesContext';
 import { Link } from 'react-router-dom';
 import { 
@@ -13,12 +13,25 @@ import { cn } from '@/lib/utils';
 interface CategoryNavigationProps {
   onSelectCategory?: (categoryId: string, subcategoryId?: string) => void;
   className?: string;
+  selectedCategory?: string;
+  selectedSubcategory?: string;
 }
 
-export function CategoryNavigation({ onSelectCategory, className }: CategoryNavigationProps) {
+export function CategoryNavigation({ 
+  onSelectCategory, 
+  className, 
+  selectedCategory = 'all',
+  selectedSubcategory = ''
+}: CategoryNavigationProps) {
   const { categories } = useCategories();
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(selectedCategory);
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(selectedSubcategory);
+
+  // Update internal state when external props change
+  useEffect(() => {
+    setActiveCategory(selectedCategory);
+    setActiveSubcategory(selectedSubcategory);
+  }, [selectedCategory, selectedSubcategory]);
 
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(categoryId);

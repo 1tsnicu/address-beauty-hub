@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
+import { ContactService } from '@/lib/firebaseService';
 
 const ContactPage = () => {
   const { t, language } = useLanguage();
@@ -140,19 +141,32 @@ const ContactPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast.success('Mesajul a fost trimis cu succes! Vă vom contacta în curând.');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: '',
-      inquiryType: ''
-    });
-    setIsSubmitting(false);
+    try {
+      // Save contact form to Firebase
+      await ContactService.addContact({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+        language: language
+      });
+
+      toast.success('Mesajul a fost trimis cu succes! Vă vom contacta în curând.');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        inquiryType: ''
+      });
+    } catch (error) {
+      console.error('Contact form error:', error);
+      toast.error('A apărut o eroare la trimiterea mesajului. Te rog să încerci din nou.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

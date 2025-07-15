@@ -36,6 +36,9 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   const { products, isLoading, error, refreshProducts } = useProducts();
   const [isRefreshing, setIsRefreshing] = useState(false);
   
+  // Add a key to force re-filtering when category changes
+  const filterKey = `${category}-${subcategory}-${searchTerm}`;
+  
   const filteredAndSortedProducts = useProductFiltering({
     products,
     searchTerm,

@@ -59,6 +59,12 @@ const OnlineStore = () => {
     connectToCloudShop();
   }, []);
 
+  // Reset filters and page when category or subcategory changes
+  useEffect(() => {
+    setActiveFilters({});
+    setCurrentPage(1);
+  }, [selectedCategory, selectedSubcategory]);
+
   // Filter the categories to only show active ones
   const activeCategories = categories.filter(cat => cat.active);
 
@@ -341,6 +347,8 @@ const OnlineStore = () => {
                 />
                 
                 <CategoryNavigation 
+                  selectedCategory={selectedCategory}
+                  selectedSubcategory={selectedSubcategory}
                   onSelectCategory={(categoryId, subcategoryId) => {
                     setSelectedCategory(categoryId);
                     setSelectedSubcategory(subcategoryId || '');

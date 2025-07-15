@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Gift, TrendingUp, Calendar } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { NewsletterService } from '@/lib/firebaseService';
 
 interface NewsletterProps {
   variant?: 'compact' | 'full' | 'sidebar';
@@ -14,7 +15,7 @@ interface NewsletterProps {
 }
 
 const Newsletter: React.FC<NewsletterProps> = ({ variant = 'full', className = '' }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -61,8 +62,8 @@ const Newsletter: React.FC<NewsletterProps> = ({ variant = 'full', className = '
     setIsLoading(true);
 
     try {
-      // În realitate, aici ar fi un apel către API pentru înregistrarea în newsletter
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulare API call
+      // Save to Firebase
+      await NewsletterService.addSubscriber(email, language);
       
       toast({
         title: "Succes! 🎉",
@@ -75,9 +76,10 @@ const Newsletter: React.FC<NewsletterProps> = ({ variant = 'full', className = '
       setInterests([]);
       setAgreeToTerms(false);
     } catch (error) {
+      console.error('Newsletter subscription error:', error);
       toast({
         title: "Eroare",
-        description: "A apărut o eroare la abonare. Te rog să încerci din nou.",
+        description: "A apărut o eroare la abonarea la newsletter. Te rog să încerci din nou.",
         variant: "destructive",
       });
     } finally {

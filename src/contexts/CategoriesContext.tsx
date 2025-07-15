@@ -34,75 +34,132 @@ const defaultCategories: ProductCategory[] = [
   // Main categories
   { id: 'all', name: 'Toate produsele', slug: 'all', active: true, order: 0 },
   { id: 'lashes', name: 'Gene', slug: 'lashes', description: 'Produse pentru gene și extensii', active: true, order: 1 },
-  { id: 'brows', name: 'Sprâncene', slug: 'brows', description: 'Produse pentru sprâncene', active: true, order: 2 },
+  { id: 'brows', name: 'Sprâncene', slug: 'brows', description: 'Produse pentru sprâncene (în curând completată)', active: true, order: 2 },
   { id: 'lamination', name: 'Laminarea', slug: 'lamination', description: 'Produse pentru laminare', active: true, order: 3 },
-  { id: 'cosmetics', name: 'Cosmetice & îngrijire personală', slug: 'cosmetics', description: 'Produse cosmetice și de îngrijire', active: true, order: 4 },
+  { id: 'cosmetics', name: 'Îngrijire Personală', slug: 'cosmetics', description: 'Momentan disponibilă doar ca denumire, urmează să o completăm...', active: true, order: 4 },
   
-  // Subcategories for Gene (Eyelashes)
+  // Subcategories for Gene (Eyelashes) - based on Firebase collections
   { 
-    id: 'lashes-black', 
-    name: 'Gene negre', 
-    slug: 'gene-negre', 
-    description: 'Gene false negre pentru diverse stiluri',
+    id: 'lashes-individual', 
+    name: 'Gene fir cu fir / bande', 
+    slug: 'gene-fir-cu-fir', 
+    description: 'Gene false individuale și în bande (datele din gene)',
     active: true,
     parentId: 'lashes',
-    attributes: { color: 'black' },
     order: 1
   },
   { 
-    id: 'lashes-brown', 
-    name: 'Gene cafenii', 
-    slug: 'gene-cafenii', 
-    description: 'Gene false cafenii pentru un look natural',
+    id: 'lashes-adhesives', 
+    name: 'Adezive', 
+    slug: 'adezive', 
+    description: 'Adezive profesionale pentru aplicarea genelor (datele din adezive)',
     active: true,
     parentId: 'lashes',
-    attributes: { color: 'brown' },
     order: 2
   },
   { 
-    id: 'lashes-colored', 
-    name: 'Gene colorate', 
-    slug: 'gene-colorate', 
-    description: 'Gene false colorate pentru un look dramatic',
+    id: 'lashes-care', 
+    name: 'Preparate pentru aplicare și îngrijire', 
+    slug: 'preparate-ingrijire', 
+    description: 'Preparate pentru aplicare și îngrijire (datele din ingrijire-personala)',
     active: true,
     parentId: 'lashes',
-    attributes: { color: 'multi' },
     order: 3
   },
-  
-  // Subcategories for Sprâncene (Eyebrows)
   { 
-    id: 'brows-pencils', 
-    name: 'Creioane sprâncene', 
-    slug: 'creioane-sprancene', 
-    description: 'Creioane pentru definirea sprâncenelor',
+    id: 'lashes-consumables', 
+    name: 'Consumabile & accesorii', 
+    slug: 'consumabile-accesorii', 
+    description: 'Consumabile și accesorii pentru aplicare (datele din consumabile)',
     active: true,
+    parentId: 'lashes',
+    order: 4
+  },
+  { 
+    id: 'lashes-tools', 
+    name: 'Ustensile profesionale', 
+    slug: 'ustensile-profesionale', 
+    description: 'Ustensile și instrumente profesionale (datele din ustensile)',
+    active: true,
+    parentId: 'lashes',
+    order: 5
+  },
+  { 
+    id: 'lashes-led', 
+    name: 'Tehnologie LED', 
+    slug: 'tehnologie-led', 
+    description: 'Echipamente și tehnologie LED pentru aplicare',
+    active: true,
+    parentId: 'lashes',
+    order: 6
+  },
+
+  // Subcategories for Sprâncene (în curând completată)
+  { 
+    id: 'brows-henna', 
+    name: 'Henna pentru sprâncene', 
+    slug: 'henna-sprancene', 
+    description: 'Henna profesională pentru sprâncene',
+    active: false, // Disabled until content is ready
     parentId: 'brows',
-    attributes: { type: 'pencil' },
     order: 1
   },
   { 
-    id: 'brows-gels', 
-    name: 'Geluri pentru sprâncene', 
-    slug: 'geluri-sprancene', 
-    description: 'Geluri pentru fixarea și colorarea sprâncenelor',
-    active: true,
+    id: 'brows-dyes', 
+    name: 'Vopsele profesionale', 
+    slug: 'vopsele-profesionale', 
+    description: 'Vopsele și coloranți pentru sprâncene',
+    active: false,
     parentId: 'brows',
-    attributes: { type: 'gel' },
     order: 2
   },
   { 
-    id: 'brows-kits', 
-    name: 'Kituri complete', 
-    slug: 'kituri-sprancene', 
-    description: 'Seturi complete pentru îngrijirea sprâncenelor',
-    active: true,
+    id: 'brows-oxidants', 
+    name: 'Oxidanți & preparate speciale', 
+    slug: 'oxidanti-preparate', 
+    description: 'Oxidanți și preparate speciale pentru sprâncene',
+    active: false,
     parentId: 'brows',
-    attributes: { type: 'kit' },
     order: 3
   },
-  
-  // Additional subcategories could be added for other main categories
+  { 
+    id: 'brows-brushes', 
+    name: 'Pensule & instrumente dedicate', 
+    slug: 'pensule-instrumente', 
+    description: 'Pensule și instrumente dedicate pentru sprâncene',
+    active: false,
+    parentId: 'brows',
+    order: 4
+  },
+
+  // Subcategories for Laminare - based on Firebase collection
+  { 
+    id: 'lamination-solutions', 
+    name: 'Soluții pentru laminare', 
+    slug: 'solutii-laminare', 
+    description: 'Soluții profesionale pentru laminare (datele din laminare)',
+    active: true,
+    parentId: 'lamination',
+    order: 1
+  },
+  { 
+    id: 'lamination-adhesives', 
+    name: 'Adezive pentru laminare', 
+    slug: 'adezive-laminare', 
+    description: 'Adezive specializate pentru laminare (datele din laminare)',
+    active: true,
+    parentId: 'lamination',
+    order: 2
+  },
+  { 
+    id: 'lamination-accessories', 
+    name: 'Role, bigudiuri & accesorii specifice', 
+    slug: 'role-bigudiuri-accesorii', 
+    description: 'Role, bigudiuri și accesorii pentru laminare (datele din laminare)',
+    active: true,
+    parentId: 'lamination',
+    order: 3
+  }
 ];
 
 export const CategoriesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

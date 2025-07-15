@@ -33,6 +33,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
+    isAdmin: false, // Add admin flag
   });
   const [registerData, setRegisterData] = useState({
     name: '',
@@ -53,11 +54,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
     setIsLoading(true);
     
     try {
-      await login(loginData.email, loginData.password);
-      toast.success('Autentificare reușită!');
+      await login(loginData.email, loginData.password, loginData.isAdmin);
+      if (loginData.isAdmin) {
+        toast.success('Autentificare admin reușită!');
+      } else {
+        toast.success('Autentificare reușită!');
+      }
       onOpenChange(false);
     } catch (error) {
-      toast.error('Eroare la autentificare');
+      toast.error(error instanceof Error ? error.message : 'Eroare la autentificare');
     } finally {
       setIsLoading(false);
     }
@@ -120,6 +125,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                   onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
                   required
                 />
+              </div>
+
+              {/* Admin checkbox */}
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="isAdmin"
+                  checked={loginData.isAdmin}
+                  onChange={(e) => setLoginData(prev => ({ ...prev, isAdmin: e.target.checked }))}
+                  className="rounded border border-gray-300"
+                />
+                <Label htmlFor="isAdmin" className="text-sm text-gray-600">
+                  Conectare ca administrator
+                </Label>
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>

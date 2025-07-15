@@ -8,6 +8,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import ProductDetailsModal from './ProductDetailsModal';
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     product.variants && product.variants.length > 0 ? product.variants[0] : null
   );
   const [variantPopoverOpen, setVariantPopoverOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Determine if the product has variants
   const hasVariants = product.variants && product.variants.length > 0;
@@ -89,7 +91,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.isNew && (
               <Badge className="bg-green-500 text-white font-medium px-2 py-1">NOU</Badge>
             )}
-            {product.originalPrice && (
+            {product.originalPrice && product.originalPrice > product.price && (
               <Badge className="bg-red-500 text-white font-medium px-2 py-1">
                 -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
               </Badge>
@@ -143,7 +145,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="font-bold text-xl text-primary">
             {formatPrice(currentPrice)}
           </span>
-          {product.originalPrice && (
+          {product.originalPrice && product.originalPrice > product.price && (
             <span className="text-sm text-muted-foreground line-through">
               {formatPrice(product.originalPrice)}
             </span>
@@ -252,12 +254,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Button 
               className="w-full" 
               variant="outline"
+              onClick={() => setIsModalOpen(true)}
             >
               Vezi detalii
             </Button>
           </div>
         </div>
       </CardFooter>
+      
+      {/* Product Details Modal */}
+      <ProductDetailsModal 
+        product={product}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </Card>
   );
 };

@@ -29,8 +29,10 @@ export const useProductFiltering = ({
       // Filter by search term
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // Filter by category
-      const matchesCategory = category === 'all' || product.category === category;
+      // Filter by category - handle both main categories and subcategories
+      const matchesCategory = category === 'all' || 
+        product.category === category || 
+        (product.subcategories && product.subcategories.includes(category));
       
       // Filter by subcategory if provided
       const matchesSubcategory = !subcategory || 
@@ -126,5 +128,5 @@ export const useProductFiltering = ({
     }
 
     return filtered;
-  }, [products, searchTerm, category, sortBy]);
+  }, [products, searchTerm, category, subcategory, filters, sortBy, showOutOfStock]);
 };
