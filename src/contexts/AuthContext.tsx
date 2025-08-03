@@ -1,4 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { signUp, signIn, signOut, getCurrentUser } from '@/services/supabaseAuth';
+import { insertUserProfile, getUserProfile } from '@/services/supabaseUserProfile';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 export interface User {
   id: string;
@@ -25,7 +29,7 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, isAdmin?: boolean) => Promise<void>;
-  register: (userData: Omit<User, 'id' | 'totalSpent' | 'loyaltyLevel' | 'discountPercentage'>) => Promise<void>;
+  register: (userData: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
   calculateDiscount: (amount: number) => number;
@@ -36,8 +40,15 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  // State pentru MessageBox eroare Gmail duplicat
+  const [showGmailError, setShowGmailError] = useState(false);
+  // State pentru MessageBox confirmare email
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  // State pentru user
+  const [user, setUser] = useState<User | null>(null);
+
   // Load user data from local storage on component mount
-  const [user, setUser] = useState<User | null>(() => {
+  useEffect(() => {
     const savedUserData = localStorage.getItem('addressBeautyUser');
     if (savedUserData) {
       try {
@@ -46,14 +57,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (parsedUser.registrationBonus && parsedUser.registrationBonus.expiresAt) {
           parsedUser.registrationBonus.expiresAt = new Date(parsedUser.registrationBonus.expiresAt);
         }
-        return parsedUser;
+        setUser(parsedUser);
       } catch (error) {
         console.error('Failed to parse user data from localStorage', error);
-        return null;
+        setUser(null);
       }
     }
-    return null;
-  });
+  }, []);
 
   // Save user data to local storage whenever it changes
   useEffect(() => {
@@ -73,74 +83,116 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return { level: 0, discount: 0 };
   };
 
-  const login = async (email: string, password: string, isAdmin = false) => {
-    // Check admin credentials
-    if (isAdmin) {
-      if (email === 'admin@addressbeauty.md' && password === 'admin123') {
-        const adminUser: User = {
-          id: 'admin',
-          name: 'Administrator',
-          email,
-          phone: '+37368882490',
-          birthdate: '1990-01-01',
-          experience: 'trainer',
-          country: 'Moldova',
-          city: 'Chișinău',
-          address: 'Address Beauty Hub',
-          totalSpent: 0,
-          loyaltyLevel: 5,
-          discountPercentage: 0,
-          isAdmin: true,
-        };
-        setUser(adminUser);
-        return;
-      } else {
-        throw new Error('Credențiale admin invalide');
+  // Login cu Supabase Auth
+  const login = async (email: string, password: string) => {
+    const { data, error } = await signIn(email, password);
+    if (error) {
+      // Verifică dacă eroarea e de tip "Email not confirmed"
+      if (error.message && error.message.toLowerCase().includes('email not confirmed')) {
+        toast.info('Contul nu este confirmat. Verifică emailul și confirmă contul pentru a te autentifica.');
+        throw new Error('Contul nu este confirmat. Verifică emailul și confirmă contul pentru a te autentifica.');
+      }
+      throw new Error(error.message);
+    }
+    if (data.session && data.user) {
+      // Poți extinde cu date suplimentare din profilul userului
+      setUser({
+        id: data.user.id,
+        name: data.user.email || '',
+        email: data.user.email || '',
+        phone: '',
+        birthdate: '',
+        experience: 'beginner',
+        country: '',
+        city: '',
+        address: '',
+        totalSpent: 0,
+        loyaltyLevel: 0,
+        discountPercentage: 0,
+        isAdmin: false,
+      });
+    }
+  };
+
+  // Register cu Supabase Auth
+  // Register cu Supabase Auth și salvează datele suplimentare în tabelul users
+  const register = async (userData: {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    birthdate: string;
+    experience: 'beginner' | 'experienced' | 'trainer';
+    instagram?: string;
+    country: string;
+    city: string;
+    village?: string;
+    address: string;
+  }) => {
+    // Verifică dacă emailul există deja în baza de date (după profil, nu doar după id)
+    if (userData.email.endsWith('@gmail.com')) {
+      // Caută profil cu același email
+      const { data: existingProfiles, error: profileError } = await getUserProfile(undefined, userData.email);
+      if (profileError) {
+        throw new Error('Eroare la verificarea emailului: ' + profileError.message);
+      }
+      if (existingProfiles && existingProfiles.length > 0) {
+        setShowGmailError(true);
+        throw new Error('Acest Gmail a fost deja folosit.');
       }
     }
-
-    // Regular user login
-    const mockUser: User = {
-      id: '1',
-      name: 'Test User',
-      email,
-      phone: '+37368882490',
-      birthdate: '1990-01-01',
-      experience: 'experienced',
-      country: 'Moldova',
-      city: 'Chișinău',
-      address: 'Str. Test 123',
-      totalSpent: 15000,
-      loyaltyLevel: 2,
-      discountPercentage: 6,
-      isAdmin: false,
-    };
-    
-    const loyaltyInfo = calculateLoyaltyLevel(mockUser.totalSpent);
-    mockUser.loyaltyLevel = loyaltyInfo.level;
-    mockUser.discountPercentage = loyaltyInfo.discount;
-    
-    setUser(mockUser);
+    const { data, error } = await signUp(userData.email, userData.password);
+    if (error) throw new Error(error.message);
+    if (data.user) {
+      // Verifică dacă profilul există deja
+      const { data: existingProfile } = await getUserProfile(data.user.id);
+      let profileInsert = { data: null, error: null };
+      if (!existingProfile || existingProfile.length === 0) {
+        // Salvează datele suplimentare în tabelul users
+        profileInsert = await insertUserProfile({
+          id: data.user.id, // id-ul generat de Supabase Auth
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          birthdate: userData.birthdate,
+          experience: userData.experience,
+          instagram: userData.instagram ? userData.instagram : null,
+          country: userData.country,
+          city: userData.city,
+          village: userData.village ? userData.village : null,
+          address: userData.address,
+        });
+        // Logare detaliată pentru debugging
+        console.log('insertUserProfile response:', profileInsert);
+        if (profileInsert?.error) {
+          console.error('Supabase insert error:', profileInsert.error);
+          throw new Error(profileInsert.error.message || 'Eroare la inserția profilului');
+        }
+      }
+      setUser({
+        id: data.user.id,
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        birthdate: userData.birthdate,
+        experience: userData.experience,
+        instagram: userData.instagram,
+        country: userData.country,
+        city: userData.city,
+        village: userData.village,
+        address: userData.address,
+        totalSpent: 0,
+        loyaltyLevel: 0,
+        discountPercentage: 0,
+        isAdmin: false,
+      });
+      setShowConfirmDialog(true);
+    }
   };
 
-  const register = async (userData: Omit<User, 'id' | 'totalSpent' | 'loyaltyLevel' | 'discountPercentage'>) => {
-    // Mock registration - in real app, this would be an API call
-    const newUser: User = {
-      ...userData,
-      id: Date.now().toString(),
-      totalSpent: 0,
-      loyaltyLevel: 0,
-      discountPercentage: 0,
-      registrationBonus: {
-        percentage: 15,
-        expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours from now
-      },
-    };
-    
-    setUser(newUser);
-  };
-
-  const logout = () => {
+  // Logout cu Supabase Auth
+  const logout = async () => {
+    await signOut();
     setUser(null);
   };
 
@@ -177,6 +229,99 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       isAuthenticated: !!user,
       isAdmin: !!user?.isAdmin,
     }}>
+      {/* MessageBox-urile sunt afișate deasupra children (formularul de autentificare) */}
+      {showConfirmDialog && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: 16,
+            padding: '2.5rem 2rem',
+            maxWidth: 400,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+            textAlign: 'center',
+          }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 16, color: '#4077d6ff' }}>Confirmă emailul!</h2>
+            <p style={{ fontSize: '1.1rem', marginBottom: 24 }}>
+              Pentru a continua, verifică emailul și confirmă contul.<br />
+              <span style={{ color: '#555', fontSize: '0.95rem' }}>
+                (Verifică și folderul Spam/Promotions dacă nu găsești emailul)
+              </span>
+            </p>
+            <button
+              style={{
+                background: '#4077d6ff',
+                color: 'white',
+                border: 'none',
+                borderRadius: 8,
+                padding: '0.75rem 1.5rem',
+                fontWeight: 600,
+                fontSize: '1rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => setShowConfirmDialog(false)}
+            >
+              Am înțeles
+            </button>
+          </div>
+        </div>
+      )}
+      {showGmailError && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: 16,
+            padding: '2.5rem 2rem',
+            maxWidth: 400,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+            textAlign: 'center',
+          }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 16, color: '#dc2626' }}>Eroare Gmail!</h2>
+            <p style={{ fontSize: '1.1rem', marginBottom: 24 }}>
+              Acest Gmail a fost deja folosit.<br />
+              <span style={{ color: '#555', fontSize: '0.95rem' }}>
+                Te rugăm să folosești alt email pentru înregistrare.
+              </span>
+            </p>
+            <button
+              style={{
+                background: '#dc2626',
+                color: 'white',
+                border: 'none',
+                borderRadius: 8,
+                padding: '0.75rem 1.5rem',
+                fontWeight: 600,
+                fontSize: '1rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => setShowGmailError(false)}
+            >
+              Am înțeles
+            </button>
+          </div>
+        </div>
+      )}
       {children}
     </AuthContext.Provider>
   );
@@ -189,3 +334,15 @@ export const useAuth = () => {
   }
   return context;
 };
+
+const LogoutButton = () => {
+  const { logout, isAuthenticated } = useAuth();
+
+  return (
+    <Button onClick={logout} disabled={!isAuthenticated}>
+      Deconectează-te
+    </Button>
+  );
+};
+
+export default LogoutButton;

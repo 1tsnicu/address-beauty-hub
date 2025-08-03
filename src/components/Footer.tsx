@@ -14,7 +14,6 @@ import {
   Heart,
   Send
 } from 'lucide-react';
-import Newsletter from './Newsletter';
 
 const Footer = () => {
   const { t, language } = useLanguage();
@@ -98,14 +97,6 @@ const Footer = () => {
 
   return (
     <footer className="bg-gradient-to-b from-background to-secondary/30 border-t">
-      {/* Newsletter Section */}
-      <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <Newsletter variant="compact" />
-          </div>
-        </div>
-      </div>
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-16">

@@ -52,6 +52,7 @@ const CategoryManager: React.FC = () => {
       });
       setIsAddDialogOpen(false);
       toast.success('Categoria a fost adăugată cu succes');
+      await refreshCategories();
     } catch (error) {
       toast.error('Nu s-a putut adăuga categoria');
     }
@@ -64,6 +65,7 @@ const CategoryManager: React.FC = () => {
       await updateCategory(currentCategory.id, currentCategory);
       setIsEditDialogOpen(false);
       toast.success('Categoria a fost actualizată cu succes');
+      await refreshCategories();
     } catch (error) {
       toast.error('Nu s-a putut actualiza categoria');
     }
@@ -76,6 +78,7 @@ const CategoryManager: React.FC = () => {
       await deleteCategory(currentCategory.id);
       setIsDeleteDialogOpen(false);
       toast.success('Categoria a fost ștearsă cu succes');
+      await refreshCategories();
     } catch (error) {
       toast.error('Nu s-a putut șterge categoria');
     }

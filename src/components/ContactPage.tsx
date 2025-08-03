@@ -28,7 +28,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
-import { ContactService } from '@/lib/firebaseService';
 
 const ContactPage = () => {
   const { t, language } = useLanguage();
@@ -133,26 +132,18 @@ const ContactPage = () => {
     }
   ];
 
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Funcție statică pentru submit, doar vizual, fără trimitere către server/bază de date
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    try {
-      // Save contact form to Firebase
-      await ContactService.addContact({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        subject: formData.subject,
-        message: formData.message,
-        language: language
-      });
-
-      toast.success('Mesajul a fost trimis cu succes! Vă vom contacta în curând.');
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast.success('Mesajul a fost trimis! (simulat, fără trimitere reală)');
       setFormData({
         name: '',
         email: '',
@@ -161,13 +152,9 @@ const ContactPage = () => {
         message: '',
         inquiryType: ''
       });
-    } catch (error) {
-      console.error('Contact form error:', error);
-      toast.error('A apărut o eroare la trimiterea mesajului. Te rog să încerci din nou.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    }, 1200);
   };
+
 
   return (
     <div className="min-h-screen">

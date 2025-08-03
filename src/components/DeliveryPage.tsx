@@ -204,39 +204,36 @@ const DeliveryPage = () => {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6">
-            <Card className="border-orange-200 bg-orange-50">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="border-orange-200 bg-orange-50 flex flex-col h-full">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-orange-800">
                   <AlertCircle className="h-5 w-5" />
-                  Restricții de Retur - Motive de Igienă și Siguranță
+                  Restricții de Retur
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-orange-700">
-                <p className="mb-4">
-                  Din motive de igienă și siguranță, produsele cosmetice și de îngrijire personală 
-                  <strong> nu pot fi returnate</strong> după ce au fost desfăcute sau testate.
+              <CardContent className="text-orange-700 text-sm">
+                <p className="mb-2">
+                  Din motive de igienă și siguranță, produsele cosmetice și de îngrijire personală <strong>nu pot fi returnate</strong> după ce au fost desfăcute sau testate.
                 </p>
                 <p>
-                  Majoritatea produselor noastre sunt destinate aplicării directe pe piele, ochi sau mucoase, 
-                  iar pentru a fi testate este necesară desigilarea ambalajului, ceea ce exclude posibilitatea 
-                  reutilizării lor sau reintroducerii în vânzare.
+                  Majoritatea produselor noastre sunt destinate aplicării directe pe piele, ochi sau mucoase, iar pentru a fi testate este necesară desigilarea ambalajului, ceea ce exclude posibilitatea reutilizării lor sau reintroducerii în vânzare.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-green-200 bg-green-50">
+            <Card className="border-green-200 bg-green-50 flex flex-col h-full">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-green-800">
                   <CheckCircle className="h-5 w-5" />
                   Când Este Acceptat Returul
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-green-700">
-                <p className="mb-4">
+              <CardContent className="text-green-700 text-sm">
+                <p className="mb-2">
                   <strong>Returul este acceptat doar dacă:</strong>
                 </p>
-                <ul className="space-y-2">
+                <ul className="space-y-1">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
                     <span>Produsul este în ambalajul original, sigilat</span>
@@ -253,21 +250,19 @@ const DeliveryPage = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="flex flex-col h-full">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Shield className="h-5 w-5 text-primary" />
                   Conformitate Legală
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Nu se acceptă returul produselor desfăcute, testate sau utilizate, în conformitate cu 
-                  normele de igienă și protecția consumatorului din Republica Moldova.
+              <CardContent className="text-muted-foreground text-sm">
+                <p className="mb-2">
+                  Nu se acceptă returul produselor desfăcute, testate sau utilizate, în conformitate cu normele de igienă și protecția consumatorului din Republica Moldova.
                 </p>
-                <p className="text-muted-foreground">
-                  Pentru orice întrebări sau situații speciale, vă încurajăm să ne contactați. 
-                  Suntem deschiși să analizăm individual fiecare caz.
+                <p>
+                  Pentru orice întrebări sau situații speciale, vă încurajăm să ne contactați. Suntem deschiși să analizăm individual fiecare caz.
                 </p>
               </CardContent>
             </Card>

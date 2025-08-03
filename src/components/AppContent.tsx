@@ -13,37 +13,28 @@ import DeliveryPage from './DeliveryPage';
 import TermsPage from '../pages/TermsPage';
 import PrivacyPage from '../pages/PrivacyPage';
 import NotFound from '../pages/NotFound';
-import AdminDashboard from './AdminDashboard';
 
 const AppContent: React.FC = () => {
-  const { isAdmin } = useAuth();
-
-  // If user is admin, show AdminDashboard, otherwise show normal app
+  // Aplicația afișează doar partea vizuală pentru toți utilizatorii
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {isAdmin ? (
-        <AdminDashboard />
-      ) : (
-        <>
-          <Header />
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/magazin" element={<OnlineStore />} />
-              <Route path="/cursuri" element={<CoursesPage />} />
-              <Route path="/despre" element={<AboutPage />} />
-              <Route path="/livrare" element={<DeliveryPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/termeni" element={<TermsPage />} />
-              <Route path="/confidentialitate" element={<PrivacyPage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <BackToTopButton />
-        </>
-      )}
+      <Header />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/magazin" element={<OnlineStore />} />
+          <Route path="/cursuri" element={<CoursesPage />} />
+          <Route path="/despre" element={<AboutPage />} />
+          <Route path="/livrare" element={<DeliveryPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/termeni" element={<TermsPage />} />
+          <Route path="/confidentialitate" element={<PrivacyPage />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+      <BackToTopButton />
     </div>
   );
 };

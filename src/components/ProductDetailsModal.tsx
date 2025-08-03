@@ -338,7 +338,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                     <CardContent className="p-0 text-center">
                       <Truck className="w-5 h-5 mx-auto text-blue-600 mb-1" />
                       <p className="text-xs text-gray-600">Livrare gratuită</p>
-                      <p className="text-xs font-medium">peste 500 MDL</p>
+                      <p className="text-xs font-medium">peste 500 LEI</p>
                     </CardContent>
                   </Card>
                   

@@ -11,8 +11,8 @@ const CurrencySelector = () => {
         <SelectValue>{getCurrencySymbol()}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="LEI">MDL (Lei Moldovenești)</SelectItem>
-        <SelectItem value="RON">RON (Lei Românești)</SelectItem>
+        <SelectItem value="LEI">LEI</SelectItem>
+        <SelectItem value="RON">RON</SelectItem>
         <SelectItem value="EUR">EUR</SelectItem>
       </SelectContent>
     </Select>

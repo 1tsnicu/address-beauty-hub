@@ -24,7 +24,7 @@ import CurrencySelector from './CurrencySelector';
 
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
@@ -90,12 +90,12 @@ const Header = () => {
                   <DropdownMenuItem disabled className="flex flex-col items-start">
                     <span className="text-xs">Nivel fidelitate: {user.loyaltyLevel}</span>
                     <span className="text-xs">Reducere: {user.discountPercentage}%</span>
-                    <span className="text-xs">Total achiziții: {user.totalSpent.toLocaleString()} MDL</span>
+                    <span className="text-xs">Total achiziții: {user.totalSpent.toLocaleString()} LEI</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setAuthModalOpen(true)}>
                     Contul meu
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => useAuth().logout()}>
+                  <DropdownMenuItem onClick={logout}>
                     Deconectare
                   </DropdownMenuItem>
                 </DropdownMenuContent>

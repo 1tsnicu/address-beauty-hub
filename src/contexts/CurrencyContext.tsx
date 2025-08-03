@@ -31,26 +31,26 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
     const convertedPrice = convertPrice(price);
     switch (currency) {
       case 'LEI':
-        return `${convertedPrice.toFixed(2)} MDL`; // Moldovan Leu
+        return `${convertedPrice.toFixed(2)} LEI`; // Moldovan Leu
       case 'RON':
         return `${convertedPrice.toFixed(2)} RON`; // Romanian Leu
       case 'EUR':
         return `€${convertedPrice.toFixed(2)}`;
       default:
-        return `${convertedPrice.toFixed(2)} MDL`;
+        return `${convertedPrice.toFixed(2)} LEI`;
     }
   };
 
   const getCurrencySymbol = (): string => {
     switch (currency) {
       case 'LEI':
-        return 'MDL'; // Moldovan Leu
+        return 'LEI'; // Moldovan Leu
       case 'RON':
         return 'RON'; // Romanian Leu
       case 'EUR':
         return '€';
       default:
-        return 'MDL';
+        return 'LEI';
     }
   };
 

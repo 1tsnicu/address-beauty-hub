@@ -13,13 +13,11 @@ import {
   ChevronRight, XCircle, LayoutGrid 
 } from 'lucide-react';
 import ProductGrid from './ProductGrid';
-import Newsletter from './Newsletter';
 import LoyaltyStatusBanner from './LoyaltyStatusBanner';
 import CategoryNavigation from './CategoryNavigation';
 import BreadcrumbNavigation from './BreadcrumbNavigation';
 import ProductFilters, { FilterGroup, FilterState, FilterOption } from './ProductFilters';
 import BackToTopButton from './BackToTopButton';
-import cloudShopService from '@/lib/CloudShopService';
 import { toast } from 'sonner';
 
 const OnlineStore = () => {
@@ -38,26 +36,6 @@ const OnlineStore = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(12); // Numărul de produse pe pagină
 
-  // Connect to Cloud Shop on component mount
-  useEffect(() => {
-    const connectToCloudShop = async () => {
-      setIsConnectingToCloudShop(true);
-      try {
-        const connected = await cloudShopService.connect();
-        setCloudShopConnected(connected);
-        if (connected) {
-          toast.success('Conexiune reușită cu Cloud Shop');
-        }
-      } catch (error) {
-        console.error('Error connecting to Cloud Shop:', error);
-        toast.error('Nu s-a putut conecta la Cloud Shop. Se folosesc date locale.');
-      } finally {
-        setIsConnectingToCloudShop(false);
-      }
-    };
-
-    connectToCloudShop();
-  }, []);
 
   // Reset filters and page when category or subcategory changes
   useEffect(() => {
@@ -194,39 +172,7 @@ const OnlineStore = () => {
       <section className="py-8 border-b">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-            {/* Cloud Shop Connection Status */}
-            <div className="flex items-center gap-2">
-              <div className={`h-2 w-2 rounded-full ${cloudShopConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <CloudCog className="h-3 w-3" />
-                {cloudShopConnected ? 'Cloud Shop conectat' : 'Cloud Shop deconectat'}
-              </span>
-              {!cloudShopConnected && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={async () => {
-                    setIsConnectingToCloudShop(true);
-                    try {
-                      const connected = await cloudShopService.connect();
-                      setCloudShopConnected(connected);
-                      if (connected) {
-                        refreshCategories();
-                        toast.success('Conexiune reușită cu Cloud Shop');
-                      }
-                    } catch (error) {
-                      toast.error('Nu s-a putut conecta la Cloud Shop');
-                    } finally {
-                      setIsConnectingToCloudShop(false);
-                    }
-                  }}
-                  disabled={isConnectingToCloudShop}
-                  className="p-1 h-auto"
-                >
-                  <RefreshCw className={`h-3 w-3 ${isConnectingToCloudShop ? 'animate-spin' : ''}`} />
-                </Button>
-              )}
-            </div>
+
 
             {/* Categories - Main categories only */}
             <div className="flex flex-wrap gap-2">
@@ -238,14 +184,17 @@ const OnlineStore = () => {
                 </div>
               ) : (
                 activeCategories
-                  .filter(category => !category.parentId) // Only show main categories, not subcategories
+                  .filter(category => !category.parentId)
                   .map((category) => (
                     <Button
                       key={category.id}
                       variant={selectedCategory === category.id ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setSelectedCategory(category.id)}
-                      className="rounded-full"
+                      onClick={() => {
+                        setSelectedCategory(category.id);
+                        setSelectedSubcategory('');
+                      }}
+                      className="rounded-full mb-1"
                     >
                       {category.name}
                     </Button>
@@ -267,11 +216,6 @@ const OnlineStore = () => {
                   ))}
                 </SelectContent>
               </Select>
-              
-              <Button variant="outline" size="sm">
-                <SlidersHorizontal className="h-4 w-4 mr-2" />
-                Filtrează
-              </Button>
             </div>
           </div>
         </div>
@@ -498,9 +442,6 @@ const OnlineStore = () => {
           </div>
         </div>
       </section>
-
-      {/* Newsletter */}
-      <Newsletter />
       
       {/* Back to top button */}
       <BackToTopButton />
