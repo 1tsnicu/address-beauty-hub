@@ -15,6 +15,7 @@ import NotFound from '../pages/NotFound';
 import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
 import AdminGuard from './AdminGuard';
+import TestSetup from './TestSetup';
 
 const AppContent: React.FC = () => {
   // Aplicația afișează doar partea vizuală pentru toți utilizatorii
