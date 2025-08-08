@@ -174,10 +174,15 @@ test_plan:
     - "Update ProductEditDialog for base64 image upload"
     - "Update AdminProductsTable with image preview column"
     - "Verify edit dialog integration with AdminDashboard"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Update ProductEditDialog for base64 image upload"
+    - "Update AdminProductsTable with image preview column"
+    - "Verify edit dialog integration with AdminDashboard"
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
     message: "Implemented base64 image upload functionality in ProductEditDialog. Changed from Supabase storage to direct base64 storage in database records. Added image preview functionality in both edit dialog and admin table. Ready for testing."
+  - agent: "testing"
+    message: "CRITICAL AUTHENTICATION ISSUES FOUND: Cannot test any edit functionality due to Supabase authentication and database access failures. Key issues: 1) Admin user creation fails with 'Email address admin@test.com is invalid' error, 2) Database operations fail with row-level security policy violations on all tables (gene, adezive, preparate), 3) Admin login fails with 400 errors. The frontend components appear correctly implemented but cannot be tested. REQUIRES IMMEDIATE ATTENTION: Fix Supabase authentication setup, admin user creation process, and database row-level security policies before edit functionality can be tested."
