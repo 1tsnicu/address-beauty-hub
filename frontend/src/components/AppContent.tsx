@@ -33,6 +33,9 @@ const AppContent: React.FC = () => {
           <Route path="/termeni" element={<TermsPage />} />
           <Route path="/confidentialitate" element={<PrivacyPage />} />
 
+          {/* Test Setup (for development) */}
+          <Route path="/test-setup" element={<TestSetup />} />
+
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
