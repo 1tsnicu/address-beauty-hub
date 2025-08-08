@@ -77,20 +77,36 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
     }
   };
 
-  // Upload simplu imagine în bucket "product-images"
+  // Convert image to base64 and store directly in database
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !row) return;
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Te rog selectează un fișier imagine valid');
+      return;
+    }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Imaginea este prea mare. Mărimea maximă permisă este 5MB');
+      return;
+    }
+    
     try {
-      const ext = file.name.split('.').pop();
-      const path = `${row.table}/${row.id}-${Date.now()}.${ext}`;
-      const { data, error } = await supabase.storage.from('product-images').upload(path, file, { upsert: true });
-      if (error) throw new Error(error.message);
-      const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(data.path);
-      setForm((p) => ({ ...p, image_url: urlData.publicUrl }));
-      toast.success('Imagine încărcată');
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64String = event.target?.result as string;
+        setForm((p) => ({ ...p, image_url: base64String }));
+        toast.success('Imagine încărcată cu succes');
+      };
+      reader.onerror = () => {
+        toast.error('Eroare la citirea fișierului');
+      };
+      reader.readAsDataURL(file);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Upload eșuat');
+      toast.error(err instanceof Error ? err.message : 'Eroare la încărcarea imaginii');
     }
   };
 
