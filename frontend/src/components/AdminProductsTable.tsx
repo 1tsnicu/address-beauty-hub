@@ -188,7 +188,25 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                       {rows.map((r) => (
                         <TableRow key={`${t}-${r.id}`}>
                           <TableCell className="font-mono text-xs">{r.id}</TableCell>
-                          <TableCell className="max-w-[520px] truncate">{r.name}</TableCell>
+                          <TableCell className="max-w-[320px] truncate">{r.name}</TableCell>
+                          <TableCell>
+                            {r.image_url ? (
+                              <img 
+                                src={r.image_url} 
+                                alt={r.name}
+                                className="w-12 h-12 object-cover rounded border"
+                                onError={(e) => {
+                                  e.currentTarget.src = '';
+                                  e.currentTarget.alt = 'Imagine indisponibilă';
+                                  e.currentTarget.className = 'w-12 h-12 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-400';
+                                }}
+                              />
+                            ) : (
+                              <div className="w-12 h-12 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-400">
+                                Fără imagine
+                              </div>
+                            )}
+                          </TableCell>
                           <TableCell className="font-mono text-xs">{r.sku || '-'}</TableCell>
                           <TableCell>{r.sale_price != null ? `${r.sale_price} MDL` : '-'}</TableCell>
                           <TableCell>
