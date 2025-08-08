@@ -84,7 +84,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   // Login cu Supabase Auth
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, isAdminParam?: boolean) => {
     const { data, error } = await signIn(email, password);
     if (error) {
       // Verifică dacă eroarea e de tip "Email not confirmed"
@@ -95,7 +95,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       throw new Error(error.message);
     }
     if (data.session && data.user) {
-      // Poți extinde cu date suplimentare din profilul userului
+      // Determină dacă userul este admin
+      const envAdmins = (import.meta.env.VITE_ADMIN_EMAILS || '')
+        .split(',')
+        .map((e: string) => e.trim().toLowerCase())
+        .filter(Boolean);
+      const userEmail = (data.user.email || '').toLowerCase();
+      const isAdminFromEnv = userEmail && envAdmins.includes(userEmail);
+      const meta: { is_admin?: boolean; role?: string } = (data.user as unknown as { user_metadata?: { is_admin?: boolean; role?: string } })
+        .user_metadata || {};
+      const isAdminFromMeta = Boolean(meta.is_admin === true || meta.role === 'admin');
+      const computedIsAdmin = Boolean(isAdminParam || isAdminFromEnv || isAdminFromMeta);
+
       setUser({
         id: data.user.id,
         name: data.user.email || '',
@@ -109,7 +120,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         totalSpent: 0,
         loyaltyLevel: 0,
         discountPercentage: 0,
-        isAdmin: false,
+        isAdmin: computedIsAdmin,
       });
     }
   };
@@ -146,22 +157,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (data.user) {
       // Verifică dacă profilul există deja
       const { data: existingProfile } = await getUserProfile(data.user.id);
-      let profileInsert = { data: null, error: null };
+      let profileInsert = { data: null as unknown, error: null as unknown } as { data: unknown; error: { message?: string } | null };
       if (!existingProfile || existingProfile.length === 0) {
         // Salvează datele suplimentare în tabelul users
-        profileInsert = await insertUserProfile({
+        const insertRes = await insertUserProfile({
           id: data.user.id, // id-ul generat de Supabase Auth
           name: userData.name,
           email: userData.email,
           phone: userData.phone,
           birthdate: userData.birthdate,
           experience: userData.experience,
-          instagram: userData.instagram ? userData.instagram : null,
+          instagram: userData.instagram ? userData.instagram : null as unknown as string,
           country: userData.country,
           city: userData.city,
-          village: userData.village ? userData.village : null,
+          village: userData.village ? userData.village : null as unknown as string,
           address: userData.address,
         });
+        profileInsert = { data: insertRes.data as unknown, error: insertRes.error };
         // Logare detaliată pentru debugging
         console.log('insertUserProfile response:', profileInsert);
         if (profileInsert?.error) {
@@ -327,6 +339,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import Header from './Header';
 import Footer from './Footer';
 import BackToTopButton from './BackToTopButton';
@@ -13,6 +12,9 @@ import DeliveryPage from './DeliveryPage';
 import TermsPage from '../pages/TermsPage';
 import PrivacyPage from '../pages/PrivacyPage';
 import NotFound from '../pages/NotFound';
+import AdminDashboard from './AdminDashboard';
+import AdminLogin from './AdminLogin';
+import AdminGuard from './AdminGuard';
 
 const AppContent: React.FC = () => {
   // Aplicația afișează doar partea vizuală pentru toți utilizatorii
@@ -29,6 +31,18 @@ const AppContent: React.FC = () => {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/termeni" element={<TermsPage />} />
           <Route path="/confidentialitate" element={<PrivacyPage />} />
+
+          {/* Admin */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminGuard>
+                <AdminDashboard />
+              </AdminGuard>
+            }
+          />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
