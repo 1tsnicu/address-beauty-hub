@@ -149,13 +149,29 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image_url">URL imagine</Label>
+            <Label htmlFor="image_url">URL imagine sau Base64</Label>
             <Input id="image_url" value={form.image_url} onChange={(e) => handleChange('image_url', e.target.value)} />
+            {form.image_url && (
+              <div className="mt-2 p-2 border rounded-lg">
+                <p className="text-sm text-muted-foreground mb-2">Previzualizare imagine:</p>
+                <img 
+                  src={form.image_url} 
+                  alt="Preview" 
+                  className="max-w-full h-32 object-contain rounded border"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
-            <Label>Încarcă imagine</Label>
+            <Label>Încarcă imagine nouă (va fi salvată ca base64)</Label>
             <Input type="file" accept="image/*" onChange={handleUpload} />
+            <p className="text-xs text-muted-foreground">
+              Formante acceptate: JPG, PNG, GIF, WebP. Mărime maximă: 5MB
+            </p>
           </div>
 
           <div className="flex justify-end gap-2">
