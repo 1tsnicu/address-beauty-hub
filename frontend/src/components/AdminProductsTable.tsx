@@ -176,6 +176,7 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                       <TableRow>
                         <TableHead className="w-[80px]">ID</TableHead>
                         <TableHead>Nume</TableHead>
+                        <TableHead className="w-[80px]">Imagine</TableHead>
                         <TableHead className="w-[140px]">SKU</TableHead>
                         <TableHead className="w-[120px]">Preț</TableHead>
                         <TableHead className="w-[120px]">Stoc</TableHead>
