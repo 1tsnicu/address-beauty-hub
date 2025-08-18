@@ -1,3 +1,5 @@
+import { GeneGroup } from './GeneVariant';
+
 export interface ProductVariant {
   id: number;
   sku?: string;
@@ -9,7 +11,7 @@ export interface ProductVariant {
   stockQuantity?: number;
   inStock?: boolean;
   imageUrl?: string;
-  [key: string]: any; // Additional attributes
+  [key: string]: string | number | boolean | undefined; // Additional attributes
 }
 
 export interface Product {
@@ -33,11 +35,15 @@ export interface Product {
   description?: string; // Detailed product description
   specifications?: Record<string, string>; // Technical specifications
   variants?: ProductVariant[]; // Product variants
+  geneGroup?: GeneGroup; // For gene products - contains GeneGroup data
   attributes?: {
     color?: string;
     material?: string;
     type?: string;
     style?: string;
-    [key: string]: any;
+    isGeneGroup?: boolean; // Flag to identify gene products
+    totalVariants?: number;
+    availableVariants?: number;
+    [key: string]: string | number | boolean | undefined;
   }; // For filtering
 }

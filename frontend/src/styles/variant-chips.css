@@ -1,0 +1,50 @@
+/* Stiluri specifice pentru chip-urile de variante gene */
+
+.variant-chip {
+  @apply inline-flex items-center justify-center rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200;
+  @apply border-2 min-w-[60px] h-8 cursor-pointer;
+}
+
+.variant-chip--selected {
+  @apply bg-primary text-primary-foreground border-primary shadow-md transform scale-105;
+}
+
+.variant-chip--enabled {
+  @apply bg-background text-foreground border-border hover:border-primary/50 hover:bg-accent hover:scale-102;
+}
+
+.variant-chip--disabled {
+  @apply bg-muted text-muted-foreground border-muted cursor-not-allowed opacity-50;
+}
+
+.variant-chip-group {
+  @apply space-y-3;
+}
+
+.variant-chip-group__title {
+  @apply font-medium text-sm text-foreground uppercase tracking-wide;
+}
+
+.variant-chip-group__chips {
+  @apply flex flex-wrap gap-2;
+}
+
+/* Animații pentru hover effects */
+.variant-chip:not(.variant-chip--disabled):hover {
+  transform: scale(1.02);
+}
+
+.variant-chip--selected:hover {
+  transform: scale(1.08);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .variant-chip {
+    @apply min-w-[50px] text-xs px-2 py-1;
+  }
+  
+  .variant-chip-group__chips {
+    @apply gap-1.5;
+  }
+}

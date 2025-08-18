@@ -13,6 +13,11 @@ function extractProductDetails(name: string) {
   const type = ['Benzi', 'Evantaie', 'mix', 'Volum', 'Natural'].find(t => name.toLowerCase().includes(t.toLowerCase())) || null;
   return { curvature, length, thickness, brand, type };
 }
+
+// Helper functions pentru conversia tipurilor
+const asString = (value: unknown): string => typeof value === 'string' ? value : '';
+const asNumber = (value: unknown): number => typeof value === 'number' ? value : (typeof value === 'string' && !isNaN(Number(value)) ? Number(value) : 0);
+const asStringOrNull = (value: unknown): string | null => typeof value === 'string' ? value : null;
 import React, { useState, useEffect } from 'react';
 import { useCategories } from '@/contexts/CategoriesContext';
 import { Search, RefreshCw, Cloud } from 'lucide-react';
@@ -22,6 +27,9 @@ import { Button } from './ui/button';
 import PaginationControls from './PaginationControls';
 import ProductsPerPageSelector from './ProductsPerPageSelector';
 import { toast } from 'sonner';
+import { Product } from '@/types/Product';
+import { supabase } from '@/lib/supabaseClient';
+import { GeneVariantService } from '@/services/geneVariantService';
 
 interface SemanticFilterState {
   curvature?: string[];
@@ -59,6 +67,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   // Fetch produse din toate tabelele relevante din Supabase
   const { categories } = useCategories();
   const [products, setProducts] = useState([]);
+  const [geneGroups, setGeneGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const refreshProducts = async () => {
@@ -77,34 +86,47 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         laminare: { category: 'Laminare', subcategory: 'Soluții pentru laminare' },
         // Poți adăuga aici și restul tabelelor când le ai
       };
-      const tables = Object.keys(tableCategoryMap);
-      const allProducts: any[] = [];
-      for (const table of tables) {
-        // @ts-ignore
-        const { data, error } = await window.supabase.from(table).select('*');
+
+      // Încarcă grupurile gene
+      const geneGroupsData = await GeneVariantService.getProductGroups();
+      setGeneGroups(geneGroupsData);
+
+      // Încarcă produsele din celelalte tabele (non-gene)
+      const nonGeneTables = Object.keys(tableCategoryMap).filter(table => table !== 'gene');
+      const allProducts: Product[] = [];
+
+      for (const table of nonGeneTables) {
+        const { data, error } = await supabase.from(table).select('*');
         if (error) throw new Error(error.message);
         if (data && Array.isArray(data) && data.length > 0) {
-          data.forEach((prod: any) => {
-            const details = extractProductDetails(prod.name);
+          data.forEach((prod: Record<string, unknown>) => {
+            const details = extractProductDetails(asString(prod.name));
+
             allProducts.push({
-              id: prod.id,
-              name: prod.name,
-              price: prod.sale_price ?? 0,
-              originalPrice: prod.sale_price ?? null,
-              image: prod.image_url ?? '/placeholder.svg',
+              id: asNumber(prod.id),
+              name: asString(prod.name),
+              price: asNumber(prod.sale_price),
+              originalPrice: asNumber(prod.sale_price) || null,
+              image: asString(prod.image_url) || '/placeholder.svg',
               rating: 0,
               reviews: 0,
-              inStock: (prod.store_stock ?? prod.total_stock ?? 0) > 0,
-              stockQuantity: prod.store_stock ?? prod.total_stock ?? 0,
+              inStock: asNumber(prod.store_stock || prod.total_stock) > 0,
+              stockQuantity: asNumber(prod.store_stock || prod.total_stock),
               isNew: false,
               category: tableCategoryMap[table]?.category ?? '',
-              subcategory: tableCategoryMap[table]?.subcategory ?? '',
-              discount: prod.discount ?? 0,
-              description: prod.sku ? `SKU: ${prod.sku}` : '',
+              subcategories: [tableCategoryMap[table]?.subcategory ?? ''],
+              sales: 0,
+              discount: asNumber(prod.discount),
+              description: asString(prod.descriere) || (prod.sku ? `SKU: ${asString(prod.sku)}` : ''),
               specifications: {},
               variants: [],
-              attributes: {},
-              ...details,
+              attributes: {
+                curvature: details.curvature,
+                length: details.length,
+                thickness: details.thickness,
+                brand: details.brand,
+                type: details.type,
+              },
             });
           });
         } else {
@@ -112,17 +134,48 @@ const ProductGrid: React.FC<ProductGridProps> = ({
           console.warn(`Tabela ${table} nu are date sau structura e greșită:`, data);
         }
       }
-      setProducts(allProducts);
-    } catch (err: any) {
-      setError(err.message || 'Eroare la încărcarea produselor');
+
+      // Convertește grupurile gene în "pseudo-produse" pentru grid
+      const geneProducts = geneGroupsData.map((group, index) => ({
+        id: `gene-group-${index}`,
+        name: group.name,
+        price: group.from_price || 0,
+        originalPrice: null, // Vom calcula asta din variante dacă e nevoie
+        image: group.image_url || '/placeholder.svg',
+        rating: 0,
+        reviews: 0,
+        inStock: group.total_stock > 0,
+        stockQuantity: group.total_stock,
+        isNew: false,
+        category: 'Gene',
+        subcategories: ['Gene fir cu fir / bande'],
+        sales: 0,
+        discount: 0,
+        description: `${group.variant_count} variante disponibile`,
+        specifications: {},
+        variants: [],
+        attributes: {
+          isGeneGroup: true,
+          totalVariants: group.variant_count,
+          availableVariants: group.total_stock,
+        },
+        geneGroup: group // Adăugăm datele grupului pentru folosire în modal
+      }));
+
+      setProducts([...allProducts, ...geneProducts]);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Eroare la încărcarea produselor';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    refreshProducts();
-    // eslint-disable-next-line
+    const loadProducts = async () => {
+      await refreshProducts();
+    };
+    loadProducts();
   }, []);
   // ...existing code...
   const [isRefreshing, setIsRefreshing] = useState(false);

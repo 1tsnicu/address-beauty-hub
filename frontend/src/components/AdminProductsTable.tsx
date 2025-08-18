@@ -24,12 +24,18 @@ export type AdminProductRow = {
   table: string;
   id: string | number;
   name: string;
+  descriere?: string | null;
   sku?: string | null;
   sale_price?: number | null;
   discount?: number | null;
   store_stock?: number | null;
   total_stock?: number | null;
   image_url?: string | null;
+  // Proprietăți specifice tabelului gene
+  curbura?: string | null;
+  grosime?: string | null;
+  lungime?: string | null;
+  culoare?: string | null;
   _raw?: Record<string, unknown>;
   [key: string]: unknown;
 };
@@ -75,12 +81,18 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
           table,
           id: getId(row),
           name: getString(row, 'name') ?? getString(row, 'Наименование') ?? '',
+          descriere: getString(row, 'descriere') ?? null,
           sku: getString(row, 'sku') ?? getString(row, 'code') ?? null,
           sale_price: getNumber(row, 'sale_price') ?? getNumber(row, 'Цена продажи') ?? null,
           discount: getNumber(row, 'discount') ?? getNumber(row, 'Скидка') ?? null,
           store_stock: getNumber(row, 'store_stock') ?? getNumber(row, 'Магазин (Остаток)') ?? null,
           total_stock: getNumber(row, 'total_stock') ?? getNumber(row, 'Общий остаток') ?? null,
           image_url: getString(row, 'image_url') ?? null,
+          // Proprietăți specifice tabelului gene
+          curbura: getString(row, 'curbura') ?? null,
+          grosime: getString(row, 'grosime') ?? null,
+          lungime: getString(row, 'lungime') ?? null,
+          culoare: getString(row, 'culoare') ?? null,
           _raw: row,
         }));
         results[table] = mapped;
@@ -176,11 +188,16 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                       <TableRow>
                         <TableHead className="w-[80px]">ID</TableHead>
                         <TableHead>Nume</TableHead>
+                        {t === 'gene' && <TableHead className="w-[200px]">Descriere</TableHead>}
                         <TableHead className="w-[80px]">Imagine</TableHead>
                         <TableHead className="w-[140px]">SKU</TableHead>
                         <TableHead className="w-[120px]">Preț</TableHead>
                         <TableHead className="w-[120px]">Stoc</TableHead>
                         <TableHead className="w-[120px]">Discount</TableHead>
+                        {t === 'gene' && <TableHead className="w-[100px]">Curbură</TableHead>}
+                        {t === 'gene' && <TableHead className="w-[100px]">Grosime</TableHead>}
+                        {t === 'gene' && <TableHead className="w-[100px]">Lungime</TableHead>}
+                        {t === 'gene' && <TableHead className="w-[100px]">Culoare</TableHead>}
                         <TableHead className="w-[120px]">Acțiuni</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -189,6 +206,11 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                         <TableRow key={`${t}-${r.id}`}>
                           <TableCell className="font-mono text-xs">{r.id}</TableCell>
                           <TableCell className="max-w-[320px] truncate">{r.name}</TableCell>
+                          {t === 'gene' && (
+                            <TableCell className="max-w-[200px] truncate text-xs">
+                              {r.descriere || '-'}
+                            </TableCell>
+                          )}
                           <TableCell>
                             {r.image_url ? (
                               <img 
@@ -213,6 +235,10 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                             {(r.store_stock ?? r.total_stock ?? 0) as number}
                           </TableCell>
                           <TableCell>{r.discount != null ? `${r.discount}%` : '-'}</TableCell>
+                          {t === 'gene' && <TableCell className="text-xs">{r.curbura || '-'}</TableCell>}
+                          {t === 'gene' && <TableCell className="text-xs">{r.grosime || '-'}</TableCell>}
+                          {t === 'gene' && <TableCell className="text-xs">{r.lungime || '-'}</TableCell>}
+                          {t === 'gene' && <TableCell className="text-xs">{r.culoare || '-'}</TableCell>}
                           <TableCell>
                             <Button
                               size="sm"

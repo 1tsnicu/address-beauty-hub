@@ -17,12 +17,17 @@ interface ProductEditDialogProps {
 const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChange, row, onSaved }) => {
   const [form, setForm] = useState({
     name: '',
-    sku: '',
+    descriere: '',
     sale_price: '',
     discount: '',
     store_stock: '',
     total_stock: '',
     image_url: '',
+    // Câmpuri specifice pentru tabelul gene
+    curbura: '',
+    grosime: '',
+    lungime: '',
+    culoare: '',
   });
   const [saving, setSaving] = useState(false);
 
@@ -30,12 +35,17 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
     if (row) {
       setForm({
         name: row.name || '',
-        sku: (row.sku ?? '') as string,
+        descriere: (row.descriere ?? '') as string,
         sale_price: row.sale_price != null ? String(row.sale_price) : '',
         discount: row.discount != null ? String(row.discount) : '',
         store_stock: row.store_stock != null ? String(row.store_stock) : '',
         total_stock: row.total_stock != null ? String(row.total_stock) : '',
         image_url: (row.image_url ?? '') as string,
+        // Câmpuri specifice pentru tabelul gene
+        curbura: (row.curbura ?? '') as string,
+        grosime: (row.grosime ?? '') as string,
+        lungime: (row.lungime ?? '') as string,
+        culoare: (row.culoare ?? '') as string,
       });
     }
   }, [row]);
@@ -52,13 +62,21 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
       // Construim payload numeric pentru câmpurile numerice
       const payload: Record<string, unknown> = {
         name: form.name,
-        sku: form.sku || null,
+        descriere: form.descriere || null,
         sale_price: form.sale_price !== '' ? Number(form.sale_price) : null,
         discount: form.discount !== '' ? Number(form.discount) : null,
         store_stock: form.store_stock !== '' ? Number(form.store_stock) : null,
         total_stock: form.total_stock !== '' ? Number(form.total_stock) : null,
         image_url: form.image_url || null,
       };
+
+      // Adăugăm câmpurile specifice pentru tabelul gene
+      if (row.table === 'gene') {
+        payload.curbura = form.curbura || null;
+        payload.grosime = form.grosime || null;
+        payload.lungime = form.lungime || null;
+        payload.culoare = form.culoare || null;
+      }
 
       const { error } = await supabase
         .from(row.table)
@@ -121,15 +139,17 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
         </DialogHeader>
 
         <form onSubmit={handleSave} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Nume</Label>
+            <Input id="name" value={form.name} onChange={(e) => handleChange('name', e.target.value)} required />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="descriere">Descriere</Label>
+            <Input id="descriere" value={form.descriere} onChange={(e) => handleChange('descriere', e.target.value)} />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Nume</Label>
-              <Input id="name" value={form.name} onChange={(e) => handleChange('name', e.target.value)} required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="sku">SKU</Label>
-              <Input id="sku" value={form.sku} onChange={(e) => handleChange('sku', e.target.value)} />
-            </div>
             <div className="space-y-2">
               <Label htmlFor="sale_price">Preț (MDL)</Label>
               <Input id="sale_price" type="number" step="0.01" value={form.sale_price} onChange={(e) => handleChange('sale_price', e.target.value)} />
@@ -147,6 +167,31 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
               <Input id="total_stock" type="number" step="1" value={form.total_stock} onChange={(e) => handleChange('total_stock', e.target.value)} />
             </div>
           </div>
+
+          {/* Câmpuri specifice pentru tabelul gene */}
+          {row?.table === 'gene' && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium border-b pb-2">Proprietăți specifice gene</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="curbura">Curbură</Label>
+                  <Input id="curbura" value={form.curbura} onChange={(e) => handleChange('curbura', e.target.value)} placeholder="ex: C, CC, D, L" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="grosime">Grosime (mm)</Label>
+                  <Input id="grosime" value={form.grosime} onChange={(e) => handleChange('grosime', e.target.value)} placeholder="ex: 0.05, 0.07, 0.10" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lungime">Lungime (mm)</Label>
+                  <Input id="lungime" value={form.lungime} onChange={(e) => handleChange('lungime', e.target.value)} placeholder="ex: 8, 10, 12" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="culoare">Culoare</Label>
+                  <Input id="culoare" value={form.culoare} onChange={(e) => handleChange('culoare', e.target.value)} placeholder="ex: Negru, Maro" />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="image_url">URL imagine sau Base64</Label>

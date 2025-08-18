@@ -250,7 +250,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {isInStock ? 'Adaugă în coș' : 'Stoc epuizat'}
             </Button>
             
-            {/* Buton „Vezi detalii" */}
+            {/* Buton „Vezi detalii" - mereu afișat */}
             <Button 
               className="w-full" 
               variant="outline"
@@ -262,7 +262,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </CardFooter>
       
-      {/* Product Details Modal */}
+      {/* Product Details Modal - mereu afișat */}
       <ProductDetailsModal 
         product={product}
         isOpen={isModalOpen}
