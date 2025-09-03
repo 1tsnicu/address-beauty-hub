@@ -32,11 +32,12 @@ import { supabase } from '@/lib/supabaseClient';
 import { GeneVariantService } from '@/services/geneVariantService';
 
 interface SemanticFilterState {
-  curvature?: string[];
-  length?: string[];
-  thickness?: string[];
-  brand?: string[];
-  type?: string[];
+  curvature?: string[] | number[];
+  length?: string[] | number[];
+  thickness?: string[] | number[];
+  brand?: string[] | number[];
+  type?: string[] | number[];
+  [key: string]: string[] | number[] | undefined;
 }
 
 interface ProductGridProps {
@@ -221,11 +222,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 specifications: {},
                 variants: [],
                 attributes: {
-                curvature: details.curvature,
-                length: details.length,
-                thickness: details.thickness,
-                brand: details.brand,
-                type: details.type,
+                // Folosim datele direct din baza de date
+                curvature: asString(prod.curbura) || details.curvature,
+                length: asString(prod.lungime) || details.length,
+                thickness: asString(prod.grosime) || details.thickness,
+                brand: asString(prod.brand) || details.brand,
+                type: asString(prod.type) || details.type,
+                color: asString(prod.culoare) || '',
               },
             });
           });
@@ -271,6 +274,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({
               isGeneGroup: true,
               totalVariants: group.variant_count,
               availableVariants: group.total_stock,
+              curvature: 'D', // Default curvature for gene products
+              thickness: '0.10', // Default thickness for gene products
+              length: '10', // Default length for gene products
+              brand: 'Address Beauty', // Default brand for gene products
+              type: 'Gene',
             },
             geneGroup: group // Adăugăm datele grupului pentru folosire în modal
           }));
@@ -317,16 +325,16 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     if (!inName && !inBrand && !inType && !inDesc) return false;
   }
   // Filtrare semantică (ex: activeFilters)
-  if (filters?.curvature && (filters.curvature as string[]).length > 0 && !(filters.curvature as string[]).includes(product.curvature)) return false;
+  if (filters?.curvature && (filters.curvature as string[]).length > 0 && !(filters.curvature as string[]).includes(product.attributes?.curvature || '')) return false;
   // Filtrare lungime pe interval numeric
   if (filters?.length && Array.isArray(filters.length) && filters.length.length === 2) {
     const [min, max] = filters.length.map(Number);
-    const prodLength = Number(product.length);
+    const prodLength = Number(product.attributes?.length || 0);
     if (isNaN(prodLength) || prodLength < min || prodLength > max) return false;
   }
-  if (filters?.thickness && (filters.thickness as string[]).length > 0 && !(filters.thickness as string[]).includes(product.thickness)) return false;
-  if (filters?.brand && (filters.brand as string[]).length > 0 && !(filters.brand as string[]).includes(product.brand)) return false;
-  if (filters?.type && (filters.type as string[]).length > 0 && !(filters.type as string[]).includes(product.type)) return false;
+  if (filters?.thickness && (filters.thickness as string[]).length > 0 && !(filters.thickness as string[]).includes(product.attributes?.thickness || '')) return false;
+  if (filters?.brand && (filters.brand as string[]).length > 0 && !(filters.brand as string[]).includes(product.attributes?.brand || '')) return false;
+  if (filters?.type && (filters.type as string[]).length > 0 && !(filters.type as string[]).includes(product.attributes?.type || '')) return false;
   // Filtrare după subcategorie (id din context)
   // Eliminat filtrarea după subcategorie
   // Filtrare după categorie (id din context)
@@ -341,19 +349,98 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   return true;
 });
 
-// Sortare după sortBy
+// Sortare după sortBy și filtrele active
 const sortedProducts = (() => {
+  let products = [...filteredAndSortedProducts];
+  
+  // Sortare primară după sortBy
   switch (sortBy) {
     case 'price-low':
-      return [...filteredAndSortedProducts].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+      products.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+      break;
     case 'price-high':
-      return [...filteredAndSortedProducts].sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+      products.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+      break;
     case 'popular':
-      return [...filteredAndSortedProducts].sort((a, b) => (b.reviews ?? 0) - (a.reviews ?? 0));
+      products.sort((a, b) => (b.reviews ?? 0) - (a.reviews ?? 0));
+      break;
     case 'newest':
     default:
-      return [...filteredAndSortedProducts].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+      products.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+      break;
   }
+  
+  // Sortare secundară după filtrele active (prioritate pentru produsele care se potrivesc cu filtrele)
+  if (Object.keys(filters).length > 0) {
+    products.sort((a, b) => {
+      // Sortare după curbura (prioritate maximă)
+      if (filters.curvature && (filters.curvature as string[]).length > 0) {
+        const aCurvature = a.attributes?.curvature || '';
+        const bCurvature = b.attributes?.curvature || '';
+        const aMatches = (filters.curvature as string[]).includes(aCurvature);
+        const bMatches = (filters.curvature as string[]).includes(bCurvature);
+        
+        if (aMatches && !bMatches) return -1;
+        if (!aMatches && bMatches) return 1;
+        if (aMatches && bMatches) {
+          // Dacă ambele se potrivesc, sortează alfabetic după curbura
+          return aCurvature.localeCompare(bCurvature);
+        }
+      }
+      
+      // Sortare după grosime (prioritate înaltă)
+      if (filters.thickness && (filters.thickness as string[]).length > 0) {
+        const aThickness = a.attributes?.thickness || '';
+        const bThickness = b.attributes?.thickness || '';
+        const aMatches = (filters.thickness as string[]).includes(aThickness);
+        const bMatches = (filters.thickness as string[]).includes(bThickness);
+        
+        if (aMatches && !bMatches) return -1;
+        if (!aMatches && bMatches) return 1;
+        if (aMatches && bMatches) {
+          // Sortează numeric după grosime
+          const aNum = parseFloat(aThickness) || 0;
+          const bNum = parseFloat(bThickness) || 0;
+          return aNum - bNum;
+        }
+      }
+      
+      // Sortare după lungime (prioritate medie)
+      if (filters.length && Array.isArray(filters.length) && filters.length.length === 2) {
+        const [min, max] = filters.length.map(Number);
+        const aLength = Number(a.attributes?.length || 0);
+        const bLength = Number(b.attributes?.length || 0);
+        const aInRange = aLength >= min && aLength <= max;
+        const bInRange = bLength >= min && bLength <= max;
+        
+        if (aInRange && !bInRange) return -1;
+        if (!aInRange && bInRange) return 1;
+        if (aInRange && bInRange) {
+          // Sortează numeric după lungime
+          return aLength - bLength;
+        }
+      }
+      
+      // Sortare după brand (prioritate mică)
+      if (filters.brand && (filters.brand as string[]).length > 0) {
+        const aBrand = a.attributes?.brand || '';
+        const bBrand = b.attributes?.brand || '';
+        const aMatches = (filters.brand as string[]).includes(aBrand);
+        const bMatches = (filters.brand as string[]).includes(bBrand);
+        
+        if (aMatches && !bMatches) return -1;
+        if (!aMatches && bMatches) return 1;
+        if (aMatches && bMatches) {
+          // Sortează alfabetic după brand
+          return aBrand.localeCompare(bBrand);
+        }
+      }
+      
+      return 0; // Păstrează ordinea existentă dacă nu se potrivesc
+    });
+  }
+  
+  return products;
 })();
   
   const handleRefresh = async () => {

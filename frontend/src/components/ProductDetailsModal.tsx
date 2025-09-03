@@ -479,7 +479,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                           ))}
                         </div>
                         <span className="text-sm text-gray-600">
-                          {product.rating} ({product.reviews} recenzii)
+                          {product.rating.toFixed(1)} ({product.reviews} recenzii)
                         </span>
                       </div>
                     )}
@@ -496,22 +496,22 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                       <>
                         {/* Curbură Selection (Required) */}
                         {getUniqueValues('curbura').length > 0 && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
-                            <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-3">
-                              <div className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></div>
-                              Curbură <span className="text-red-500 text-sm font-medium">*obligatoriu</span>
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                              Curbură <span className="text-red-500 text-xs font-medium">*obligatoriu</span>
                             </h4>
-                            <div className="flex flex-wrap gap-3">
+                            <div className="flex flex-wrap gap-2">
                               {getUniqueValues('curbura').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('curbura', value)}
                                   disabled={!isVariantAvailable('curbura', value)}
-                                  className={`px-6 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
+                                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
                                     selectedFilters.curbura === value
-                                      ? 'bg-primary text-white shadow-xl transform scale-105 border-2 border-primary/20'
+                                      ? 'bg-primary text-white shadow-lg transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('curbura', value)
-                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg hover:scale-105'
+                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-md hover:scale-105'
                                       : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-50'
                                   }`}
                                 >
@@ -524,19 +524,19 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Grosime Selection */}
                         {getUniqueValues('grosime').length > 0 && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
-                            <h4 className="font-bold text-gray-900 mb-4">Grosime:</h4>
-                            <div className="flex flex-wrap gap-3">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-3">Grosime:</h4>
+                            <div className="flex flex-wrap gap-2">
                               {getUniqueValues('grosime').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('grosime', value)}
                                   disabled={!isVariantAvailable('grosime', value)}
-                                  className={`px-6 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
+                                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
                                     selectedFilters.grosime === value
-                                      ? 'bg-primary text-white shadow-xl transform scale-105 border-2 border-primary/20'
+                                      ? 'bg-primary text-white shadow-lg transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('grosime', value)
-                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg hover:scale-105'
+                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-md hover:scale-105'
                                       : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-50'
                                   }`}
                                 >
@@ -549,19 +549,19 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Lungime Selection */}
                         {getUniqueValues('lungime').length > 0 && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
-                            <h4 className="font-bold text-gray-900 mb-4">Lungime:</h4>
-                            <div className="flex flex-wrap gap-3">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-3">Lungime:</h4>
+                            <div className="flex flex-wrap gap-2">
                               {getUniqueValues('lungime').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('lungime', value)}
                                   disabled={!isVariantAvailable('lungime', value)}
-                                  className={`px-6 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
+                                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
                                     selectedFilters.lungime === value
-                                      ? 'bg-primary text-white shadow-xl transform scale-105 border-2 border-primary/20'
+                                      ? 'bg-primary text-white shadow-lg transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('lungime', value)
-                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg hover:scale-105'
+                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-md hover:scale-105'
                                       : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-50'
                                   }`}
                                 >
@@ -574,14 +574,14 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Culoare Display (Non-selectable) */}
                         {selectedFilters.culoare && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
-                            <h4 className="font-bold text-gray-900 mb-4">Culoare:</h4>
-                            <div className="flex flex-wrap gap-3">
-                              <span className="px-6 py-4 rounded-2xl border-2 bg-white text-gray-700 border-gray-200 text-base font-bold shadow-md">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-3">Culoare:</h4>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="px-4 py-2 rounded-xl border-2 bg-white text-gray-700 border-gray-200 text-sm font-semibold shadow-md">
                                 {selectedFilters.culoare}
                               </span>
                             </div>
-                            <p className="text-sm text-gray-500 mt-3">Culoarea este setată automat pentru acest produs</p>
+                            <p className="text-xs text-gray-500 mt-2">Culoarea este setată automat pentru acest produs</p>
                           </div>
                         )}
                       </>

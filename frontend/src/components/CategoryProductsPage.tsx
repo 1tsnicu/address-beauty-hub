@@ -224,74 +224,113 @@ const CategoryProductsPage = () => {
         </section>
       )}
 
-      {/* Subcategories */}
+            {/* Subcategories */}
       {subcategories.length > 0 && (
         <section className="py-6 bg-gradient-to-b from-slate-50/50 via-blue-50/30 to-indigo-50/20">
           <div className="container mx-auto px-4">
-            {/* Visible subcategories (first 1) */}
-            <div className="flex flex-col sm:flex-row sm:flex-nowrap gap-3 sm:gap-2 justify-center sm:overflow-x-auto sm:pb-2">
+            {/* Desktop: Show all subcategories directly */}
+            <div className="hidden md:flex flex-wrap gap-3 justify-center">
               <Button
                 variant={selectedSubcategory === '' ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedSubcategory('')}
-                className="rounded-xl px-4 py-3 h-auto flex flex-row items-center gap-3 w-full sm:w-auto sm:min-w-[140px] sm:flex-col sm:gap-1 sm:py-2"
+                className="rounded-xl px-4 py-3 h-auto flex flex-col items-center gap-2 min-w-[140px] hover:scale-105 transition-transform"
               >
                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
                   <LayoutGrid className="h-4 w-4" />
                 </div>
-                <span className="text-xs font-medium text-left sm:text-center flex-1">Toate {currentCategory.name}</span>
+                <span className="text-xs font-medium text-center">Toate {currentCategory.name}</span>
               </Button>
+              
+              {subcategories.map((subcategory) => (
+                <Button
+                  key={subcategory.id}
+                  variant={selectedSubcategory === subcategory.id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedSubcategory(subcategory.id)}
+                  className="rounded-xl px-4 py-3 h-auto flex flex-col items-center gap-2 min-w-[140px] hover:scale-105 transition-transform"
+                >
+                  <div className={`flex items-center justify-center w-6 h-6 rounded-full ${
+                    selectedSubcategory === subcategory.id
+                      ? 'bg-white/20'
+                      : 'bg-primary/10'
+                  }`}>
+                    {getSubcategoryIcon(subcategory.id)}
+                  </div>
+                  <span className="text-xs font-medium text-center leading-tight">
+                    {subcategory.name}
+                  </span>
+                </Button>
+              ))}
             </div>
 
-            {/* Show more/less button if there are more than 1 subcategory */}
-            {subcategories.length > 0 && (
-              <div className="flex justify-center mt-4">
+            {/* Mobile: Carousel behavior */}
+            <div className="md:hidden">
+              {/* Visible subcategories (only "Toate Gene") */}
+              <div className="flex flex-col gap-3 justify-center">
                 <Button
-                  variant="ghost"
+                  variant={selectedSubcategory === '' ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setShowAllSubcategories(!showAllSubcategories)}
-                  className="flex items-center gap-2 text-primary hover:text-primary/80"
+                  onClick={() => setSelectedSubcategory('')}
+                  className="rounded-xl px-4 py-3 h-auto flex flex-row items-center gap-3 w-full"
                 >
-                  {showAllSubcategories ? (
-                    <>
-                      <ChevronUp className="h-4 w-4" />
-                      Arată mai puține
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDown className="h-4 w-4" />
-                      Arată toate ({subcategories.length} categorii)
-                    </>
-                  )}
+                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
+                    <LayoutGrid className="h-4 w-4" />
+                  </div>
+                  <span className="text-xs font-medium text-left flex-1">Toate {currentCategory.name}</span>
                 </Button>
               </div>
-            )}
 
-            {/* Hidden subcategories (expandable) */}
-            {showAllSubcategories && subcategories.length > 0 && (
-              <div className="flex flex-col sm:flex-row sm:flex-nowrap gap-3 sm:gap-2 justify-center sm:overflow-x-auto sm:pb-2 mt-4 animate-in slide-in-from-top-2 duration-300">
-                {subcategories.map((subcategory) => (
+              {/* Show more/less button for mobile */}
+              {subcategories.length > 0 && (
+                <div className="flex justify-center mt-4">
                   <Button
-                    key={subcategory.id}
-                    variant={selectedSubcategory === subcategory.id ? "default" : "outline"}
+                    variant="ghost"
                     size="sm"
-                    onClick={() => setSelectedSubcategory(subcategory.id)}
-                    className="rounded-xl px-4 py-3 h-auto flex flex-row items-center gap-3 w-full sm:w-auto sm:min-w-[140px] sm:flex-col sm:gap-1 sm:py-2 hover:scale-105 transition-transform"
+                    onClick={() => setShowAllSubcategories(!showAllSubcategories)}
+                    className="flex items-center gap-2 text-primary hover:text-primary/80"
                   >
-                    <div className={`flex items-center justify-center w-6 h-6 rounded-full ${
-                      selectedSubcategory === subcategory.id 
-                        ? 'bg-white/20' 
-                        : 'bg-primary/10'
-                    }`}>
-                      {getSubcategoryIcon(subcategory.id)}
-                    </div>
-                    <span className="text-xs font-medium text-left sm:text-center leading-tight flex-1">
-                      {subcategory.name}
-                    </span>
+                    {showAllSubcategories ? (
+                      <>
+                        <ChevronUp className="h-4 w-4" />
+                        Arată mai puține
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="h-4 w-4" />
+                        Arată toate ({subcategories.length} categorii)
+                      </>
+                    )}
                   </Button>
-                ))}
-              </div>
-            )}
+                </div>
+              )}
+
+              {/* Hidden subcategories (expandable on mobile) */}
+              {showAllSubcategories && subcategories.length > 0 && (
+                <div className="flex flex-col gap-3 justify-center mt-4 animate-in slide-in-from-top-2 duration-300">
+                  {subcategories.map((subcategory) => (
+                    <Button
+                      key={subcategory.id}
+                      variant={selectedSubcategory === subcategory.id ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedSubcategory(subcategory.id)}
+                      className="rounded-xl px-4 py-3 h-auto flex flex-row items-center gap-3 w-full hover:scale-105 transition-transform"
+                    >
+                      <div className={`flex items-center justify-center w-6 h-6 rounded-full ${
+                        selectedSubcategory === subcategory.id
+                          ? 'bg-white/20'
+                          : 'bg-primary/10'
+                      }`}>
+                        {getSubcategoryIcon(subcategory.id)}
+                      </div>
+                      <span className="text-xs font-medium text-left leading-tight flex-1">
+                        {subcategory.name}
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </section>
       )}

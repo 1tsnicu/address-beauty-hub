@@ -77,7 +77,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 h-full flex flex-col border-0 shadow-md hover:scale-[1.02]">
       <CardHeader className="p-0">
-        <div className="relative overflow-hidden rounded-2xl">
+        <div 
+          className="relative overflow-hidden rounded-2xl cursor-pointer"
+          onClick={() => setIsModalOpen(true)}
+        >
           {/* Imagine de înaltă calitate */}
           <img
             src={product.image}
