@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useCategories, ProductCategory } from '@/contexts/CategoriesContext';
+import { useCategories } from '@/hooks/useCategories';
+import { ProductCategory } from '@/types/Category';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';

@@ -10,7 +10,11 @@ import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from 'sonner';
 
-const ShoppingCart: React.FC = () => {
+interface ShoppingCartProps {
+  className?: string;
+}
+
+const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
   const { t } = useLanguage();
   const { user, isAuthenticated, calculateDiscount } = useAuth();
   const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice, checkout, isCheckingOut } = useCart();
@@ -73,7 +77,7 @@ const ShoppingCart: React.FC = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2 relative">
+        <Button variant="ghost" size="sm" className={`gap-2 relative ${className}`}>
           <ShoppingBag className="h-4 w-4" />
           <span className="hidden sm:inline">Coș</span>
           {totalItems > 0 && (

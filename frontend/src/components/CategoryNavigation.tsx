@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useCategories } from '@/contexts/CategoriesContext';
+import { useCategories } from '@/hooks/useCategories';
 import { Link } from 'react-router-dom';
 import { 
   Accordion, 

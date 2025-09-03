@@ -75,29 +75,32 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all h-full flex flex-col">
+    <Card className="group hover:shadow-xl transition-all duration-300 h-full flex flex-col border-0 shadow-md hover:scale-[1.02]">
       <CardHeader className="p-0">
-        <div className="relative overflow-hidden rounded-t-xl">
+        <div className="relative overflow-hidden rounded-2xl">
           {/* Imagine de înaltă calitate */}
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
             loading="lazy"
           />
           
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          
           {/* Product Labels - Etichete vizuale */}
-          <div className="absolute top-2 left-2 space-y-1">
+          <div className="absolute top-3 left-3 space-y-1">
             {product.isNew && (
-              <Badge className="bg-green-500 text-white font-medium px-2 py-1">NOU</Badge>
+              <Badge className="bg-emerald-500 text-white font-semibold px-3 py-1 text-xs rounded-full shadow-lg">NOU</Badge>
             )}
             {product.originalPrice && product.originalPrice > product.price && (
-              <Badge className="bg-red-500 text-white font-medium px-2 py-1">
+              <Badge className="bg-red-500 text-white font-semibold px-3 py-1 text-xs rounded-full shadow-lg">
                 -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
               </Badge>
             )}
             {stockQuantity !== undefined && stockQuantity <= 5 && stockQuantity > 0 && (
-              <Badge className="bg-amber-500 text-white font-medium px-2 py-1">Stoc limitat</Badge>
+              <Badge className="bg-amber-500 text-white font-semibold px-3 py-1 text-xs rounded-full shadow-lg">Stoc limitat</Badge>
             )}
           </div>
 
@@ -105,56 +108,58 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity rounded-full shadow-sm"
+            className="absolute top-3 right-3 h-9 w-9 p-0 bg-white/90 hover:bg-white opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full shadow-lg border-0"
           >
-            <Heart className="h-4 w-4" />
+            <Heart className="h-4 w-4 text-gray-700" />
           </Button>
         </div>
       </CardHeader>
       
-      <CardContent className="p-4 space-y-3">
+      <CardContent className="p-5 space-y-4">
         {/* Denumire completă și clară */}
-        <CardTitle className="text-base line-clamp-2 font-semibold leading-tight">{product.name}</CardTitle>
+        <CardTitle className="text-lg line-clamp-2 font-bold leading-tight text-gray-900 group-hover:text-primary transition-colors">
+          {product.name}
+        </CardTitle>
         
         {/* Rating */}
         <div className="flex items-center gap-1">
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
-              className={`h-3 w-3 ${
-                i < Math.floor(product.rating)
+              className={`h-4 w-4 ${
+                product.rating && i < Math.floor(product.rating)
                   ? 'fill-yellow-400 text-yellow-400'
                   : 'text-gray-300'
               }`}
             />
           ))}
-          <span className="text-xs text-muted-foreground ml-1">
-            ({product.reviews})
+          <span className="text-sm text-muted-foreground ml-2 font-medium">
+            {(product.rating || 0).toFixed(1)}{product.reviews && product.reviews > 0 ? ` (${product.reviews})` : ''}
           </span>
         </div>
         
         {/* Scurtă descriere */}
         {product.description && (
-          <div className="text-xs text-muted-foreground line-clamp-2">
+          <div className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
             {product.description}
           </div>
         )}
         
         {/* Preț afișat vizibil */}
-        <div className="flex items-center gap-2 mt-1">
-          <span className="font-bold text-xl text-primary">
+        <div className="flex items-baseline gap-3">
+          <span className="font-bold text-2xl text-primary">
             {formatPrice(currentPrice)}
           </span>
           {product.originalPrice && product.originalPrice > product.price && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-lg text-muted-foreground line-through">
               {formatPrice(product.originalPrice)}
             </span>
           )}
         </div>
       </CardContent>
       
-      <CardFooter className="p-4 pt-0">
-        <div className="space-y-3 w-full">
+      <CardFooter className="p-5 pt-0">
+        <div className="space-y-4 w-full">
           {/* Variants selector - Opțiuni pentru variante */}
           {hasVariants && (
             <Popover open={variantPopoverOpen} onOpenChange={setVariantPopoverOpen}>
@@ -239,20 +244,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
           
           {/* Butoane de acțiune */}
-          <div className="grid grid-cols-1 gap-2 mt-2">
+          <div className="grid grid-cols-1 gap-3">
             {/* Buton „Adaugă în coș" */}
             <Button 
-              className="w-full font-medium py-5" 
+              className="w-full font-semibold py-4 rounded-xl text-base shadow-lg hover:shadow-xl transition-all duration-300" 
               disabled={!isInStock}
               onClick={handleAddToCart}
             >
-              <ShoppingCart className="w-4 h-4 mr-2" />
+              <ShoppingCart className="w-5 h-5 mr-2" />
               {isInStock ? 'Adaugă în coș' : 'Stoc epuizat'}
             </Button>
             
             {/* Buton „Vezi detalii" - mereu afișat */}
             <Button 
-              className="w-full" 
+              className="w-full font-medium py-3 rounded-xl border-2 hover:bg-primary/5 transition-all duration-300" 
               variant="outline"
               onClick={() => setIsModalOpen(true)}
             >

@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/
 import { Input } from './ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Badge } from './ui/badge';
-import { RefreshCw, Pencil, ChevronDown, ChevronRight, Search } from 'lucide-react';
+import { RefreshCw, Pencil, ChevronDown, ChevronRight, Search, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import AddProductButton from './AddProductButton';
 
 // Harta tabelelor din Supabase pe care vrem să le listăm în admin
 const TABLES: string[] = [
@@ -17,7 +18,13 @@ const TABLES: string[] = [
   'accesorii',
   'consumabile',
   'ustensile',
-  'laminare',
+  'tehnologie_led',
+  'hena_sprancene',
+  'vopsele_profesionale',
+  'pensule_instrumente_speciale',
+  'solutii_laminare',
+  'adezive_laminare',
+  'accesorii_specifice',
 ];
 
 export type AdminProductRow = {
@@ -62,12 +69,72 @@ const getId = (row: Record<string, unknown>): string | number => {
   return Math.random().toString(36).slice(2);
 };
 
+// Helper: grupează rândurile după nume (ignorând case & spații în exces)
+const groupByName = (rows: AdminProductRow[]): Array<[string, AdminProductRow[]]> => {
+  const map = new Map<string, { display: string; items: AdminProductRow[] }>();
+  for (const r of rows) {
+    const display = (r.name || '').trim();
+    const key = display.toLowerCase();
+    if (!map.has(key)) map.set(key, { display, items: [] });
+    map.get(key)!.items.push(r);
+  }
+  return Array.from(map.values())
+    .sort((a, b) => a.display.localeCompare(b.display))
+    .map((g) => [g.display, g.items]);
+};
+
 const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadKey }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dataByTable, setDataByTable] = useState<Record<string, AdminProductRow[]>>({});
   const [openTables, setOpenTables] = useState<Record<string, boolean>>({});
   const [query, setQuery] = useState('');
+  const [deletingKey, setDeletingKey] = useState<string | null>(null);
+
+  // Helper pentru determinarea coloanei cheie în Supabase
+  const getPkAndValue = (row: AdminProductRow): { pk: string; value: string | number } => {
+    const raw = (row._raw ?? {}) as Record<string, unknown>;
+    const candidates: Array<{ pk: string; val: unknown }> = [
+      { pk: 'id', val: raw['id'] },
+      { pk: 'code', val: raw['code'] },
+      { pk: 'Код', val: (raw as Record<string, unknown>)['Код'] },
+    ];
+    for (const { pk, val } of candidates) {
+      if (typeof val === 'string' || typeof val === 'number') {
+        return { pk, value: val };
+      }
+    }
+    if (typeof row.id === 'string' || typeof row.id === 'number') {
+      return { pk: 'id', value: row.id };
+    }
+    return { pk: 'id', value: String(row.id) };
+  };
+
+  const handleDelete = async (table: string, row: AdminProductRow) => {
+    const key = `${table}-${row.id}`;
+    const confirmMsg = `Ștergi produsul «${row.name}» din „${table}”? Această acțiune este ireversibilă.`;
+    const ok = window.confirm(confirmMsg);
+    if (!ok) return;
+    setDeletingKey(key);
+    try {
+      const { pk, value } = getPkAndValue(row);
+      const { error } = await supabase.from(table).delete().eq(pk, value);
+      if (error) throw new Error(error.message || 'Ștergerea a eșuat');
+      // Scoatem din UI
+      setDataByTable((prev) => {
+        const copy: Record<string, AdminProductRow[]> = { ...prev };
+        const list = copy[table] || [];
+        copy[table] = list.filter((r) => r.id !== row.id);
+        return copy;
+      });
+      toast.success('Produsul a fost șters');
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Eroare la ștergere';
+      toast.error(msg);
+    } finally {
+      setDeletingKey(null);
+    }
+  };
 
   const fetchAll = async () => {
     setLoading(true);
@@ -112,12 +179,12 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
     fetchAll();
   }, [reloadKey]);
 
-  const filteredDataByTable = useMemo(() => {
+  const filteredDataByTable = useMemo<Record<string, AdminProductRow[]>>(() => {
     if (!query.trim()) return dataByTable;
     const q = query.toLowerCase();
     const out: Record<string, AdminProductRow[]> = {};
     for (const [table, rows] of Object.entries(dataByTable)) {
-      out[table] = rows.filter((r) => {
+      out[table] = (rows || []).filter((r) => {
         return (
           (r.name || '').toLowerCase().includes(q) ||
           (r.sku || '').toString().toLowerCase().includes(q)
@@ -146,9 +213,12 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
-        <Button onClick={handleRefresh} variant="outline" size="sm" disabled={loading}>
-          <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          <AddProductButton onAdded={handleRefresh} />
+          <Button onClick={handleRefresh} variant="outline" size="sm" disabled={loading}>
+            <RefreshCw className={`${loading ? 'animate-spin' : ''} h-4 w-4 mr-2`} /> Refresh
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -183,78 +253,64 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
             {isOpen && (
               <CardContent>
                 <div className="w-full overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[80px]">ID</TableHead>
-                        <TableHead>Nume</TableHead>
-                        {t === 'gene' && <TableHead className="w-[200px]">Descriere</TableHead>}
-                        <TableHead className="w-[80px]">Imagine</TableHead>
-                        <TableHead className="w-[140px]">SKU</TableHead>
-                        <TableHead className="w-[120px]">Preț</TableHead>
-                        <TableHead className="w-[120px]">Stoc</TableHead>
-                        <TableHead className="w-[120px]">Discount</TableHead>
-                        {t === 'gene' && <TableHead className="w-[100px]">Curbură</TableHead>}
-                        {t === 'gene' && <TableHead className="w-[100px]">Grosime</TableHead>}
-                        {t === 'gene' && <TableHead className="w-[100px]">Lungime</TableHead>}
-                        {t === 'gene' && <TableHead className="w-[100px]">Culoare</TableHead>}
-                        <TableHead className="w-[120px]">Acțiuni</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {rows.map((r) => (
-                        <TableRow key={`${t}-${r.id}`}>
-                          <TableCell className="font-mono text-xs">{r.id}</TableCell>
-                          <TableCell className="max-w-[320px] truncate">{r.name}</TableCell>
-                          {t === 'gene' && (
-                            <TableCell className="max-w-[200px] truncate text-xs">
-                              {r.descriere || '-'}
-                            </TableCell>
-                          )}
-                          <TableCell>
-                            {r.image_url ? (
-                              <img 
-                                src={r.image_url} 
-                                alt={r.name}
-                                className="w-12 h-12 object-cover rounded border"
-                                onError={(e) => {
-                                  e.currentTarget.src = '';
-                                  e.currentTarget.alt = 'Imagine indisponibilă';
-                                  e.currentTarget.className = 'w-12 h-12 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-400';
-                                }}
-                              />
-                            ) : (
-                              <div className="w-12 h-12 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-400">
-                                Fără imagine
-                              </div>
-                            )}
-                          </TableCell>
-                          <TableCell className="font-mono text-xs">{r.sku || '-'}</TableCell>
-                          <TableCell>{r.sale_price != null ? `${r.sale_price} MDL` : '-'}</TableCell>
-                          <TableCell>
-                            {(r.store_stock ?? r.total_stock ?? 0) as number}
-                          </TableCell>
-                          <TableCell>{r.discount != null ? `${r.discount}%` : '-'}</TableCell>
-                          {t === 'gene' && <TableCell className="text-xs">{r.curbura || '-'}</TableCell>}
-                          {t === 'gene' && <TableCell className="text-xs">{r.grosime || '-'}</TableCell>}
-                          {t === 'gene' && <TableCell className="text-xs">{r.lungime || '-'}</TableCell>}
-                          {t === 'gene' && <TableCell className="text-xs">{r.culoare || '-'}</TableCell>}
-                          <TableCell>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => onEdit?.(r)}
-                            >
-                              <Pencil className="h-4 w-4 mr-2" /> Edit
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                    {rows.length === 0 && (
-                      <TableCaption>Nu există produse în această tabelă.</TableCaption>
-                    )}
-                  </Table>
+                  {/* Grupare pe nume */}
+                  {groupByName(rows).map(([groupName, items]) => (
+                    <div key={`${t}-${groupName}`} className="mb-4 rounded-lg border bg-card">
+                      <div className="flex items-center justify-between px-3 py-2 border-b bg-muted/40">
+                        <div className="font-medium truncate pr-2" title={groupName}>{groupName}</div>
+                        <Badge variant="secondary">{items.length}</Badge>
+                      </div>
+
+                      <div className="w-full overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead className="w-[80px]">ID</TableHead>
+                              {t === 'gene' && <TableHead className="w-[120px]">Curbură</TableHead>}
+                              {t === 'gene' && <TableHead className="w-[120px]">Grosime</TableHead>}
+                              {t === 'gene' && <TableHead className="w-[120px]">Lungime</TableHead>}
+                              {t === 'gene' && <TableHead className="w-[120px]">Culoare</TableHead>}
+                              <TableHead className="w-[140px]">SKU</TableHead>
+                              <TableHead className="w-[100px]">Preț</TableHead>
+                              <TableHead className="w-[100px]">Stoc</TableHead>
+                              <TableHead className="w-[160px]">Acțiuni</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {items.map((r) => (
+                              <TableRow key={`${t}-${groupName}-${r.id}`}>
+                                <TableCell className="font-mono text-xs">{r.id}</TableCell>
+                                {t === 'gene' && <TableCell className="text-xs">{r.curbura || '-'}</TableCell>}
+                                {t === 'gene' && <TableCell className="text-xs">{r.grosime || '-'}</TableCell>}
+                                {t === 'gene' && <TableCell className="text-xs">{r.lungime || '-'}</TableCell>}
+                                {t === 'gene' && <TableCell className="text-xs">{r.culoare || '-'}</TableCell>}
+                                <TableCell className="font-mono text-xs">{r.sku || '-'}</TableCell>
+                                <TableCell className="text-xs">{r.sale_price != null ? `${r.sale_price} MDL` : '-'}</TableCell>
+                                <TableCell className="text-xs">{(r.store_stock ?? r.total_stock ?? 0) as number}</TableCell>
+                                <TableCell>
+                                  <div className="flex items-center gap-2">
+                                    <Button size="sm" variant="outline" onClick={() => onEdit?.(r)}>
+                                      <Pencil className="h-4 w-4 mr-2" /> Edit
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() => handleDelete(t, r)}
+                                      disabled={deletingKey === `${t}-${r.id}`}
+                                      title="Șterge produs"
+                                    >
+                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      {deletingKey === `${t}-${r.id}` ? 'Ștergere...' : 'Șterge'}
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             )}

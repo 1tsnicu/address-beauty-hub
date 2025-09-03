@@ -1,21 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-export interface ProductCategory {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  active: boolean;
-  parentId?: string; // For subcategories
-  imageUrl?: string; // For category thumbnail
-  order?: number; // For controlling display order
-  attributes?: {
-    type?: string;
-    color?: string;
-    size?: string;
-    [key: string]: any;
-  }; // For additional filtering attributes
-}
+import { ProductCategory } from '@/types/Category';
 
 interface CategoriesContextType {
   categories: ProductCategory[];
@@ -28,6 +12,8 @@ interface CategoriesContextType {
 }
 
 const CategoriesContext = createContext<CategoriesContextType | undefined>(undefined);
+
+export { CategoriesContext };
 
 // Default categories (these will be replaced by Cloud Shop data in the future)
 const defaultCategories: ProductCategory[] = [
@@ -100,7 +86,7 @@ const defaultCategories: ProductCategory[] = [
     name: 'Henna pentru sprâncene', 
     slug: 'henna-sprancene', 
     description: 'Henna profesională pentru sprâncene',
-    active: false, // Disabled until content is ready
+    active: true, // Activată conform cererii
     parentId: 'brows',
     order: 1
   },
@@ -109,7 +95,7 @@ const defaultCategories: ProductCategory[] = [
     name: 'Vopsele profesionale', 
     slug: 'vopsele-profesionale', 
     description: 'Vopsele și coloranți pentru sprâncene',
-    active: false,
+    active: true, // Activată conform cererii
     parentId: 'brows',
     order: 2
   },
@@ -118,7 +104,7 @@ const defaultCategories: ProductCategory[] = [
     name: 'Oxidanți & preparate speciale', 
     slug: 'oxidanti-preparate', 
     description: 'Oxidanți și preparate speciale pentru sprâncene',
-    active: false,
+    active: true, // Activată conform cererii
     parentId: 'brows',
     order: 3
   },
@@ -127,7 +113,7 @@ const defaultCategories: ProductCategory[] = [
     name: 'Pensule & instrumente dedicate', 
     slug: 'pensule-instrumente', 
     description: 'Pensule și instrumente dedicate pentru sprâncene',
-    active: false,
+    active: true, // Activată conform cererii
     parentId: 'brows',
     order: 4
   },
@@ -281,12 +267,4 @@ export const CategoriesProvider: React.FC<{ children: ReactNode }> = ({ children
       {children}
     </CategoriesContext.Provider>
   );
-};
-
-export const useCategories = () => {
-  const context = useContext(CategoriesContext);
-  if (context === undefined) {
-    throw new Error('useCategories must be used within a CategoriesProvider');
-  }
-  return context;
 };

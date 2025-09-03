@@ -353,45 +353,45 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[95vh] p-0 bg-white">
+      <DialogContent className="max-w-5xl max-h-[95vh] p-0 bg-white rounded-3xl border-0 shadow-2xl">
         <ScrollArea className="max-h-[95vh]">
           <div className="relative">
-            {/* Header cu background albastru pastel */}
-            <div className="bg-blue-300 text-white p-6 border-b border-blue-400">
-              <DialogHeader className="space-y-3">
-                <div className="flex items-start justify-between gap-4">
+            {/* Header modern cu gradient */}
+            <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white p-8">
+              <DialogHeader className="space-y-4">
+                <div className="flex items-start justify-between gap-6">
                   <div className="flex-1">
-                    <DialogTitle className="text-2xl font-bold text-white leading-tight">
+                    <DialogTitle className="text-3xl font-bold text-white leading-tight mb-3">
                       {currentData.name}
                     </DialogTitle>
-                    <div className="flex items-center gap-3 mt-2">
-                      <span className="text-3xl font-bold text-white">
+                    <div className="flex items-baseline gap-4">
+                      <span className="text-4xl font-bold text-white">
                         {formatPrice(currentData.price)}
                       </span>
                       {currentData.originalPrice && currentData.originalPrice > currentData.price && (
-                        <span className="text-lg text-blue-200 line-through">
+                        <span className="text-xl text-white/70 line-through">
                           {formatPrice(currentData.originalPrice)}
                         </span>
                       )}
                     </div>
                   </div>
                   
-                  {/* Badges */}
-                  <div className="flex flex-col gap-2">
+                  {/* Badges moderne */}
+                  <div className="flex flex-col gap-3">
                     {product?.isNew && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-800 shadow-sm">
-                        <Zap className="w-3 h-3 mr-1" />
+                      <Badge className="bg-emerald-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg">
+                        <Zap className="w-4 h-4 mr-2" />
                         Nou
                       </Badge>
                     )}
                     {product?.discount && product.discount > 0 && (
-                      <Badge variant="destructive" className="shadow-sm">
+                      <Badge className="bg-red-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg">
                         -{product.discount}%
                       </Badge>
                     )}
                     {product?.sales && product.sales > 100 && (
-                      <Badge variant="default" className="bg-blue-50 text-blue-700 shadow-sm">
-                        <Award className="w-3 h-3 mr-1" />
+                      <Badge className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg">
+                        <Award className="w-4 h-4 mr-2" />
                         Bestseller
                       </Badge>
                     )}
@@ -400,38 +400,38 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
               </DialogHeader>
             </div>
 
-            <div className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {/* Image Gallery */}
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="relative group">
-                    <div className="relative overflow-hidden rounded-xl bg-white shadow-lg border border-gray-100">
+                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 shadow-2xl border-0">
                       <img
                         src={allImages[selectedImageIndex] || '/placeholder.svg'}
                         alt={currentData.name}
-                        className="w-full h-96 object-contain transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-[500px] object-contain transition-transform duration-500 group-hover:scale-110"
                       />
                       
                       {/* Overlay cu gradient pentru butoane */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
                       {allImages.length > 1 && (
                         <>
                           <Button
                             variant="outline"
                             size="icon"
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/90 hover:bg-white shadow-lg border-0"
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/95 hover:bg-white shadow-xl border-0 rounded-full h-12 w-12"
                             onClick={prevImage}
                           >
-                            <ChevronLeft className="w-5 h-5" />
+                            <ChevronLeft className="w-6 h-6" />
                           </Button>
                           <Button
                             variant="outline"
                             size="icon"
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/90 hover:bg-white shadow-lg border-0"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/95 hover:bg-white shadow-xl border-0 rounded-full h-12 w-12"
                             onClick={nextImage}
                           >
-                            <ChevronRight className="w-5 h-5" />
+                            <ChevronRight className="w-6 h-6" />
                           </Button>
                         </>
                       )}
@@ -439,15 +439,15 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                     {/* Thumbnail Gallery */}
                     {allImages.length > 1 && (
-                      <div className="flex gap-3 overflow-x-auto pb-2">
+                      <div className="flex gap-4 overflow-x-auto pb-2">
                         {allImages.map((image, index) => (
                           <button
                             key={index}
                             onClick={() => setSelectedImageIndex(index)}
-                            className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 overflow-hidden transition-all duration-200 ${
+                            className={`flex-shrink-0 w-24 h-24 rounded-2xl border-2 overflow-hidden transition-all duration-300 ${
                               selectedImageIndex === index 
-                                ? 'border-blue-300 shadow-lg scale-105' 
-                                : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                                ? 'border-primary shadow-xl scale-110' 
+                                : 'border-gray-200 hover:border-primary/50 hover:shadow-lg hover:scale-105'
                             }`}
                           >
                             <img
@@ -496,10 +496,10 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                       <>
                         {/* Curbură Selection (Required) */}
                         {getUniqueValues('curbura').length > 0 && (
-                          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-                            <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                              Curbură <span className="text-red-500 text-sm font-normal">*obligatoriu</span>
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
+                            <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-3">
+                              <div className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></div>
+                              Curbură <span className="text-red-500 text-sm font-medium">*obligatoriu</span>
                             </h4>
                             <div className="flex flex-wrap gap-3">
                               {getUniqueValues('curbura').map((value) => (
@@ -507,11 +507,11 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                                   key={value}
                                   onClick={() => handleFilterChange('curbura', value)}
                                   disabled={!isVariantAvailable('curbura', value)}
-                                  className={`px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                                  className={`px-6 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
                                     selectedFilters.curbura === value
-                                      ? 'bg-blue-300 text-white shadow-lg transform scale-105 border-2 border-blue-400'
+                                      ? 'bg-primary text-white shadow-xl transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('curbura', value)
-                                      ? 'bg-gray-50 text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md'
+                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg hover:scale-105'
                                       : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-50'
                                   }`}
                                 >
@@ -524,19 +524,19 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Grosime Selection */}
                         {getUniqueValues('grosime').length > 0 && (
-                          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-                            <h4 className="font-semibold text-gray-800 mb-3">Grosime:</h4>
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
+                            <h4 className="font-bold text-gray-900 mb-4">Grosime:</h4>
                             <div className="flex flex-wrap gap-3">
                               {getUniqueValues('grosime').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('grosime', value)}
                                   disabled={!isVariantAvailable('grosime', value)}
-                                  className={`px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                                  className={`px-6 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
                                     selectedFilters.grosime === value
-                                      ? 'bg-blue-300 text-white shadow-lg transform scale-105 border-2 border-blue-400'
+                                      ? 'bg-primary text-white shadow-xl transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('grosime', value)
-                                      ? 'bg-gray-50 text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md'
+                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg hover:scale-105'
                                       : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-50'
                                   }`}
                                 >
@@ -549,19 +549,19 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Lungime Selection */}
                         {getUniqueValues('lungime').length > 0 && (
-                          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-                            <h4 className="font-semibold text-gray-800 mb-3">Lungime:</h4>
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
+                            <h4 className="font-bold text-gray-900 mb-4">Lungime:</h4>
                             <div className="flex flex-wrap gap-3">
                               {getUniqueValues('lungime').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('lungime', value)}
                                   disabled={!isVariantAvailable('lungime', value)}
-                                  className={`px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                                  className={`px-6 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
                                     selectedFilters.lungime === value
-                                      ? 'bg-blue-200 text-white shadow-lg transform scale-105 border-2 border-blue-300'
+                                      ? 'bg-primary text-white shadow-xl transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('lungime', value)
-                                      ? 'bg-gray-50 text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md'
+                                      ? 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg hover:scale-105'
                                       : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-50'
                                   }`}
                                 >
@@ -574,14 +574,14 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Culoare Display (Non-selectable) */}
                         {selectedFilters.culoare && (
-                          <div className="space-y-3">
-                            <h4 className="font-medium text-gray-900">Culoare:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              <span className="px-4 py-2 rounded-full border bg-gray-50 text-gray-700 border-gray-300 text-sm font-medium">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-0 shadow-lg">
+                            <h4 className="font-bold text-gray-900 mb-4">Culoare:</h4>
+                            <div className="flex flex-wrap gap-3">
+                              <span className="px-6 py-4 rounded-2xl border-2 bg-white text-gray-700 border-gray-200 text-base font-bold shadow-md">
                                 {selectedFilters.culoare}
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500">Culoarea este setată automat pentru acest produs</p>
+                            <p className="text-sm text-gray-500 mt-3">Culoarea este setată automat pentru acest produs</p>
                           </div>
                         )}
                       </>
@@ -736,13 +736,13 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                 )}
 
                 {/* Action Buttons */}
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <Button 
-                    className="w-full py-4 text-base font-medium" 
+                    className="w-full py-5 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300" 
                     disabled={!currentData.isInStock || (isActuallyGeneProduct && !selectedFilters.curbura)}
                     onClick={handleAddToCart}
                   >
-                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    <ShoppingCart className="w-6 h-6 mr-3" />
                     {!currentData.isInStock 
                       ? 'Stoc epuizat' 
                       : (isActuallyGeneProduct && !selectedFilters.curbura)
@@ -751,35 +751,35 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                     }
                   </Button>
                   
-                  <Button variant="outline" className="w-full py-2">
-                    <Heart className="w-4 h-4 mr-2" />
+                  <Button variant="outline" className="w-full py-4 text-base font-semibold rounded-2xl border-2 hover:bg-primary/5 transition-all duration-300">
+                    <Heart className="w-5 h-5 mr-2" />
                     Adaugă la favorite
                   </Button>
                 </div>
 
                 {/* Product Info Cards */}
-                <div className="grid grid-cols-3 gap-2">
-                  <Card className="p-2">
+                <div className="grid grid-cols-3 gap-4">
+                  <Card className="p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardContent className="p-0 text-center">
-                      <Truck className="w-4 h-4 mx-auto text-blue-600 mb-1" />
-                      <p className="text-xs text-gray-600">Livrare gratuită</p>
-                      <p className="text-xs font-medium">peste 500 LEI</p>
+                      <Truck className="w-6 h-6 mx-auto text-primary mb-2" />
+                      <p className="text-sm text-gray-600 font-medium">Livrare gratuită</p>
+                      <p className="text-sm font-bold text-primary">peste 500 LEI</p>
                     </CardContent>
                   </Card>
                   
-                  <Card className="p-2">
+                  <Card className="p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardContent className="p-0 text-center">
-                      <Shield className="w-4 h-4 mx-auto text-green-600 mb-1" />
-                      <p className="text-xs text-gray-600">Garanție</p>
-                      <p className="text-xs font-medium">30 zile</p>
+                      <Shield className="w-6 h-6 mx-auto text-emerald-600 mb-2" />
+                      <p className="text-sm text-gray-600 font-medium">Garanție</p>
+                      <p className="text-sm font-bold text-emerald-600">30 zile</p>
                     </CardContent>
                   </Card>
                   
-                  <Card className="p-2">
+                  <Card className="p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardContent className="p-0 text-center">
-                      <Package className="w-4 h-4 mx-auto text-purple-600 mb-1" />
-                      <p className="text-xs text-gray-600">Ambalare</p>
-                      <p className="text-xs font-medium">profesională</p>
+                      <Package className="w-6 h-6 mx-auto text-purple-600 mb-2" />
+                      <p className="text-sm text-gray-600 font-medium">Ambalare</p>
+                      <p className="text-sm font-bold text-purple-600">profesională</p>
                     </CardContent>
                   </Card>
                 </div>

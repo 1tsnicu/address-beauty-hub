@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import BackToTopButton from './BackToTopButton';
@@ -16,16 +16,22 @@ import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
 import AdminGuard from './AdminGuard';
 import TestSetup from './TestSetup';
+import CategoryProductsPage from './CategoryProductsPage';
 
 const AppContent: React.FC = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   // Aplicația afișează doar partea vizuală pentru toți utilizatorii
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header />
+      {/* Header-ul normal nu se afișează pe pagina de acasă */}
+      {!isHomePage && <Header />}
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/magazin" element={<OnlineStore />} />
+          <Route path="/magazin/categorie/:categoryId" element={<CategoryProductsPage />} />
           <Route path="/cursuri" element={<CoursesPage />} />
           <Route path="/despre" element={<AboutPage />} />
           <Route path="/livrare" element={<DeliveryPage />} />

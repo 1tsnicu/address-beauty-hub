@@ -123,16 +123,6 @@ const Header = () => {
 
         {/* Main header */}
         <div className="flex items-center justify-between">
-          {/* Logo and motto */}
-          <div className="flex flex-col">
-            <Link to="/" className="font-heading text-2xl md:text-3xl font-bold text-primary">
-              Adress Beauty
-            </Link>
-            <p className="text-sm text-muted-foreground hidden md:block">
-              {t('header.motto')}
-            </p>
-          </div>
-
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item) => (
@@ -149,6 +139,16 @@ const Header = () => {
               </Link>
             ))}
           </nav>
+
+          {/* Central Logo and motto */}
+          <div className="flex flex-col items-center">
+            <Link to="/" className="font-heading text-2xl md:text-3xl font-bold text-primary">
+              Adress Beauty
+            </Link>
+            <p className="text-sm text-muted-foreground hidden md:block">
+              {t('header.motto')}
+            </p>
+          </div>
 
           {/* Mobile menu */}
           <Sheet>
