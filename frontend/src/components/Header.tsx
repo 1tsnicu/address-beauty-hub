@@ -41,9 +41,9 @@ const Header = () => {
 
   return (
     <header className="bg-white/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         {/* Top bar with language selector and account */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
           {/* Language selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -63,7 +63,7 @@ const Header = () => {
           </DropdownMenu>
 
           {/* Account section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <CurrencySelector />
             <ShoppingCart />
             
@@ -142,10 +142,10 @@ const Header = () => {
 
           {/* Central Logo and motto */}
           <div className="flex flex-col items-center">
-            <Link to="/" className="font-heading text-2xl md:text-3xl font-bold text-primary">
+            <Link to="/" className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-primary">
               Adress Beauty
             </Link>
-            <p className="text-sm text-muted-foreground hidden md:block">
+            <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
               {t('header.motto')}
             </p>
           </div>
@@ -158,7 +158,7 @@ const Header = () => {
                 <span className="sr-only">Deschide meniul</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[280px] sm:w-[350px]">
               <SheetHeader>
                 <SheetTitle className="font-heading text-primary">Adress Beauty</SheetTitle>
                 <SheetDescription>

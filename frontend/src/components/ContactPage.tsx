@@ -291,14 +291,14 @@ const ContactPage = () => {
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle className="font-heading text-2xl text-primary flex items-center gap-3">
-                    <MessageSquare className="h-6 w-6" />
+                  <CardTitle className="font-heading text-xl sm:text-2xl text-primary flex items-center gap-2 sm:gap-3">
+                    <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6" />
                     Trimite-ne un Mesaj
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="name">Nume complet *</Label>
                         <Input
@@ -322,7 +322,7 @@ const ContactPage = () => {
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="phone">Telefon</Label>
                         <Input

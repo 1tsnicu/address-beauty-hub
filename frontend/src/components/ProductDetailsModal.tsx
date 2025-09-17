@@ -353,23 +353,23 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[95vh] p-0 bg-white rounded-3xl border-0 shadow-2xl">
+      <DialogContent className="max-w-5xl max-h-[95vh] p-0 bg-white rounded-3xl border-0 shadow-2xl mx-4 sm:mx-0">
         <ScrollArea className="max-h-[95vh]">
           <div className="relative">
             {/* Header modern cu gradient */}
-            <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white p-8">
-              <DialogHeader className="space-y-4">
-                <div className="flex items-start justify-between gap-6">
+            <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white p-4 sm:p-6 lg:p-8">
+              <DialogHeader className="space-y-3 sm:space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-6">
                   <div className="flex-1">
-                    <DialogTitle className="text-3xl font-bold text-white leading-tight mb-3">
+                    <DialogTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight mb-2 sm:mb-3">
                       {currentData.name}
                     </DialogTitle>
-                    <div className="flex items-baseline gap-4">
-                      <span className="text-4xl font-bold text-white">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                      <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
                         {formatPrice(currentData.price)}
                       </span>
                       {currentData.originalPrice && currentData.originalPrice > currentData.price && (
-                        <span className="text-xl text-white/70 line-through">
+                        <span className="text-lg sm:text-xl text-white/70 line-through">
                           {formatPrice(currentData.originalPrice)}
                         </span>
                       )}
@@ -377,7 +377,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                   </div>
                   
                   {/* Badges moderne */}
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-wrap gap-2 sm:flex-col sm:gap-3">
                     {product?.isNew && (
                       <Badge className="bg-emerald-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg">
                         <Zap className="w-4 h-4 mr-2" />
@@ -400,16 +400,16 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
               </DialogHeader>
             </div>
 
-            <div className="p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
                 {/* Image Gallery */}
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <div className="relative group">
-                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 shadow-2xl border-0">
+                    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 shadow-2xl border-0">
                       <img
                         src={allImages[selectedImageIndex] || '/placeholder.svg'}
                         alt={currentData.name}
-                        className="w-full h-[500px] object-contain transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-contain transition-transform duration-500 group-hover:scale-110"
                       />
                       
                       {/* Overlay cu gradient pentru butoane */}
@@ -439,12 +439,12 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                     {/* Thumbnail Gallery */}
                     {allImages.length > 1 && (
-                      <div className="flex gap-4 overflow-x-auto pb-2">
+                      <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-2">
                         {allImages.map((image, index) => (
                           <button
                             key={index}
                             onClick={() => setSelectedImageIndex(index)}
-                            className={`flex-shrink-0 w-24 h-24 rounded-2xl border-2 overflow-hidden transition-all duration-300 ${
+                            className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all duration-300 ${
                               selectedImageIndex === index 
                                 ? 'border-primary shadow-xl scale-110' 
                                 : 'border-gray-200 hover:border-primary/50 hover:shadow-lg hover:scale-105'
@@ -486,28 +486,28 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                 {/* Gene Variants with Interactive Chips */}
                 {isActuallyGeneProduct && geneVariants.length > 0 && (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {loading ? (
                       <div className="text-center py-4">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                        <p className="text-sm text-gray-600 mt-2">Se încarcă variantele...</p>
+                        <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary mx-auto"></div>
+                        <p className="text-xs sm:text-sm text-gray-600 mt-2">Se încarcă variantele...</p>
                       </div>
                     ) : (
                       <>
                         {/* Curbură Selection (Required) */}
                         {getUniqueValues('curbura').length > 0 && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border-0 shadow-md">
                             <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                               <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                               Curbură <span className="text-red-500 text-xs font-medium">*obligatoriu</span>
                             </h4>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
                               {getUniqueValues('curbura').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('curbura', value)}
                                   disabled={!isVariantAvailable('curbura', value)}
-                                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                                  className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
                                     selectedFilters.curbura === value
                                       ? 'bg-primary text-white shadow-lg transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('curbura', value)
@@ -524,15 +524,15 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Grosime Selection */}
                         {getUniqueValues('grosime').length > 0 && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
-                            <h4 className="font-semibold text-gray-900 mb-3">Grosime:</h4>
-                            <div className="flex flex-wrap gap-2">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Grosime:</h4>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
                               {getUniqueValues('grosime').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('grosime', value)}
                                   disabled={!isVariantAvailable('grosime', value)}
-                                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                                  className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
                                     selectedFilters.grosime === value
                                       ? 'bg-primary text-white shadow-lg transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('grosime', value)
@@ -549,15 +549,15 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Lungime Selection */}
                         {getUniqueValues('lungime').length > 0 && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
-                            <h4 className="font-semibold text-gray-900 mb-3">Lungime:</h4>
-                            <div className="flex flex-wrap gap-2">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Lungime:</h4>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
                               {getUniqueValues('lungime').map((value) => (
                                 <button
                                   key={value}
                                   onClick={() => handleFilterChange('lungime', value)}
                                   disabled={!isVariantAvailable('lungime', value)}
-                                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                                  className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
                                     selectedFilters.lungime === value
                                       ? 'bg-primary text-white shadow-lg transform scale-105 border-2 border-primary/20'
                                       : isVariantAvailable('lungime', value)
@@ -574,10 +574,10 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
                         {/* Culoare Display (Non-selectable) */}
                         {selectedFilters.culoare && (
-                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border-0 shadow-md">
-                            <h4 className="font-semibold text-gray-900 mb-3">Culoare:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              <span className="px-4 py-2 rounded-xl border-2 bg-white text-gray-700 border-gray-200 text-sm font-semibold shadow-md">
+                          <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border-0 shadow-md">
+                            <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Culoare:</h4>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                              <span className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border-2 bg-white text-gray-700 border-gray-200 text-xs sm:text-sm font-semibold shadow-md">
                                 {selectedFilters.culoare}
                               </span>
                             </div>
@@ -736,13 +736,13 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                 )}
 
                 {/* Action Buttons */}
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <Button 
-                    className="w-full py-5 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300" 
+                    className="w-full py-3 sm:py-4 lg:py-5 text-sm sm:text-base lg:text-lg font-bold rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300" 
                     disabled={!currentData.isInStock || (isActuallyGeneProduct && !selectedFilters.curbura)}
                     onClick={handleAddToCart}
                   >
-                    <ShoppingCart className="w-6 h-6 mr-3" />
+                    <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 mr-2 sm:mr-3" />
                     {!currentData.isInStock 
                       ? 'Stoc epuizat' 
                       : (isActuallyGeneProduct && !selectedFilters.curbura)
@@ -751,35 +751,35 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                     }
                   </Button>
                   
-                  <Button variant="outline" className="w-full py-4 text-base font-semibold rounded-2xl border-2 hover:bg-primary/5 transition-all duration-300">
-                    <Heart className="w-5 h-5 mr-2" />
+                  <Button variant="outline" className="w-full py-2 sm:py-3 lg:py-4 text-sm sm:text-base font-semibold rounded-xl sm:rounded-2xl border-2 hover:bg-primary/5 transition-all duration-300">
+                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
                     Adaugă la favorite
                   </Button>
                 </div>
 
                 {/* Product Info Cards */}
-                <div className="grid grid-cols-3 gap-4">
-                  <Card className="p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <Card className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardContent className="p-0 text-center">
-                      <Truck className="w-6 h-6 mx-auto text-primary mb-2" />
-                      <p className="text-sm text-gray-600 font-medium">Livrare gratuită</p>
-                      <p className="text-sm font-bold text-primary">peste 500 LEI</p>
+                      <Truck className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-primary mb-1.5 sm:mb-2" />
+                      <p className="text-xs sm:text-sm text-gray-600 font-medium">Livrare gratuită</p>
+                      <p className="text-xs sm:text-sm font-bold text-primary">peste 500 LEI</p>
                     </CardContent>
                   </Card>
                   
-                  <Card className="p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Card className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardContent className="p-0 text-center">
-                      <Shield className="w-6 h-6 mx-auto text-emerald-600 mb-2" />
-                      <p className="text-sm text-gray-600 font-medium">Garanție</p>
-                      <p className="text-sm font-bold text-emerald-600">30 zile</p>
+                      <Shield className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-emerald-600 mb-1.5 sm:mb-2" />
+                      <p className="text-xs sm:text-sm text-gray-600 font-medium">Garanție</p>
+                      <p className="text-xs sm:text-sm font-bold text-emerald-600">30 zile</p>
                     </CardContent>
                   </Card>
                   
-                  <Card className="p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Card className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardContent className="p-0 text-center">
-                      <Package className="w-6 h-6 mx-auto text-purple-600 mb-2" />
-                      <p className="text-sm text-gray-600 font-medium">Ambalare</p>
-                      <p className="text-sm font-bold text-purple-600">profesională</p>
+                      <Package className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-purple-600 mb-1.5 sm:mb-2" />
+                      <p className="text-xs sm:text-sm text-gray-600 font-medium">Ambalare</p>
+                      <p className="text-xs sm:text-sm font-bold text-purple-600">profesională</p>
                     </CardContent>
                   </Card>
                 </div>

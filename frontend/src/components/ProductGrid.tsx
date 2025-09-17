@@ -1,16 +1,16 @@
 // Funcție pentru extragere semantică din denumirea produsului
 function extractProductDetails(name: string) {
   // Curbură
-  const curvature = (name.match(/\b(C|CC|D|DD|L|LC|LD)\b/) || [])[1] || null;
+  const curvature = (name.match(/\b(C|CC|D|DD|L|LC|LD)\b/) || [])[1] || '';
   // Lungime (extrage doar cifra, fără 'mm')
   const lengthMatch = name.match(/(\d{1,2}(?:\.\d)?)mm/);
-  const length = lengthMatch ? lengthMatch[1] : null;
+  const length = lengthMatch ? lengthMatch[1] : '';
   // Grosime (extrage doar cifra, fără 'mm')
-  const thickness = (name.match(/(0\.05|0\.07|0\.10|0\.12|0\.15)/) || [])[1] || null;
+  const thickness = (name.match(/(0\.05|0\.07|0\.10|0\.12|0\.15)/) || [])[1] || '';
   // Brand
-  const brand = ['Address Beauty', 'Luxe Glam', 'Glam Lash', 'Bella Lash'].find(b => name.includes(b)) || null;
+  const brand = ['Address Beauty', 'Luxe Glam', 'Glam Lash', 'Bella Lash'].find(b => name.includes(b)) || '';
   // Tip
-  const type = ['Benzi', 'Evantaie', 'mix', 'Volum', 'Natural'].find(t => name.toLowerCase().includes(t.toLowerCase())) || null;
+  const type = ['Benzi', 'Evantaie', 'mix', 'Volum', 'Natural'].find(t => name.toLowerCase().includes(t.toLowerCase())) || '';
   return { curvature, length, thickness, brand, type };
 }
 
@@ -157,11 +157,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({
           return tableInfo && tableInfo.subcategory === realSubcategory;
         });
         
-        console.log(`Mapare subcategorie: ${subcategory} → ${realSubcategory}`);
+        // console.log(`Mapare subcategorie: ${subcategory} → ${realSubcategory}`);
       }
 
-      console.log(`Încărcare produse pentru categoria: ${category}, subcategoria: ${subcategory}`);
-      console.log(`Tabele selectate:`, tablesToLoad);
+      // console.log(`Încărcare produse pentru categoria: ${category}, subcategoria: ${subcategory}`);
+      // console.log(`Tabele selectate:`, tablesToLoad);
 
       // Încarcă grupurile gene doar dacă categoria include Gene și subcategoria corespunde
       const subcategoryMap = {
@@ -183,7 +183,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         setGeneGroups(geneGroupsData);
         console.log(`Încărcate ${geneGroupsData.length} grupuri gene`);
       } else {
-        console.log('Grupurile gene nu sunt încărcate pentru această filtrare');
+        // console.log('Grupurile gene nu sunt încărcate pentru această filtrare');
       }
 
       // Încarcă produsele din tabelele filtrate (excluzând gene care e gestionat separat)
@@ -192,14 +192,27 @@ const ProductGrid: React.FC<ProductGridProps> = ({
 
       for (const table of nonGeneTables) {
         try {
-          const { data, error } = await supabase.from(table).select('*');
+          console.log(`Încărcare din tabela: ${table}`);
+          // Încarcă toate produsele din tabelă cu paginare
+          let hasMore = true;
+          let offset = 0;
+          const limit = 100;
+          
+          while (hasMore) {
+            const { data, error } = await supabase
+              .from(table)
+              .select('*')
+              .range(offset, offset + limit - 1)
+              .order('id', { ascending: true });
           
           if (error) {
             console.warn(`Eroare la accesarea tabelei ${table}:`, error.message);
-            continue; // Sare peste această tabelă și continuă cu următoarea
+              hasMore = false;
+              break;
           }
           
           if (data && Array.isArray(data) && data.length > 0) {
+              console.log(`Tabela ${table} - încărcate ${data.length} produse (offset: ${offset})`);
             data.forEach((prod: Record<string, unknown>) => {
               const details = extractProductDetails(asString(prod.name));
 
@@ -209,8 +222,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 price: asNumber(prod.sale_price),
                 originalPrice: asNumber(prod.sale_price) || null,
                 image: asString(prod.image_url) || '/placeholder.svg',
-                rating: 4.0 + Math.random(), // Rating ridicat între 4.0-5.0
-                reviews: Math.floor(Math.random() * 50) + 20, // Review-uri între 20-70
+                  rating: 4.0 + Math.random(), // Rating ridicat între 4.0-5.0
+                  reviews: Math.floor(Math.random() * 50) + 20, // Review-uri între 20-70
                 inStock: asNumber(prod.store_stock || prod.total_stock) > 0,
                 stockQuantity: asNumber(prod.store_stock || prod.total_stock),
                 isNew: false,
@@ -222,20 +235,29 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 specifications: {},
                 variants: [],
                 attributes: {
-                // Folosim datele direct din baza de date
-                curvature: asString(prod.curbura) || details.curvature,
-                length: asString(prod.lungime) || details.length,
-                thickness: asString(prod.grosime) || details.thickness,
-                brand: asString(prod.brand) || details.brand,
-                type: asString(prod.type) || details.type,
-                color: asString(prod.culoare) || '',
+                  // Folosim datele direct din baza de date, cu fallback la extractProductDetails
+                  curvature: asString(prod.curbura) || details.curvature,
+                  length: asString(prod.lungime) || details.length,
+                  thickness: asString(prod.grosime) || details.thickness,
+                  brand: asString(prod.brand) || details.brand,
+                  type: asString(prod.type) || details.type,
+                  color: asString(prod.culoare),
               },
             });
           });
+              
+              // Verifică dacă mai sunt produse de încărcat
+              if (data.length < limit) {
+                hasMore = false;
+              } else {
+                offset += limit;
+              }
           } else {
-            // Debug: dacă nu există date, loghează ce vine din Supabase
-            console.info(`Tabela ${table} nu conține date.`);
+              hasMore = false;
+            }
           }
+          
+          console.log(`Tabela ${table} - total încărcate: ${allProducts.filter(p => p.category === tableCategoryMap[table]?.category).length} produse`);
         } catch (tableError) {
           // Loghează eroarea specifică pentru această tabelă
           console.warn(`Nu s-a putut accesa tabela ${table}:`, tableError);
@@ -288,9 +310,9 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       setProducts([...allProducts, ...filteredGeneProducts]);
       
       // Logging pentru debugging
-      console.log(`Total produse încărcate: ${allProducts.length + filteredGeneProducts.length}`);
-      console.log(`- Produse din tabele: ${allProducts.length}`);
-      console.log(`- Grupuri gene: ${filteredGeneProducts.length}`);
+      // console.log(`Total produse încărcate: ${allProducts.length + filteredGeneProducts.length}`);
+      // console.log(`- Produse din tabele: ${allProducts.length}`);
+      // console.log(`- Grupuri gene: ${filteredGeneProducts.length}`);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Eroare la încărcarea produselor';
       setError(message);

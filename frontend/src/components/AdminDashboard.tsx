@@ -44,14 +44,9 @@ const AdminDashboard: React.FC = () => {
         <TabsContent value="products">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Gestionare Produse</CardTitle>
-                  <CardDescription>Adaugă, editează sau șterge produse.</CardDescription>
-                </div>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" /> Adaugă produs
-                </Button>
+              <div>
+                <CardTitle>Gestionare Produse</CardTitle>
+                <CardDescription>Adaugă, editează sau șterge produse.</CardDescription>
               </div>
             </CardHeader>
             <CardContent>

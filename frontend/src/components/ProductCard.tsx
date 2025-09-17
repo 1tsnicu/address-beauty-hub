@@ -118,9 +118,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </CardHeader>
       
-      <CardContent className="p-5 space-y-4">
+      <CardContent className="p-4 sm:p-5 space-y-3 sm:space-y-4">
         {/* Denumire completă și clară */}
-        <CardTitle className="text-lg line-clamp-2 font-bold leading-tight text-gray-900 group-hover:text-primary transition-colors">
+        <CardTitle className="text-base sm:text-lg line-clamp-2 font-bold leading-tight text-gray-900 group-hover:text-primary transition-colors">
           {product.name}
         </CardTitle>
         
@@ -129,47 +129,47 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
-              className={`h-4 w-4 ${
+              className={`h-3 w-3 sm:h-4 sm:w-4 ${
                 product.rating && i < Math.floor(product.rating)
                   ? 'fill-yellow-400 text-yellow-400'
                   : 'text-gray-300'
               }`}
             />
           ))}
-          <span className="text-sm text-muted-foreground ml-2 font-medium">
+          <span className="text-xs sm:text-sm text-muted-foreground ml-1 sm:ml-2 font-medium">
             {(product.rating || 0).toFixed(1)}{product.reviews && product.reviews > 0 ? ` (${product.reviews})` : ''}
           </span>
         </div>
         
         {/* Scurtă descriere */}
         {product.description && (
-          <div className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+          <div className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
             {product.description}
           </div>
         )}
         
         {/* Preț afișat vizibil */}
-        <div className="flex items-baseline gap-3">
-          <span className="font-bold text-2xl text-primary">
+        <div className="flex items-baseline gap-2 sm:gap-3">
+          <span className="font-bold text-xl sm:text-2xl text-primary">
             {formatPrice(currentPrice)}
           </span>
           {product.originalPrice && product.originalPrice > product.price && (
-            <span className="text-lg text-muted-foreground line-through">
+            <span className="text-base sm:text-lg text-muted-foreground line-through">
               {formatPrice(product.originalPrice)}
             </span>
           )}
         </div>
       </CardContent>
       
-      <CardFooter className="p-5 pt-0">
-        <div className="space-y-4 w-full">
+      <CardFooter className="p-4 sm:p-5 pt-0">
+        <div className="space-y-3 sm:space-y-4 w-full">
           {/* Variants selector - Opțiuni pentru variante */}
           {hasVariants && (
             <Popover open={variantPopoverOpen} onOpenChange={setVariantPopoverOpen}>
               <PopoverTrigger asChild>
                 <Button 
                   variant="outline" 
-                  className="w-full justify-between text-xs h-10 border-dashed overflow-hidden group/variant-btn"
+                  className="w-full justify-between text-xs h-8 sm:h-10 border-dashed overflow-hidden group/variant-btn"
                 >
                   <div className="flex items-center w-full justify-between overflow-hidden">
                     <div className="truncate mr-2 flex items-center">
@@ -246,21 +246,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
           )}
           
-          {/* Butoane de acțiune */}
-          <div className="grid grid-cols-1 gap-3">
+            {/* Butoane de acțiune */}
+          <div className="grid grid-cols-1 gap-2 sm:gap-3">
             {/* Buton „Adaugă în coș" */}
             <Button 
-              className="w-full font-semibold py-4 rounded-xl text-base shadow-lg hover:shadow-xl transition-all duration-300" 
+              className="w-full font-semibold py-3 sm:py-4 rounded-xl text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-300" 
               disabled={!isInStock}
               onClick={handleAddToCart}
             >
-              <ShoppingCart className="w-5 h-5 mr-2" />
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
               {isInStock ? 'Adaugă în coș' : 'Stoc epuizat'}
             </Button>
             
             {/* Buton „Vezi detalii" - mereu afișat */}
             <Button 
-              className="w-full font-medium py-3 rounded-xl border-2 hover:bg-primary/5 transition-all duration-300" 
+              className="w-full font-medium py-2 sm:py-3 rounded-xl border-2 hover:bg-primary/5 transition-all duration-300 text-sm sm:text-base" 
               variant="outline"
               onClick={() => setIsModalOpen(true)}
             >

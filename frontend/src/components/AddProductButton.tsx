@@ -170,8 +170,8 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
           <Plus className="mr-2 h-4 w-4" /> Adaugă produs
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Adaugă produs</DialogTitle>
           <p className="sr-only" id="add-product-desc">
             Completează datele produsului
@@ -179,60 +179,64 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
         </DialogHeader>
 
         {step === 1 && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <Label htmlFor="category">Categorie</Label>
-              <select
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value as CategoryKey)}
-                className="w-full rounded-md border border-blue-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-              >
-                <option value="" disabled>
-                  Selectează categoria
-                </option>
-                {CATEGORY_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
+          <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <Label htmlFor="category">Categorie</Label>
+                <select
+                  id="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as CategoryKey)}
+                  className="w-full rounded-md border border-blue-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                  <option value="" disabled>
+                    Selectează categoria
                   </option>
-                ))}
-              </select>
-            </div>
+                  {CATEGORY_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className="flex justify-end">
-              <Button onClick={() => setStep(2)} disabled={!category} className="bg-blue-600 hover:bg-blue-700 text-white">
-                Continuă
-              </Button>
+              <div className="flex justify-end pt-4 border-t bg-white sticky bottom-0">
+                <Button onClick={() => setStep(2)} disabled={!category} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  Continuă
+                </Button>
+              </div>
             </div>
           </div>
         )}
 
         {step === 2 && category && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {fields.map((f) => (
-                <FieldRenderer key={f.name} field={f} value={values[f.name]} onChange={onChange} />
-              ))}
-            </div>
+          <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {fields.map((f) => (
+                  <FieldRenderer key={f.name} field={f} value={values[f.name]} onChange={onChange} />
+                ))}
+              </div>
 
-            <div className="space-y-3">
-              <Label>Încărcare imagine de pe dispozitiv</Label>
-              <input type="file" accept="image/*" onChange={handleFileSelect} />
-              {imageUrl && (
-                <div className="rounded-md border border-blue-200 p-3 bg-blue-50">
-                  <div className="text-sm mb-2 text-blue-900">Previzualizare imagine</div>
-                  <img src={imageUrl} alt="preview" className="max-h-48 w-full object-contain bg-white rounded" />
-                </div>
-              )}
-            </div>
+              <div className="space-y-3">
+                <Label>Încărcare imagine de pe dispozitiv</Label>
+                <input type="file" accept="image/*" onChange={handleFileSelect} />
+                {imageUrl && (
+                  <div className="rounded-md border border-blue-200 p-3 bg-blue-50">
+                    <div className="text-sm mb-2 text-blue-900">Previzualizare imagine</div>
+                    <img src={imageUrl} alt="preview" className="max-h-48 w-full object-contain bg-white rounded" />
+                  </div>
+                )}
+              </div>
 
-            <div className="flex items-center justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                Înapoi
-              </Button>
-              <Button onClick={onSubmit} disabled={submitting} className="bg-blue-600 hover:bg-blue-700 text-white">
-                {submitting ? 'Se salvează...' : 'Salvează'}
-              </Button>
+              <div className="flex items-center justify-between pt-4 border-t bg-white sticky bottom-0">
+                <Button variant="outline" onClick={() => setStep(1)}>
+                  Înapoi
+                </Button>
+                <Button onClick={onSubmit} disabled={submitting} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  {submitting ? 'Se salvează...' : 'Salvează'}
+                </Button>
+              </div>
             </div>
           </div>
         )}

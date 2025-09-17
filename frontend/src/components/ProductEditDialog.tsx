@@ -130,72 +130,91 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>Editare produs</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="w-[95vw] sm:w-[90vw] md:w-[85vw] lg:w-[80vw] xl:w-[75vw] 2xl:w-[70vw] max-w-[1800px] max-h-[95vh] flex flex-col mx-auto">
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="text-lg sm:text-xl">Editare produs</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
             Modifică câmpurile și salvează. Imaginea poate fi încărcată mai jos.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSave} className="space-y-4">
+        <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          <form onSubmit={handleSave} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="name">Nume</Label>
-            <Input id="name" value={form.name} onChange={(e) => handleChange('name', e.target.value)} required />
+            <Input 
+              id="name" 
+              value={form.name} 
+              onChange={(e) => handleChange('name', e.target.value)} 
+              required 
+              className="text-sm sm:text-base md:text-lg py-2 sm:py-3"
+            />
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="descriere">Descriere</Label>
-            <Input id="descriere" value={form.descriere} onChange={(e) => handleChange('descriere', e.target.value)} />
+            <textarea 
+              id="descriere" 
+              value={form.descriere} 
+              onChange={(e) => handleChange('descriere', e.target.value)}
+              className="w-full min-h-[80px] sm:min-h-[100px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical text-sm sm:text-base"
+              placeholder="Introduceți descrierea produsului..."
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 sm:gap-4 md:gap-5">
             <div className="space-y-2">
-              <Label htmlFor="sale_price">Preț (MDL)</Label>
-              <Input id="sale_price" type="number" step="0.01" value={form.sale_price} onChange={(e) => handleChange('sale_price', e.target.value)} />
+              <Label htmlFor="sale_price" className="text-xs sm:text-sm">Preț (MDL)</Label>
+              <Input id="sale_price" type="number" step="0.01" value={form.sale_price} onChange={(e) => handleChange('sale_price', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="discount">Discount (%)</Label>
-              <Input id="discount" type="number" step="1" value={form.discount} onChange={(e) => handleChange('discount', e.target.value)} />
+              <Label htmlFor="discount" className="text-xs sm:text-sm">Discount (%)</Label>
+              <Input id="discount" type="number" step="1" value={form.discount} onChange={(e) => handleChange('discount', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="store_stock">Stoc magazin</Label>
-              <Input id="store_stock" type="number" step="1" value={form.store_stock} onChange={(e) => handleChange('store_stock', e.target.value)} />
+              <Label htmlFor="store_stock" className="text-xs sm:text-sm">Stoc magazin</Label>
+              <Input id="store_stock" type="number" step="1" value={form.store_stock} onChange={(e) => handleChange('store_stock', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="total_stock">Stoc total</Label>
-              <Input id="total_stock" type="number" step="1" value={form.total_stock} onChange={(e) => handleChange('total_stock', e.target.value)} />
+              <Label htmlFor="total_stock" className="text-xs sm:text-sm">Stoc total</Label>
+              <Input id="total_stock" type="number" step="1" value={form.total_stock} onChange={(e) => handleChange('total_stock', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
           </div>
 
           {/* Câmpuri specifice pentru tabelul gene */}
           {row?.table === 'gene' && (
             <div className="space-y-4">
-              <h3 className="text-lg font-medium border-b pb-2">Proprietăți specifice gene</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <h3 className="text-base sm:text-lg font-medium border-b pb-2">Proprietăți specifice gene</h3>
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 sm:gap-4 md:gap-5">
                 <div className="space-y-2">
-                  <Label htmlFor="curbura">Curbură</Label>
-                  <Input id="curbura" value={form.curbura} onChange={(e) => handleChange('curbura', e.target.value)} placeholder="ex: C, CC, D, L" />
+                  <Label htmlFor="curbura" className="text-xs sm:text-sm">Curbură</Label>
+                  <Input id="curbura" value={form.curbura} onChange={(e) => handleChange('curbura', e.target.value)} placeholder="ex: C, CC, D, L" className="py-2 sm:py-3 text-sm sm:text-base" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="grosime">Grosime (mm)</Label>
-                  <Input id="grosime" value={form.grosime} onChange={(e) => handleChange('grosime', e.target.value)} placeholder="ex: 0.05, 0.07, 0.10" />
+                  <Label htmlFor="grosime" className="text-xs sm:text-sm">Grosime (mm)</Label>
+                  <Input id="grosime" value={form.grosime} onChange={(e) => handleChange('grosime', e.target.value)} placeholder="ex: 0.05, 0.07, 0.10" className="py-2 sm:py-3 text-sm sm:text-base" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lungime">Lungime (mm)</Label>
-                  <Input id="lungime" value={form.lungime} onChange={(e) => handleChange('lungime', e.target.value)} placeholder="ex: 8, 10, 12" />
+                  <Label htmlFor="lungime" className="text-xs sm:text-sm">Lungime (mm)</Label>
+                  <Input id="lungime" value={form.lungime} onChange={(e) => handleChange('lungime', e.target.value)} placeholder="ex: 8, 10, 12" className="py-2 sm:py-3 text-sm sm:text-base" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="culoare">Culoare</Label>
-                  <Input id="culoare" value={form.culoare} onChange={(e) => handleChange('culoare', e.target.value)} placeholder="ex: Negru, Maro" />
+                  <Label htmlFor="culoare" className="text-xs sm:text-sm">Culoare</Label>
+                  <Input id="culoare" value={form.culoare} onChange={(e) => handleChange('culoare', e.target.value)} placeholder="ex: Negru, Maro" className="py-2 sm:py-3 text-sm sm:text-base" />
                 </div>
               </div>
             </div>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="image_url">URL imagine sau Base64</Label>
-            <Input id="image_url" value={form.image_url} onChange={(e) => handleChange('image_url', e.target.value)} />
+            <Label htmlFor="image_url" className="text-sm sm:text-base">URL imagine sau Base64</Label>
+            <textarea 
+              id="image_url" 
+              value={form.image_url} 
+              onChange={(e) => handleChange('image_url', e.target.value)}
+              className="w-full min-h-[60px] sm:min-h-[80px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical font-mono text-xs sm:text-sm"
+              placeholder="Introduceți URL-ul imaginii sau datele Base64..."
+            />
             {form.image_url && (
               <div className="mt-2 p-2 border rounded-lg">
                 <p className="text-sm text-muted-foreground mb-2">Previzualizare imagine:</p>
@@ -219,15 +238,16 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
             </p>
           </div>
 
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-              Anulează
-            </Button>
-            <Button type="submit" disabled={saving}>
-              {saving ? 'Se salvează...' : 'Salvează'}
-            </Button>
-          </div>
-        </form>
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 pt-4 border-t bg-white sticky bottom-0">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={saving} className="w-full sm:w-auto py-2 sm:py-3 text-sm sm:text-base">
+                Anulează
+              </Button>
+              <Button type="submit" disabled={saving} className="w-full sm:w-auto py-2 sm:py-3 text-sm sm:text-base">
+                {saving ? 'Se salvează...' : 'Salvează'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

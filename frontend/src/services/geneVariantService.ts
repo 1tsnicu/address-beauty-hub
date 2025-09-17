@@ -9,16 +9,39 @@ export class GeneVariantService {
    * Obține toate grupurile de produse pentru listarea principală
    */
   static async getProductGroups(): Promise<GeneGroup[]> {
-    // Încarcă toate produsele din tabela gene și le grupează by name
-    const { data, error } = await supabase
-      .from('gene')
-      .select('id, name, image_url, sale_price, store_stock, descriere');
+    // Încarcă toate produsele gene cu paginare
+    let allData: any[] = [];
+    let hasMore = true;
+    let offset = 0;
+    const limit = 100;
+    
+    while (hasMore) {
+      const { data, error } = await supabase
+        .from('gene')
+        .select('id, name, image_url, sale_price, store_stock, descriere')
+        .range(offset, offset + limit - 1)
+        .order('id', { ascending: true });
 
-    if (error) {
-      throw new Error(`Eroare la încărcarea produselor gene: ${error.message}`);
+      if (error) {
+        console.warn(`Eroare la încărcarea produselor gene: ${error.message}`);
+        break;
+      }
+
+      if (data && data.length > 0) {
+        allData = [...allData, ...data];
+        console.log(`Gene - încărcate ${data.length} produse (offset: ${offset})`);
+        
+        if (data.length < limit) {
+          hasMore = false;
+        } else {
+          offset += limit;
+        }
+      } else {
+        hasMore = false;
+      }
     }
 
-    if (!data) return [];
+    if (allData.length === 0) return [];
 
     // Grupează produsele după nume
     const groups = new Map<string, {
@@ -30,7 +53,7 @@ export class GeneVariantService {
       descriere: string | null;
     }>();
 
-    data.forEach(product => {
+    allData.forEach(product => {
       const productName = product.name;
       if (!groups.has(productName)) {
         groups.set(productName, {
@@ -60,7 +83,7 @@ export class GeneVariantService {
     });
 
     // Convertește în format GeneGroup
-    return Array.from(groups.entries()).map(([name, group]) => ({
+    const result = Array.from(groups.entries()).map(([name, group]) => ({
       slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''),
       name: group.name,
       image_url: group.image_url,
@@ -69,6 +92,9 @@ export class GeneVariantService {
       variant_count: group.variant_count,
       descriere: group.descriere
     }));
+    
+    console.log(`Gene - total produse procesate: ${allData.length}, grupuri create: ${result.length}`);
+    return result;
   }
 
   /**
@@ -102,10 +128,12 @@ export class GeneVariantService {
     const { data, error } = await supabase
       .from('gene')
       .select('curbura, grosime, lungime, culoare')
-      .ilike('name', `%${searchName}%`);
+      .ilike('name', `%${searchName}%`)
+      .limit(50);
 
     if (error) {
-      throw new Error(`Eroare la încărcarea opțiunilor: ${error.message}`);
+      console.warn(`Eroare la încărcarea opțiunilor: ${error.message}`);
+      return { curburi: [], grosimi: [], lungimi: [], culori: [] };
     }
 
     const variants = data || [];
@@ -125,14 +153,16 @@ export class GeneVariantService {
     // Convertește slug-ul înapoi în numele produsului
     const productName = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     
-    // Găsește toate variantele cu numele exact sau similar
+    // Găsește toate variantele cu numele exact sau similar, limitat la 20 de rezultate
     const { data, error } = await supabase
       .from('gene')
       .select('id, sale_price, discount, store_stock, image_url, curbura, grosime, lungime, culoare, name, descriere')
-      .or(`name.eq.${productName},name.ilike.%${productName}%`);
+      .ilike('name', `%${productName}%`)
+      .limit(20);
 
     if (error) {
-      throw new Error(`Eroare la încărcarea variantelor: ${error.message}`);
+      console.warn(`Eroare la încărcarea variantelor: ${error.message}`);
+      return []; // Returnează array gol în loc să arunce eroare
     }
 
     return (data || []).map(variant => ({
