@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -23,6 +23,11 @@ import OrderConfirmationPage from './OrderConfirmationPage';
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+
+  // Scroll automat la începutul paginii la fiecare schimbare de rută
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   // Aplicația afișează doar partea vizuală pentru toți utilizatorii
   return (

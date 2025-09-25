@@ -35,7 +35,7 @@ interface OrderFormData {
 
 const CheckoutPage = () => {
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { items: cartItems, clearCart, getTotalPrice, getTotalItems } = useCart();
   const { currency, getCurrencySymbol } = useCurrency();
   const navigate = useNavigate();
@@ -57,12 +57,16 @@ const CheckoutPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Redirect if cart is empty
+  // Redirect if cart is empty or user is not authenticated
   useEffect(() => {
     if (cartItems.length === 0) {
+      toast.info('Coșul tău este gol. Te rugăm să adaugi produse pentru a continua.');
       navigate('/magazin');
+    } else if (!isAuthenticated) {
+      toast.error('Trebuie să te conectezi pentru a face o comandă.');
+      navigate('/');
     }
-  }, [cartItems, navigate]);
+  }, [cartItems, navigate, isAuthenticated]);
 
   const handleInputChange = (field: keyof OrderFormData, value: string | boolean) => {
     setFormData(prev => ({

@@ -186,6 +186,10 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
                   className="w-full" 
                   size="lg" 
                   onClick={() => {
+                    if (!isAuthenticated) {
+                      toast.error('Trebuie să te conectezi pentru a face o comandă.');
+                      return;
+                    }
                     if (checkout()) {
                       navigate('/checkout');
                     }
