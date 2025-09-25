@@ -168,14 +168,12 @@ export const CategoriesProvider: React.FC<{ children: ReactNode }> = ({ children
         try {
           setCategories(JSON.parse(storedCategories));
         } catch (err) {
-          console.error('Error parsing stored categories', err);
           setCategories(defaultCategories);
         }
       } else {
         setCategories(defaultCategories);
       }
     } catch (err) {
-      console.error('Failed to load categories', err);
       setError('Nu s-au putut încărca categoriile. Vă rugăm încercați din nou mai târziu.');
       // Fallback to default categories
       setCategories(defaultCategories);
@@ -211,7 +209,6 @@ export const CategoriesProvider: React.FC<{ children: ReactNode }> = ({ children
       
       setCategories(prev => [...prev, newCategory]);
     } catch (err) {
-      console.error('Failed to add category', err);
       setError('Nu s-a putut adăuga categoria. Vă rugăm încercați din nou.');
     } finally {
       setIsLoading(false);
@@ -231,7 +228,6 @@ export const CategoriesProvider: React.FC<{ children: ReactNode }> = ({ children
         )
       );
     } catch (err) {
-      console.error('Failed to update category', err);
       setError('Nu s-a putut actualiza categoria. Vă rugăm încercați din nou.');
     } finally {
       setIsLoading(false);
@@ -247,7 +243,6 @@ export const CategoriesProvider: React.FC<{ children: ReactNode }> = ({ children
       
       setCategories(prev => prev.filter(cat => cat.id !== id));
     } catch (err) {
-      console.error('Failed to delete category', err);
       setError('Nu s-a putut șterge categoria. Vă rugăm încercați din nou.');
     } finally {
       setIsLoading(false);

@@ -70,14 +70,11 @@ export const createAdminUser = async () => {
     });
     
     if (error) {
-      console.error('Error creating admin user:', error);
       return false;
     }
     
-    console.log('Admin user created successfully:', data);
     return true;
   } catch (error) {
-    console.error('Failed to create admin user:', error);
     return false;
   }
 };
@@ -86,33 +83,25 @@ export const createAdminUser = async () => {
 export const seedSampleData = async () => {
   try {
     for (const [tableName, products] of Object.entries(sampleProducts)) {
-      console.log(`Adding sample data to ${tableName}...`);
       
       const { data, error } = await supabase
         .from(tableName)
         .insert(products);
         
       if (error) {
-        console.error(`Error inserting data into ${tableName}:`, error);
-      } else {
-        console.log(`Successfully added ${products.length} products to ${tableName}`);
       }
     }
     
-    console.log('Sample data seeding completed!');
     return true;
   } catch (error) {
-    console.error('Failed to seed sample data:', error);
     return false;
   }
 };
 
 // Function to run all setup
 export const setupTestData = async () => {
-  console.log('Setting up test data...');
   
   await createAdminUser();
   await seedSampleData();
   
-  console.log('Test data setup completed!');
 };

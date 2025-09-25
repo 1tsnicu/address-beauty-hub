@@ -144,7 +144,6 @@ export const ProductPage: React.FC = () => {
     setAddingToCart(true);
     try {
       // Aici adaugi logica pentru coș - trimite selectedVariant.id
-      console.log('Adaugă în coș varianta:', selectedVariant.id);
       toast.success('Produsul a fost adăugat în coș');
       
       // Simulare API call

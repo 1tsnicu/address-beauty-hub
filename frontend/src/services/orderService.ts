@@ -107,7 +107,6 @@ class OrderService {
         .single();
 
       if (error) {
-        console.error('Eroare la crearea comenzii:', error);
         return {
           success: false,
           error: `Eroare la salvarea comenzii: ${error.message}`
@@ -153,7 +152,6 @@ class OrderService {
       };
 
     } catch (error) {
-      console.error('Eroare neașteptată la crearea comenzii:', error);
       return {
         success: false,
         error: 'A apărut o eroare neașteptată la procesarea comenzii'
@@ -173,7 +171,6 @@ class OrderService {
         .single();
 
       if (error) {
-        console.error('Eroare la obținerea comenzii:', error);
         return {
           success: false,
           error: `Eroare la obținerea comenzii: ${error.message}`
@@ -226,7 +223,6 @@ class OrderService {
       };
 
     } catch (error) {
-      console.error('Eroare neașteptată la obținerea comenzii:', error);
       return {
         success: false,
         error: 'A apărut o eroare neașteptată la obținerea comenzii'
@@ -250,7 +246,6 @@ class OrderService {
         .single();
 
       if (error) {
-        console.error('Eroare la actualizarea statusului comenzii:', error);
         return {
           success: false,
           error: `Eroare la actualizarea statusului: ${error.message}`
@@ -263,7 +258,6 @@ class OrderService {
       };
 
     } catch (error) {
-      console.error('Eroare neașteptată la actualizarea statusului:', error);
       return {
         success: false,
         error: 'A apărut o eroare neașteptată la actualizarea statusului'
@@ -283,7 +277,6 @@ class OrderService {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Eroare la obținerea comenzilor:', error);
         return {
           success: false,
           error: `Eroare la obținerea comenzilor: ${error.message}`
@@ -330,7 +323,6 @@ class OrderService {
       };
 
     } catch (error) {
-      console.error('Eroare neașteptată la obținerea comenzilor:', error);
       return {
         success: false,
         error: 'A apărut o eroare neașteptată la obținerea comenzilor'

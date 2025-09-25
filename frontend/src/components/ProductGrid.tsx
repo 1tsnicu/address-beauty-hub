@@ -157,11 +157,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({
           return tableInfo && tableInfo.subcategory === realSubcategory;
         });
         
-        // console.log(`Mapare subcategorie: ${subcategory} → ${realSubcategory}`);
       }
 
-      // console.log(`Încărcare produse pentru categoria: ${category}, subcategoria: ${subcategory}`);
-      // console.log(`Tabele selectate:`, tablesToLoad);
 
       // Încarcă grupurile gene doar dacă categoria include Gene și subcategoria corespunde
       const subcategoryMap = {
@@ -181,9 +178,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       if (shouldLoadGeneGroups) {
         geneGroupsData = await GeneVariantService.getProductGroups();
         setGeneGroups(geneGroupsData);
-        console.log(`Încărcate ${geneGroupsData.length} grupuri gene`);
       } else {
-        // console.log('Grupurile gene nu sunt încărcate pentru această filtrare');
       }
 
       // Încarcă produsele din tabelele filtrate (excluzând gene care e gestionat separat)
@@ -192,7 +187,6 @@ const ProductGrid: React.FC<ProductGridProps> = ({
 
       for (const table of nonGeneTables) {
         try {
-          console.log(`Încărcare din tabela: ${table}`);
           // Încarcă toate produsele din tabelă cu paginare
           let hasMore = true;
           let offset = 0;
@@ -206,13 +200,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({
               .order('id', { ascending: true });
           
           if (error) {
-            console.warn(`Eroare la accesarea tabelei ${table}:`, error.message);
               hasMore = false;
               break;
           }
           
           if (data && Array.isArray(data) && data.length > 0) {
-              console.log(`Tabela ${table} - încărcate ${data.length} produse (offset: ${offset})`);
             data.forEach((prod: Record<string, unknown>) => {
               const details = extractProductDetails(asString(prod.name));
 
@@ -257,10 +249,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({
             }
           }
           
-          console.log(`Tabela ${table} - total încărcate: ${allProducts.filter(p => p.category === tableCategoryMap[table]?.category).length} produse`);
         } catch (tableError) {
           // Loghează eroarea specifică pentru această tabelă
-          console.warn(`Nu s-a putut accesa tabela ${table}:`, tableError);
           continue;
         }
       }
@@ -310,9 +300,6 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       setProducts([...allProducts, ...filteredGeneProducts]);
       
       // Logging pentru debugging
-      // console.log(`Total produse încărcate: ${allProducts.length + filteredGeneProducts.length}`);
-      // console.log(`- Produse din tabele: ${allProducts.length}`);
-      // console.log(`- Grupuri gene: ${filteredGeneProducts.length}`);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Eroare la încărcarea produselor';
       setError(message);

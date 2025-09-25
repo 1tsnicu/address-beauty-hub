@@ -56,7 +56,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error('Error getting session:', error);
           return;
         }
 
@@ -78,13 +77,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               }
               setUser(parsedUser);
             } catch (error) {
-              console.error('Failed to parse user data from localStorage', error);
               setUser(null);
             }
           }
         }
       } catch (error) {
-        console.error('Error initializing auth:', error);
+        // Error initializing auth
       }
     };
 
@@ -218,9 +216,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
         profileInsert = { data: insertRes.data as unknown, error: insertRes.error };
         // Logare detaliată pentru debugging
-        console.log('insertUserProfile response:', profileInsert);
         if (profileInsert?.error) {
-          console.error('Supabase insert error:', profileInsert.error);
           throw new Error(profileInsert.error.message || 'Eroare la inserția profilului');
         }
       }

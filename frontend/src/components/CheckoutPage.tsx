@@ -171,7 +171,6 @@ const CheckoutPage = () => {
       navigate('/comanda-confirmata', { state: { order: result.order } });
 
     } catch (error) {
-      console.error('Eroare la plasarea comenzii:', error);
       toast.error('A apărut o eroare la plasarea comenzii. Te rugăm să încerci din nou.');
     } finally {
       setIsSubmitting(false);

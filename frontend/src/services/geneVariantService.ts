@@ -23,13 +23,11 @@ export class GeneVariantService {
         .order('id', { ascending: true });
 
       if (error) {
-        console.warn(`Eroare la încărcarea produselor gene: ${error.message}`);
         break;
       }
 
       if (data && data.length > 0) {
         allData = [...allData, ...data];
-        console.log(`Gene - încărcate ${data.length} produse (offset: ${offset})`);
         
         if (data.length < limit) {
           hasMore = false;
@@ -93,7 +91,6 @@ export class GeneVariantService {
       descriere: group.descriere
     }));
     
-    console.log(`Gene - total produse procesate: ${allData.length}, grupuri create: ${result.length}`);
     return result;
   }
 
@@ -132,7 +129,6 @@ export class GeneVariantService {
       .limit(50);
 
     if (error) {
-      console.warn(`Eroare la încărcarea opțiunilor: ${error.message}`);
       return { curburi: [], grosimi: [], lungimi: [], culori: [] };
     }
 
@@ -161,7 +157,6 @@ export class GeneVariantService {
       .limit(20);
 
     if (error) {
-      console.warn(`Eroare la încărcarea variantelor: ${error.message}`);
       return []; // Returnează array gol în loc să arunce eroare
     }
 

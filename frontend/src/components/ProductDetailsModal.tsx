@@ -118,7 +118,6 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
           }
         }
       } catch (error) {
-        console.error('Error loading gene variants:', error);
       } finally {
         setLoading(false);
       }
