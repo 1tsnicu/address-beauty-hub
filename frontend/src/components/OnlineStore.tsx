@@ -11,7 +11,7 @@ const OnlineStore = () => {
   const { t } = useLanguage();
   const { isAuthenticated } = useAuth();
   const { categories, isLoading: isCategoriesLoading } = useCategories();
-  
+
   // Filter the categories to only show active ones
   const activeCategories = categories.filter(category => category.active);
 
@@ -236,16 +236,16 @@ const OnlineStore = () => {
           {/* Floating beauty elements */}
           <div className="absolute top-28 right-1/5 w-2 h-6 bg-gradient-to-b from-pink-200/30 to-transparent rounded-full transform -rotate-12 animate-sway"></div>
           <div className="absolute bottom-36 left-1/4 w-6 h-2 bg-gradient-to-r from-blue-200/25 to-transparent rounded-full transform rotate-12 animate-sway delay-300"></div>
-        </div>
-
+                  </div>
+                  
         <div className="container mx-auto px-4 relative z-10">
           {/* Beauty Premium Categories Grid */}
           <div className="flex flex-col sm:flex-row sm:flex-nowrap justify-center items-center gap-4 sm:overflow-x-auto pb-4 mb-8">
             {featuredCategories.map((cfg) => (
               <CategoryCard key={cfg.to} {...cfg} />
             ))}
-          </div>
-
+            </div>
+            
           {additionalCategories.length > 0 && (
             <>
               {/* Visual divider and label */}
@@ -254,7 +254,7 @@ const OnlineStore = () => {
                 <span className="text-xs uppercase tracking-wide text-muted-foreground">Alte categorii</span>
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-200/40 to-transparent" />
               </div>
-
+              
               {/* Additional Categories Grid */}
               <div className="flex flex-col sm:flex-row sm:flex-nowrap justify-center items-center gap-4 sm:overflow-x-auto pb-4">
                 {additionalCategories.map((category, index) => {
@@ -274,8 +274,8 @@ const OnlineStore = () => {
                   const iconClass = `${textColor} group-hover:${textColor.replace('600', '700')}`;
                   const titleClass = textColor.replace('600', '700');
                   const subtitleClass = textColor.replace('600', '500');
-
-                  return (
+                      
+                      return (
                     <CategoryCard
                       key={category.id}
                       to={`/magazin/categorie/${category.id}`}
@@ -289,8 +289,8 @@ const OnlineStore = () => {
                       overlayFrom="from-blue-100/20"
                     />
                   );
-                })}
-              </div>
+                  })}
+                </div>
             </>
           )}
         </div>

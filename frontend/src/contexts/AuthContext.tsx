@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { signUp, signIn, signOut, getCurrentUser } from '@/services/supabaseAuth';
 import { insertUserProfile, getUserProfile } from '@/services/supabaseUserProfile';
+import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
@@ -47,22 +48,64 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // State pentru user
   const [user, setUser] = useState<User | null>(null);
 
-  // Load user data from local storage on component mount
+  // Load user data and check Supabase session on component mount
   useEffect(() => {
-    const savedUserData = localStorage.getItem('addressBeautyUser');
-    if (savedUserData) {
+    const initializeAuth = async () => {
       try {
-        const parsedUser = JSON.parse(savedUserData);
-        // Convert string date back to Date object if registration bonus exists
-        if (parsedUser.registrationBonus && parsedUser.registrationBonus.expiresAt) {
-          parsedUser.registrationBonus.expiresAt = new Date(parsedUser.registrationBonus.expiresAt);
+        // Check if there's an active Supabase session
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+          return;
         }
-        setUser(parsedUser);
+
+        if (session?.user) {
+          // User is authenticated with Supabase, load their profile
+          const { data: userProfile, error } = await getUserProfile(session.user.id);
+          if (userProfile && userProfile.length > 0 && !error) {
+            setUser(userProfile[0]);
+          }
+        } else {
+          // No active session, try to load from localStorage as fallback
+          const savedUserData = localStorage.getItem('addressBeautyUser');
+          if (savedUserData) {
+            try {
+              const parsedUser = JSON.parse(savedUserData);
+              // Convert string date back to Date object if registration bonus exists
+              if (parsedUser.registrationBonus && parsedUser.registrationBonus.expiresAt) {
+                parsedUser.registrationBonus.expiresAt = new Date(parsedUser.registrationBonus.expiresAt);
+              }
+              setUser(parsedUser);
+            } catch (error) {
+              console.error('Failed to parse user data from localStorage', error);
+              setUser(null);
+            }
+          }
+        }
       } catch (error) {
-        console.error('Failed to parse user data from localStorage', error);
-        setUser(null);
+        console.error('Error initializing auth:', error);
       }
-    }
+    };
+
+    initializeAuth();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        localStorage.removeItem('addressBeautyUser');
+      } else if (event === 'SIGNED_IN' && session?.user) {
+        const { data: userProfile, error } = await getUserProfile(session.user.id);
+        if (userProfile && userProfile.length > 0 && !error) {
+          setUser(userProfile[0]);
+        }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Save user data to local storage whenever it changes

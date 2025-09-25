@@ -17,6 +17,8 @@ import AdminLogin from './AdminLogin';
 import AdminGuard from './AdminGuard';
 import TestSetup from './TestSetup';
 import CategoryProductsPage from './CategoryProductsPage';
+import CheckoutPage from './CheckoutPage';
+import OrderConfirmationPage from './OrderConfirmationPage';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -32,6 +34,8 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/magazin" element={<OnlineStore />} />
           <Route path="/magazin/categorie/:categoryId" element={<CategoryProductsPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/comanda-confirmata" element={<OrderConfirmationPage />} />
           <Route path="/cursuri" element={<CoursesPage />} />
           <Route path="/despre" element={<AboutPage />} />
           <Route path="/livrare" element={<DeliveryPage />} />

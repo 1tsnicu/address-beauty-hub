@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -19,6 +20,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
   const { user, isAuthenticated, calculateDiscount } = useAuth();
   const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice, checkout, isCheckingOut } = useCart();
   const { formatPrice } = useCurrency();
+  const navigate = useNavigate();
   
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -183,7 +185,11 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
                   <Button 
                   className="w-full" 
                   size="lg" 
-                  onClick={checkout} 
+                  onClick={() => {
+                    if (checkout()) {
+                      navigate('/checkout');
+                    }
+                  }} 
                   disabled={isCheckingOut || items.length === 0}
                 >
                   <CreditCard className="mr-2 h-4 w-4" />
