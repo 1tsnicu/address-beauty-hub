@@ -23,22 +23,22 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-heading text-primary">Admin Dashboard</h1>
-          <p className="text-muted-foreground text-sm">Conectat ca: {user?.email}</p>
+    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-heading text-primary truncate">Admin Dashboard</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm truncate">Conectat ca: {user?.email}</p>
         </div>
-        <Button variant="outline" onClick={logout}>
+        <Button variant="outline" onClick={logout} className="w-full sm:w-auto">
           <LogOut className="h-4 w-4 mr-2" /> Deconectare
         </Button>
       </div>
 
       <Tabs defaultValue="products" className="w-full">
-        <TabsList>
-          <TabsTrigger value="products">Produse</TabsTrigger>
-          <TabsTrigger value="orders" disabled>Comenzi</TabsTrigger>
-          <TabsTrigger value="users" disabled>Utilizatori</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="products" className="text-xs sm:text-sm">Produse</TabsTrigger>
+          <TabsTrigger value="orders" disabled className="text-xs sm:text-sm">Comenzi</TabsTrigger>
+          <TabsTrigger value="users" disabled className="text-xs sm:text-sm">Utilizatori</TabsTrigger>
         </TabsList>
 
         <TabsContent value="products">

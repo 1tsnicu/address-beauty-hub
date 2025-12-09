@@ -60,7 +60,7 @@ const ContactPage = () => {
       icon: MapPin,
       title: 'Adresa',
       titleRu: 'Адрес',
-      details: ['Chișinău, Moldova', 'Str. Exemplu 123'],
+      details: ['Chișinău, Moldova', 'Str. Costin Nicolae'],
       action: null
     },
     {
@@ -107,26 +107,26 @@ const ContactPage = () => {
 
   const quickActions = [
     {
-      title: 'Programează o Consultație',
-      titleRu: 'Записаться на Консультацию',
-      description: 'Consultație gratuită pentru cursuri',
-      descriptionRu: 'Бесплатная консультация по курсам',
+      title: t('contact.quick.book'),
+      titleRu: t('contact.quick.book'),
+      description: t('contact.quick.book.desc'),
+      descriptionRu: t('contact.quick.book.desc'),
       icon: Calendar,
       link: '/cursuri'
     },
     {
-      title: 'Comandă Produse',
-      titleRu: 'Заказать Продукты',
-      description: 'Peste 1000 produse premium',
-      descriptionRu: 'Более 1000 премиум продуктов',
+      title: t('contact.quick.order'),
+      titleRu: t('contact.quick.order'),
+      description: t('contact.quick.order.desc'),
+      descriptionRu: t('contact.quick.order.desc'),
       icon: ShoppingBag,
       link: '/magazin'
     },
     {
-      title: 'Informații Cursuri',
-      titleRu: 'Информация о Курсах',
-      description: '6 programe specializate',
-      descriptionRu: '6 специализированных программ',
+      title: t('contact.quick.info'),
+      titleRu: t('contact.quick.info'),
+      description: t('contact.quick.info.desc'),
+      descriptionRu: t('contact.quick.info.desc'),
       icon: GraduationCap,
       link: '/cursuri'
     }
@@ -162,11 +162,10 @@ const ContactPage = () => {
       <section className="py-16 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary mb-6">
-            Contactează-ne
+            {t('contact.title')}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Suntem aici pentru tine! Contactează-ne pentru orice întrebare despre cursuri, 
-            produse sau servicii. Echipa noastră îți va răspunde în cel mai scurt timp.
+            {t('contact.description')}
           </p>
         </div>
       </section>
@@ -205,7 +204,7 @@ const ContactPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="font-heading text-xl text-primary">
-                    Informații de Contact
+                    {t('contact.info.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -242,7 +241,7 @@ const ContactPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="font-heading text-xl text-primary">
-                    Urmărește-ne
+                    {t('contact.social.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -268,20 +267,41 @@ const ContactPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="font-heading text-xl text-primary">
-                    Locația Noastră
+                    {t('contact.location.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                    <div className="text-center text-muted-foreground">
-                      <MapPin className="h-12 w-12 mx-auto mb-2" />
-                      <p className="text-sm">Hartă interactivă</p>
-                      <p className="text-xs">Google Maps va fi integrată</p>
+                  <div className="aspect-video rounded-lg overflow-hidden">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2719.5!2d28.8!3d47.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c97c3628b769a1%3A0x1234567890abcdef!2sStrada%20Costin%20Nicolae%2C%20Chi%C8%99in%C4%83u%2C%20Moldova!5e0!3m2!1sen!2s!4v1234567890!5m2!1sen!2s"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Locația Adress Beauty - Chișinău, str. Costin Nicolae"
+                    ></iframe>
+                  </div>
+                  <div className="mt-4 p-3 bg-primary/5 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium text-sm text-primary mb-1">{t('contact.address.title')}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {t('contact.address.location')}<br />
+                          {t('contact.address.street')}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <Button className="w-full mt-4" variant="outline">
+                  <Button 
+                    className="w-full mt-4" 
+                    variant="outline"
+                    onClick={() => window.open('https://maps.google.com/maps?q=Strada+Costin+Nicolae,+Chișinău,+Moldova', '_blank')}
+                  >
                     <MapPin className="h-4 w-4 mr-2" />
-                    Vezi pe Google Maps
+                    {t('contact.map.button')}
                   </Button>
                 </CardContent>
               </Card>
@@ -293,28 +313,28 @@ const ContactPage = () => {
                 <CardHeader>
                   <CardTitle className="font-heading text-xl sm:text-2xl text-primary flex items-center gap-2 sm:gap-3">
                     <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6" />
-                    Trimite-ne un Mesaj
+                    {t('contact.form.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Nume complet *</Label>
+                        <Label htmlFor="name">{t('contact.form.name')}</Label>
                         <Input
                           id="name"
-                          placeholder="Numele și prenumele"
+                          placeholder={t('contact.form.name.placeholder')}
                           value={formData.name}
                           onChange={(e) => handleInputChange('name', e.target.value)}
                           required
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email">Email *</Label>
+                        <Label htmlFor="email">{t('contact.form.email')}</Label>
                         <Input
                           id="email"
                           type="email"
-                          placeholder="adresa@email.com"
+                          placeholder={t('contact.form.email.placeholder')}
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
                           required
@@ -324,20 +344,20 @@ const ContactPage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Telefon</Label>
+                        <Label htmlFor="phone">{t('contact.form.phone')}</Label>
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="+373 XX XXX XXX"
+                          placeholder={t('contact.form.phone.placeholder')}
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="inquiryType">Tipul întrebării</Label>
+                        <Label htmlFor="inquiryType">{t('contact.form.type')}</Label>
                         <Select value={formData.inquiryType} onValueChange={(value) => handleInputChange('inquiryType', value)}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selectează categoria" />
+                            <SelectValue placeholder={t('contact.form.type.placeholder')} />
                           </SelectTrigger>
                           <SelectContent>
                             {inquiryTypes.map((type) => (
@@ -351,10 +371,10 @@ const ContactPage = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="subject">Subiect *</Label>
+                      <Label htmlFor="subject">{t('contact.form.subject')}</Label>
                       <Input
                         id="subject"
-                        placeholder="Subiectul mesajului"
+                        placeholder={t('contact.form.subject.placeholder')}
                         value={formData.subject}
                         onChange={(e) => handleInputChange('subject', e.target.value)}
                         required
@@ -362,10 +382,10 @@ const ContactPage = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="message">Mesaj *</Label>
+                      <Label htmlFor="message">{t('contact.form.message')}</Label>
                       <Textarea
                         id="message"
-                        placeholder="Descrie-ne întrebarea sau solicitarea ta..."
+                        placeholder={t('contact.form.message.placeholder')}
                         rows={6}
                         value={formData.message}
                         onChange={(e) => handleInputChange('message', e.target.value)}
@@ -375,11 +395,11 @@ const ContactPage = () => {
 
                     <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                       {isSubmitting ? (
-                        <>Se trimite...</>
+                        <>{t('contact.form.submitting')}</>
                       ) : (
                         <>
                           <Send className="h-4 w-4 mr-2" />
-                          Trimite Mesajul
+                          {t('contact.form.submit')}
                         </>
                       )}
                     </Button>

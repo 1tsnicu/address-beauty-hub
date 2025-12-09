@@ -194,17 +194,17 @@ const CheckoutPage = () => {
             <Link to="/magazin">
               <Button variant="ghost" size="sm" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
-                Înapoi la magazin
+                {t('checkout.back')}
               </Button>
             </Link>
           </div>
           
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
-              Finalizează Comanda
+              {t('checkout.title')}
             </h1>
             <p className="text-xl text-muted-foreground">
-              Completează datele pentru a finaliza comanda ta
+              {t('checkout.description')}
             </p>
           </div>
         </div>
@@ -300,7 +300,7 @@ const CheckoutPage = () => {
                         id="firstName"
                         value={formData.firstName}
                         onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        placeholder="Introdu prenumele"
+                        placeholder={t('checkout.firstname.placeholder')}
                       />
                     </div>
                     <div>
@@ -309,7 +309,7 @@ const CheckoutPage = () => {
                         id="lastName"
                         value={formData.lastName}
                         onChange={(e) => handleInputChange('lastName', e.target.value)}
-                        placeholder="Introdu numele"
+                        placeholder={t('checkout.lastname.placeholder')}
                       />
                     </div>
                   </div>
@@ -353,7 +353,7 @@ const CheckoutPage = () => {
                       id="address"
                       value={formData.address}
                       onChange={(e) => handleInputChange('address', e.target.value)}
-                      placeholder="Strada, numărul, blocul, scara, etajul, apartamentul"
+                      placeholder={t('checkout.address.placeholder')}
                     />
                   </div>
                   
@@ -364,7 +364,7 @@ const CheckoutPage = () => {
                         id="city"
                         value={formData.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
-                        placeholder="Orașul"
+                        placeholder={t('checkout.city.placeholder')}
                       />
                     </div>
                     <div>
@@ -466,7 +466,7 @@ const CheckoutPage = () => {
                       id="notes"
                       value={formData.notes}
                       onChange={(e) => handleInputChange('notes', e.target.value)}
-                      placeholder="Instrucțiuni speciale pentru livrare sau alte observații..."
+                      placeholder={t('checkout.notes.placeholder')}
                       rows={3}
                     />
                   </div>
@@ -480,13 +480,13 @@ const CheckoutPage = () => {
                       className="mt-1 text-primary"
                     />
                     <Label htmlFor="agreeToTerms" className="text-sm">
-                      Accept{' '}
+                      {t('checkout.agree.terms')}{' '}
                       <Link to="/termeni" className="text-primary hover:underline">
-                        termenii și condițiile
+                        {t('checkout.agree.terms.link')}
                       </Link>{' '}
-                      și{' '}
+                      {t('checkout.agree.privacy')}{' '}
                       <Link to="/confidentialitate" className="text-primary hover:underline">
-                        politica de confidențialitate
+                        {t('checkout.agree.privacy.link')}
                       </Link>
                     </Label>
                   </div>

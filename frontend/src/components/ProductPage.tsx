@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, ShoppingCart, AlertCircle, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 import type { 
   GeneGroup, 
   GeneVariant, 
@@ -18,6 +19,7 @@ import type {
 export const ProductPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   // Stări pentru datele produsului
   const [group, setGroup] = useState<GeneGroup | null>(null);
@@ -239,11 +241,11 @@ export const ProductPage: React.FC = () => {
           {/* Selecția variantelor */}
           <Card>
             <CardHeader>
-              <CardTitle>Selectează varianta</CardTitle>
+              <CardTitle>{t('product.select.variant')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <VariantChipGroup
-                title="Curbură"
+                title={t('product.curvature')}
                 values={options.curburi}
                 selectedValue={selection.curbura}
                 enabledValues={enabledOptions.curburi}
@@ -251,7 +253,7 @@ export const ProductPage: React.FC = () => {
               />
 
               <VariantChipGroup
-                title="Grosime"
+                title={t('product.thickness')}
                 values={options.grosimi}
                 selectedValue={selection.grosime}
                 enabledValues={enabledOptions.grosimi}
@@ -259,7 +261,7 @@ export const ProductPage: React.FC = () => {
               />
 
               <VariantChipGroup
-                title="Lungime"
+                title={t('product.length')}
                 values={options.lungimi}
                 selectedValue={selection.lungime}
                 enabledValues={enabledOptions.lungimi}

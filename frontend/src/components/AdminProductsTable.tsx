@@ -7,6 +7,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Badge } from './ui/badge';
 import { RefreshCw, Pencil, ChevronDown, ChevronRight, Search, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 import AddProductButton from './AddProductButton';
 
 // Harta tabelelor din Supabase pe care vrem să le listăm în admin
@@ -84,6 +85,7 @@ const groupByName = (rows: AdminProductRow[]): Array<[string, AdminProductRow[]]
 };
 
 const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadKey }) => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dataByTable, setDataByTable] = useState<Record<string, AdminProductRow[]>>({});
@@ -203,20 +205,22 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
     setOpenTables((prev) => ({ ...prev, [t]: !prev[t] }));
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 w-full max-w-md">
-          <Search className="h-4 w-4 text-muted-foreground" />
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
+        <div className="flex items-center gap-2 w-full sm:max-w-md">
+          <Search className="h-4 w-4 text-muted-foreground flex-shrink-0" />
           <Input
-            placeholder="Caută după nume sau SKU..."
+            placeholder={t('admin.search.placeholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            className="text-sm"
           />
         </div>
         <div className="flex items-center gap-2">
           <AddProductButton onAdded={handleRefresh} />
-          <Button onClick={handleRefresh} variant="outline" size="sm" disabled={loading}>
-            <RefreshCw className={`${loading ? 'animate-spin' : ''} h-4 w-4 mr-2`} /> Refresh
+          <Button onClick={handleRefresh} variant="outline" size="sm" disabled={loading} className="text-xs sm:text-sm">
+            <RefreshCw className={`${loading ? 'animate-spin' : ''} h-4 w-4 mr-1 sm:mr-2`} /> 
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
         </div>
       </div>
@@ -235,17 +239,17 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
         const isOpen = openTables[t];
         return (
           <Card key={t}>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2 capitalize">
-                  {isOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-                  {t}
-                  <Badge variant="secondary">{rows.length}</Badge>
+            <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
+              <div className="min-w-0">
+                <CardTitle className="flex items-center gap-2 capitalize text-sm sm:text-base">
+                  {isOpen ? <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" /> : <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />}
+                  <span className="truncate">{t}</span>
+                  <Badge variant="secondary" className="text-xs">{rows.length}</Badge>
                 </CardTitle>
-                <CardDescription>Lista produselor din tabela „{t}”.</CardDescription>
+                <CardDescription className="text-xs sm:text-sm">Lista produselor din tabela „{t}".</CardDescription>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm" onClick={() => toggleTable(t)}>
+                <Button variant="ghost" size="sm" onClick={() => toggleTable(t)} className="text-xs sm:text-sm">
                   {isOpen ? 'Ascunde' : 'Afișează'}
                 </Button>
               </div>
@@ -262,18 +266,18 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                       </div>
 
                       <div className="w-full overflow-x-auto">
-                        <Table>
+                        <Table className="min-w-[800px]">
                           <TableHeader>
                             <TableRow>
-                              <TableHead className="w-[80px]">ID</TableHead>
-                              {t === 'gene' && <TableHead className="w-[120px]">Curbură</TableHead>}
-                              {t === 'gene' && <TableHead className="w-[120px]">Grosime</TableHead>}
-                              {t === 'gene' && <TableHead className="w-[120px]">Lungime</TableHead>}
-                              {t === 'gene' && <TableHead className="w-[120px]">Culoare</TableHead>}
-                              <TableHead className="w-[140px]">SKU</TableHead>
-                              <TableHead className="w-[100px]">Preț</TableHead>
-                              <TableHead className="w-[100px]">Stoc</TableHead>
-                              <TableHead className="w-[160px]">Acțiuni</TableHead>
+                              <TableHead className="w-[60px] sm:w-[80px] text-xs sm:text-sm">ID</TableHead>
+                              {t === 'gene' && <TableHead className="w-[80px] sm:w-[120px] text-xs sm:text-sm">Curbură</TableHead>}
+                              {t === 'gene' && <TableHead className="w-[80px] sm:w-[120px] text-xs sm:text-sm">Grosime</TableHead>}
+                              {t === 'gene' && <TableHead className="w-[80px] sm:w-[120px] text-xs sm:text-sm">Lungime</TableHead>}
+                              {t === 'gene' && <TableHead className="w-[80px] sm:w-[120px] text-xs sm:text-sm">Culoare</TableHead>}
+                              <TableHead className="w-[100px] sm:w-[140px] text-xs sm:text-sm">SKU</TableHead>
+                              <TableHead className="w-[80px] sm:w-[100px] text-xs sm:text-sm">Preț</TableHead>
+                              <TableHead className="w-[80px] sm:w-[100px] text-xs sm:text-sm">Stoc</TableHead>
+                              <TableHead className="w-[120px] sm:w-[160px] text-xs sm:text-sm">Acțiuni</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
@@ -288,19 +292,23 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
                                 <TableCell className="text-xs">{r.sale_price != null ? `${r.sale_price} MDL` : '-'}</TableCell>
                                 <TableCell className="text-xs">{(r.store_stock ?? r.total_stock ?? 0) as number}</TableCell>
                                 <TableCell>
-                                  <div className="flex items-center gap-2">
-                                    <Button size="sm" variant="outline" onClick={() => onEdit?.(r)}>
-                                      <Pencil className="h-4 w-4 mr-2" /> Edit
+                                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 sm:gap-2">
+                                    <Button size="sm" variant="outline" onClick={() => onEdit?.(r)} className="text-xs">
+                                      <Pencil className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /> 
+                                      <span className="hidden sm:inline">Edit</span>
                                     </Button>
                                     <Button
                                       size="sm"
                                       variant="destructive"
                                       onClick={() => handleDelete(t, r)}
                                       disabled={deletingKey === `${t}-${r.id}`}
-                                      title="Șterge produs"
+                                      title={t('admin.delete.product')}
+                                      className="text-xs"
                                     >
-                                      <Trash2 className="h-4 w-4 mr-2" />
-                                      {deletingKey === `${t}-${r.id}` ? 'Ștergere...' : 'Șterge'}
+                                      <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                                      <span className="hidden sm:inline">
+                                        {deletingKey === `${t}-${r.id}` ? t('admin.deleting') : t('admin.delete')}
+                                      </span>
                                     </Button>
                                   </div>
                                 </TableCell>
@@ -320,7 +328,7 @@ const AdminProductsTable: React.FC<AdminProductsTableProps> = ({ onEdit, reloadK
 
       {!loading && !error && TABLES.every((t) => (filteredDataByTable[t] || []).length === 0) && (
         <div className="text-center text-muted-foreground py-12">
-          Nu s-au găsit produse pentru criteriile curente.
+          {t('admin.no.products')}
         </div>
       )}
     </div>

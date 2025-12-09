@@ -137,10 +137,10 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
-              Descoperă Ofertele Noastre
+              {t('home.carousel.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Promoții exclusive, produse noi și conținut educațional pentru a-ți îmbunătăți experiența de frumusețe
+              {t('home.carousel.description')}
             </p>
           </div>
 
@@ -179,8 +179,8 @@ const HomePage = () => {
                           </div>
                         )}
                         <span className="text-sm font-medium bg-primary/80 px-3 py-1 rounded-full">
-                          {item.type === 'promotion' ? 'Promoție' : 
-                           item.type === 'new-product' ? 'Produs Nou' : 'Video'}
+                          {item.type === 'promotion' ? t('home.carousel.promotion') : 
+                           item.type === 'new-product' ? t('home.carousel.new-product') : t('home.carousel.video')}
                         </span>
                 </div>
                       

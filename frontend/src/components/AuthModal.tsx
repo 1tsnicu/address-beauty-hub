@@ -33,7 +33,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
-    isAdmin: false, // Add admin flag
   });
   const [registerData, setRegisterData] = useState({
     name: '',
@@ -54,15 +53,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
     setIsLoading(true);
     
     try {
-      await login(loginData.email, loginData.password, loginData.isAdmin);
-      if (loginData.isAdmin) {
-        toast.success('Autentificare admin reușită!');
-      } else {
-        toast.success('Autentificare reușită!');
-      }
+      await login(loginData.email, loginData.password, false);
+      toast.success(t('auth.login.success'));
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Eroare la autentificare');
+      toast.error(error instanceof Error ? error.message : t('auth.login.error'));
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +72,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
       toast.success(t('auth.bonus.message'));
       onOpenChange(false);
     } catch (error) {
-      toast.error('Eroare la înregistrare');
+      toast.error(t('auth.register.error'));
     } finally {
       setIsLoading(false);
     }
@@ -88,10 +83,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-heading text-2xl text-primary">
-            Contul tău Adress Beauty
+            {t('auth.modal.title')}
           </DialogTitle>
           <DialogDescription>
-            Autentifică-te sau creează un cont nou pentru a continua cumpărăturile
+            {t('auth.modal.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -104,11 +99,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
           <TabsContent value="login" className="space-y-4">
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="adresa@email.com"
+                  placeholder={t('auth.email.placeholder')}
                   value={loginData.email}
                   onChange={(e) => setLoginData(prev => ({ ...prev, email: e.target.value }))}
                   required
@@ -116,33 +111,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Parola</Label>
+                <Label htmlFor="password">{t('auth.password')}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder={t('auth.password.placeholder')}
                   value={loginData.password}
                   onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
                   required
                 />
               </div>
 
-              {/* Admin checkbox */}
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="isAdmin"
-                  checked={loginData.isAdmin}
-                  onChange={(e) => setLoginData(prev => ({ ...prev, isAdmin: e.target.checked }))}
-                  className="rounded border border-gray-300"
-                />
-                <Label htmlFor="isAdmin" className="text-sm text-gray-600">
-                  Conectare ca administrator
-                </Label>
-              </div>
-
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Se încarcă...' : t('auth.login.title')}
+                {isLoading ? t('auth.loading') : t('auth.login.title')}
               </Button>
             </form>
           </TabsContent>
@@ -154,7 +135,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                   <Label htmlFor="name">{t('auth.name')}</Label>
                   <Input
                     id="name"
-                    placeholder="Nume Prenume"
+                    placeholder={t('auth.name.placeholder')}
                     value={registerData.name}
                     onChange={(e) => setRegisterData(prev => ({ ...prev, name: e.target.value }))}
                     required
@@ -162,11 +143,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
+                  <Label htmlFor="register-email">{t('auth.email')}</Label>
                   <Input
                     id="register-email"
                     type="email"
-                    placeholder="adresa@email.com"
+                    placeholder={t('auth.email.placeholder')}
                     value={registerData.email}
                     onChange={(e) => setRegisterData(prev => ({ ...prev, email: e.target.value }))}
                     required
@@ -176,11 +157,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="register-password">Parola</Label>
+                  <Label htmlFor="register-password">{t('auth.password')}</Label>
                   <Input
                     id="register-password"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder={t('auth.password.placeholder')}
                     value={registerData.password}
                     onChange={(e) => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
                     required
@@ -192,7 +173,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="+373 XX XXX XXX"
+                    placeholder={t('auth.phone.placeholder')}
                     value={registerData.phone}
                     onChange={(e) => setRegisterData(prev => ({ ...prev, phone: e.target.value }))}
                     required
@@ -213,7 +194,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="experience">Experiență</Label>
+                  <Label htmlFor="experience">{t('auth.experience')}</Label>
                   <Select 
                     value={registerData.experience} 
                     onValueChange={(value: 'beginner' | 'experienced' | 'trainer') => 
@@ -236,7 +217,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                 <Label htmlFor="instagram">{t('auth.instagram')}</Label>
                 <Input
                   id="instagram"
-                  placeholder="@username"
+                  placeholder={t('auth.instagram.placeholder')}
                   value={registerData.instagram}
                   onChange={(e) => setRegisterData(prev => ({ ...prev, instagram: e.target.value }))}
                 />
@@ -255,20 +236,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="city">{t('auth.city')}</Label>
-                  <Input
-                    id="city"
-                    placeholder="Chișinău"
-                    value={registerData.city}
-                    onChange={(e) => setRegisterData(prev => ({ ...prev, city: e.target.value }))}
-                    required
-                  />
+                    <Input
+                      id="city"
+                      placeholder={t('auth.city.placeholder')}
+                      value={registerData.city}
+                      onChange={(e) => setRegisterData(prev => ({ ...prev, city: e.target.value }))}
+                      required
+                    />
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="village">{t('auth.village')}</Label>
                   <Input
                     id="village"
-                    placeholder="(opțional)"
+                    placeholder={t('auth.village.placeholder')}
                     value={registerData.village}
                     onChange={(e) => setRegisterData(prev => ({ ...prev, village: e.target.value }))}
                   />
@@ -279,7 +260,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                 <Label htmlFor="address">{t('auth.address')}</Label>
                 <Input
                   id="address"
-                  placeholder="Strada, numărul casei"
+                  placeholder={t('auth.address.placeholder')}
                   value={registerData.address}
                   onChange={(e) => setRegisterData(prev => ({ ...prev, address: e.target.value }))}
                   required
@@ -288,12 +269,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
 
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <p className="text-sm text-green-800 font-medium">
-                  🎁 Bonus special: Primești 15% reducere pentru prima comandă dacă te înregistrezi acum! Bonusul este valabil 2 ore după înregistrare.
+                  {t('auth.bonus.special')}
                 </p>
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Se încarcă...' : t('auth.register.title')}
+                {isLoading ? t('auth.loading') : t('auth.register.title')}
               </Button>
             </form>
           </TabsContent>

@@ -49,7 +49,7 @@ const CategoryProductsPage = () => {
   const productFilters: FilterGroup[] = [
     {
       id: 'curvature',
-      name: 'Curbură',
+      name: t('category.filters.curvature'),
       type: 'checkbox',
       options: [
         { id: 'C', label: 'C' },
@@ -64,7 +64,7 @@ const CategoryProductsPage = () => {
     },
     {
       id: 'length',
-      name: 'Lungime',
+      name: t('category.filters.length'),
       type: 'range',
       options: {
         min: 6,
@@ -75,7 +75,7 @@ const CategoryProductsPage = () => {
     },
     {
       id: 'thickness',
-      name: 'Grosime',
+      name: t('category.filters.thickness'),
       type: 'checkbox',
       options: [
         { id: '0.05', label: '0.05 mm' },
@@ -87,7 +87,7 @@ const CategoryProductsPage = () => {
     },
     {
       id: 'brand',
-      name: 'Brand',
+      name: t('category.filters.brand'),
       type: 'checkbox',
       options: [
         { id: 'addressbeauty', label: 'Address Beauty' },
@@ -100,10 +100,10 @@ const CategoryProductsPage = () => {
 
   // Opțiuni de sortare
   const sortOptions = [
-    { value: 'newest', label: 'Noutăți' },
-    { value: 'price-low', label: 'Preț crescător' },
-    { value: 'price-high', label: 'Preț descrescător' },
-    { value: 'popular', label: 'Cele mai vândute' },
+    { value: 'newest', label: t('category.sort.newest') },
+    { value: 'price-low', label: t('category.sort.price.low') },
+    { value: 'price-high', label: t('category.sort.price.high') },
+    { value: 'popular', label: t('category.sort.popular') },
   ];
 
   // Resetarea filtrelor
@@ -206,7 +206,7 @@ const CategoryProductsPage = () => {
           <div className="max-w-md mx-auto relative mt-6">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
-              placeholder="🔍 Caută produse..."
+              placeholder={t('category.search.placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 h-10 rounded-xl border focus:border-primary/50"
@@ -239,7 +239,7 @@ const CategoryProductsPage = () => {
                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
                   <LayoutGrid className="h-4 w-4" />
                 </div>
-                <span className="text-xs font-medium text-center">Toate {currentCategory.name}</span>
+                <span className="text-xs font-medium text-center">{t('category.show.all')} {currentCategory.name}</span>
               </Button>
               
               {subcategories.map((subcategory) => (
@@ -293,12 +293,12 @@ const CategoryProductsPage = () => {
                     {showAllSubcategories ? (
                       <>
                         <ChevronUp className="h-4 w-4" />
-                        Arată mai puține
+                        {t('category.show.less')}
                       </>
                     ) : (
                       <>
                         <ChevronDown className="h-4 w-4" />
-                        Arată toate ({subcategories.length} categorii)
+                        {t('category.show.all.subcategories')} ({subcategories.length} {t('category.subcategories.count')})
                       </>
                     )}
                   </Button>
@@ -348,7 +348,7 @@ const CategoryProductsPage = () => {
               >
                 <span className="flex items-center">
                   <Filter className="h-4 w-4 mr-2" /> 
-                  Filtre
+                  {t('category.filters.title')}
                 </span>
                 <ChevronRight className={`h-4 w-4 transition-transform ${showMobileFilters ? 'rotate-90' : ''}`} />
               </Button>
@@ -357,7 +357,7 @@ const CategoryProductsPage = () => {
             {/* Filters Sidebar */}
             <div className={`${showMobileFilters ? 'block' : 'hidden'} lg:block lg:w-64 flex-shrink-0`}>
               <div className="sticky top-20">
-                <h3 className="font-medium text-lg mb-4">Filtre</h3>
+                <h3 className="font-medium text-lg mb-4">{t('category.filters.title')}</h3>
                 
                 <ProductFilters 
                   filters={productFilters}
@@ -378,7 +378,7 @@ const CategoryProductsPage = () => {
                     htmlFor="show-out-of-stock" 
                     className="text-sm cursor-pointer"
                   >
-                    Arată produse indisponibile
+                    {t('category.show.out.of.stock')}
                   </label>
                 </div>
 
@@ -390,7 +390,7 @@ const CategoryProductsPage = () => {
                     className="w-full mt-4"
                   >
                     <XCircle className="h-3 w-3 mr-1" />
-                    Reset Filtre
+                    {t('category.reset.filters')}
                   </Button>
                 )}
               </div>

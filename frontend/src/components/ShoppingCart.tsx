@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice, checkout, isCheckingOut } = useCart();
   const { formatPrice } = useCurrency();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -77,7 +78,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
   const nextLevelInfo = isAuthenticated ? getNextLoyaltyLevelInfo() : null;
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="sm" className={`gap-2 relative ${className}`}>
           <ShoppingBag className="h-4 w-4" />
@@ -191,6 +192,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
                       return;
                     }
                     if (checkout()) {
+                      setIsOpen(false); // Închide fereastra cu coșul
                       navigate('/checkout');
                     }
                   }} 

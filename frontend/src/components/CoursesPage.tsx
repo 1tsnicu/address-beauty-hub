@@ -399,14 +399,14 @@ const CoursesPage = () => {
       {/* Header Section */}
       <div className="text-center mb-12">
         <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary mb-6">
-          Cursuri Beauty
+          {t('courses.title')}
         </h1>
         <div className="max-w-4xl mx-auto space-y-4">
           <p className="text-xl text-muted-foreground">
-            La Adress Beauty credem în puterea educației de calitate.
+            {t('courses.subtitle')}
           </p>
           <p className="text-lg text-muted-foreground">
-            Cursurile noastre sunt concepute pentru a oferi nu doar informații, ci și o transformare profesională reală.
+            {t('courses.description')}
           </p>
         </div>
       </div>
@@ -423,11 +423,11 @@ const CoursesPage = () => {
             <CardHeader className="pb-4">
               <div className="flex justify-between items-start mb-2">
                 <Badge variant={course.level === 'beginner' ? 'secondary' : course.level === 'intermediate' ? 'default' : 'destructive'}>
-                  {course.level === 'beginner' ? 'Începător' : course.level === 'intermediate' ? 'Intermediar' : 'Avansat'}
+                  {course.level === 'beginner' ? t('courses.level.beginner') : course.level === 'intermediate' ? t('courses.level.intermediate') : t('courses.level.advanced')}
                 </Badge>
                 {!course.available && (
                   <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-                    În pregătire
+                    {t('courses.status.preparing')}
                   </Badge>
                 )}
               </div>
@@ -447,7 +447,7 @@ const CoursesPage = () => {
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  <span>{course.practiceModels} modele</span>
+                  <span>{course.practiceModels} {t('courses.models')}</span>
                 </div>
               </div>
 
@@ -482,7 +482,7 @@ const CoursesPage = () => {
                         onClick={() => setSelectedCourse(course)}
                         disabled={!course.available}
                       >
-                        {course.available ? 'Vezi Detalii' : 'În curând'}
+                        {course.available ? t('courses.details') : t('courses.coming.soon')}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -500,14 +500,14 @@ const CoursesPage = () => {
                           <div className="grid md:grid-cols-2 gap-6">
                             <div className="space-y-4">
                               <div>
-                                <h3 className="font-semibold text-lg mb-2">Descriere</h3>
+                                <h3 className="font-semibold text-lg mb-2">{t('courses.description.title')}</h3>
                                 <p className="text-muted-foreground">
                                   {language === 'RO' ? selectedCourse.detailedDescription : selectedCourse.detailedDescriptionRu}
                                 </p>
                               </div>
                               
                               <div>
-                                <h3 className="font-semibold text-lg mb-2">Ce înveți</h3>
+                                <h3 className="font-semibold text-lg mb-2">{t('courses.what.learn')}</h3>
                                 <ul className="space-y-1">
                                   {(language === 'RO' ? selectedCourse.whatYouLearn : selectedCourse.whatYouLearnRu).map((item, index) => (
                                     <li key={index} className="flex items-start gap-2 text-sm">
@@ -521,7 +521,7 @@ const CoursesPage = () => {
                             
                             <div className="space-y-4">
                               <div>
-                                <h3 className="font-semibold text-lg mb-2">Efecte și Volume</h3>
+                                <h3 className="font-semibold text-lg mb-2">{t('courses.effects.volumes')}</h3>
                                 <div className="flex flex-wrap gap-2">
                                   {(language === 'RO' ? selectedCourse.effects : selectedCourse.effectsRu).map((effect, index) => (
                                     <Badge key={index} variant="outline">{effect}</Badge>
@@ -530,7 +530,7 @@ const CoursesPage = () => {
                               </div>
                               
                               <div>
-                                <h3 className="font-semibold text-lg mb-2">Ce primești</h3>
+                                <h3 className="font-semibold text-lg mb-2">{t('courses.what.get')}</h3>
                                 <ul className="space-y-1">
                                   {(language === 'RO' ? selectedCourse.whatYouGet : selectedCourse.whatYouGetRu).map((item, index) => (
                                     <li key={index} className="flex items-start gap-2 text-sm">
@@ -546,11 +546,11 @@ const CoursesPage = () => {
                           <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t">
                             <Button className="flex-1" size="lg">
                               <Phone className="h-4 w-4 mr-2" />
-                              Rezervă Locul: +373 68 88 24 90
+                              {t('courses.reserve')}
                             </Button>
                             <Button variant="outline" size="lg">
                               <Mail className="h-4 w-4 mr-2" />
-                              Email: addressbeauty@mail.ru
+                              {t('courses.email')}
                             </Button>
                           </div>
                         </div>
@@ -561,7 +561,7 @@ const CoursesPage = () => {
                   {course.available && (
                     <Button variant="outline" className="w-full" size="sm">
                       <Calendar className="h-4 w-4 mr-2" />
-                      Programează o Vizită
+                      {t('courses.schedule.visit')}
                     </Button>
                   )}
                 </div>
@@ -575,7 +575,7 @@ const CoursesPage = () => {
       <Card className="mb-12">
         <CardHeader>
           <CardTitle className="font-heading text-2xl text-primary text-center">
-            Comparație Cursuri
+            {t('courses.comparison.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -583,7 +583,7 @@ const CoursesPage = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-48">Element</TableHead>
+                  <TableHead className="w-48">{t('courses.comparison.element')}</TableHead>
                   <TableHead className="text-center">Start-Up</TableHead>
                   <TableHead className="text-center">Next-Up</TableHead>
                   <TableHead className="text-center">Academia</TableHead>
@@ -623,19 +623,19 @@ const CoursesPage = () => {
       <Card className="bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10 border-0">
         <CardContent className="text-center py-12">
           <h2 className="font-heading text-3xl font-bold text-primary mb-4">
-            Gata să-ți începi transformarea profesională?
+            {t('courses.cta.title')}
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Alege cursul potrivit pentru tine și fă primul pas către o carieră de succes în beauty!
+            {t('courses.cta.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="min-w-[200px]">
               <Phone className="h-5 w-5 mr-2" />
-              Sună acum: +373 68 88 24 90
+              {t('courses.call.now')}
             </Button>
             <Button variant="outline" size="lg" className="min-w-[200px]">
               <Mail className="h-5 w-5 mr-2" />
-              Scrie-ne: addressbeauty@mail.ru
+              {t('courses.write.us')}
             </Button>
           </div>
         </CardContent>

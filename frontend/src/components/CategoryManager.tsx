@@ -10,8 +10,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Plus, Edit, Trash, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const CategoryManager: React.FC = () => {
+  const { t } = useLanguage();
   const { categories, isLoading, error, refreshCategories, addCategory, updateCategory, deleteCategory } = useCategories();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -155,7 +157,7 @@ const CategoryManager: React.FC = () => {
           ) : categories.length === 0 ? (
             <TableRow>
               <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                Nu există categorii. Adaugă prima categorie folosind butonul "Categorie nouă".
+                {t('category.manager.no.categories')}
               </TableCell>
             </TableRow>
           ) : (

@@ -90,10 +90,10 @@ const DeliveryPage = () => {
       <section className="py-16 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary mb-6">
-            Livrare și Achitare
+            {t('delivery.title')}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Informații complete despre modalitățile de livrare, plată și politicile noastre de retur
+            {t('delivery.description')}
           </p>
         </div>
       </section>
@@ -103,10 +103,10 @@ const DeliveryPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="font-heading text-3xl font-bold text-primary mb-4">
-              Opțiuni de Livrare
+              {t('delivery.options.title')}
             </h2>
             <p className="text-muted-foreground">
-              Alegeți modalitatea de livrare care vi se potrivește cel mai bine
+              {t('delivery.options.description')}
             </p>
           </div>
 
@@ -150,10 +150,10 @@ const DeliveryPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="font-heading text-3xl font-bold text-primary mb-4">
-              Metode de Achitare
+              {t('delivery.payment.title')}
             </h2>
             <p className="text-muted-foreground">
-              Pentru a vă oferi flexibilitate și siguranță în procesul de cumpărare
+              {t('delivery.payment.description')}
             </p>
           </div>
 
@@ -178,14 +178,12 @@ const DeliveryPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <FileText className="h-5 w-5 text-primary" />
-                Factură Fiscală
+                {t('delivery.invoice.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Factură fiscală se emite la cererea clientului. În acest caz, vă rugăm să ne lăsați un mesaj 
-                cu solicitarea dumneavoastră și datele necesare pentru facturare, iar echipa noastră va reveni 
-                în cel mai scurt timp.
+                {t('delivery.invoice.description')}
               </p>
             </CardContent>
           </Card>
@@ -197,10 +195,10 @@ const DeliveryPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="font-heading text-3xl font-bold text-primary mb-4">
-              Politica de Retur
+              {t('delivery.return.title')}
             </h2>
             <p className="text-muted-foreground">
-              Informații importante despre returnarea produselor
+              {t('delivery.return.description')}
             </p>
           </div>
 
@@ -209,7 +207,7 @@ const DeliveryPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-orange-800">
                   <AlertCircle className="h-5 w-5" />
-                  Restricții de Retur
+                  {t('delivery.return.restrictions')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-orange-700 text-sm">
@@ -226,7 +224,7 @@ const DeliveryPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-green-800">
                   <CheckCircle className="h-5 w-5" />
-                  Când Este Acceptat Returul
+                  {t('delivery.return.accepted')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-green-700 text-sm">
@@ -254,7 +252,7 @@ const DeliveryPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Shield className="h-5 w-5 text-primary" />
-                  Conformitate Legală
+                  {t('delivery.return.legal')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-muted-foreground text-sm">
@@ -274,18 +272,18 @@ const DeliveryPage = () => {
       <section className="py-12 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-2xl font-bold text-primary mb-4">
-            Ai întrebări despre livrare sau plată?
+            {t('delivery.contact.title')}
           </h2>
           <p className="text-muted-foreground mb-6">
-            Echipa noastră este gata să te ajute cu orice întrebare
+            {t('delivery.contact.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg">
               <Phone className="h-4 w-4 mr-2" />
-              Sună: +373 68 88 24 90
+              {t('delivery.contact.call')}
             </Button>
             <Button variant="outline" size="lg">
-              Scrie-ne: addressbeauty@mail.ru
+              {t('delivery.contact.email')}
             </Button>
           </div>
         </div>

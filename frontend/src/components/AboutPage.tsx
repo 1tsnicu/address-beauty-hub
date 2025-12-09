@@ -15,6 +15,10 @@ import {
   Mail
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import salonImage1 from '@/assets/photo_2025-12-09 10.58.01.jpeg';
+import salonImage2 from '@/assets/photo_2025-12-09 10.58.05.jpeg';
+import salonImage3 from '@/assets/photo_2025-12-09 10.58.09.jpeg';
+import salonImage4 from '@/assets/photo_2025-12-09 10.58.12.jpeg';
 
 const AboutPage = () => {
   const { t, language } = useLanguage();
@@ -52,42 +56,28 @@ const AboutPage = () => {
 
   const teamMembers = [
     {
-      name: 'Elena Popescu',
-      role: 'Fondator & Master Trainer',
-      roleRu: 'Основатель и Мастер-Тренер',
-      experience: '8+ ani experiență',
-      experienceRu: '8+ лет опыта',
-      specialization: 'Extensii gene, Laminare',
-      specializationRu: 'Наращивание ресниц, Ламинирование',
-      image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=400&fit=crop&crop=face'
-    },
-    {
-      name: 'Maria Ionescu',
-      role: 'Senior Master',
-      roleRu: 'Старший Мастер',
-      experience: '6+ ani experiență',
-      experienceRu: '6+ лет опыта',
-      specialization: 'Volum Rus, Mega Volum',
-      specializationRu: 'Русский объем, Мега объем',
-      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop&crop=face'
-    },
-    {
-      name: 'Ana Dumitrescu',
-      role: 'Master Specialist',
-      roleRu: 'Мастер-Специалист',
-      experience: '4+ ani experiență',
-      experienceRu: '4+ года опыта',
-      specialization: 'Sprâncene, Laminare Gene',
-      specializationRu: 'Брови, Ламинирование ресниц',
-      image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=400&fit=crop&crop=face'
+      name: 'Dumitrița Gabuja',
+      role: 'Master & Lash Trainer',
+      roleRu: 'Мастер и Тренер по Ресницам',
+      experience: '10 ani experiență în domeniul lash & lami-beauty',
+      experienceRu: '10 лет опыта в области lash & lami-beauty',
+      specialization: 'Fondatoarea brandului Adress Beauty, cu 7 ani experiență în predarea cursurilor',
+      specializationRu: 'Основатель бренда Adress Beauty, с 7-летним опытом преподавания',
+      education: 'Studii superioare în Psihopedagogie, Managementul serviciilor de frumusețe, Business și Administrare',
+      educationRu: 'Высшее образование в области Психопедагогики, Управления услугами красоты, Бизнеса и Администрирования',
+      age: '31 ani',
+      ageRu: '31 год',
+      philosophy: 'Îmbin pasiunea pentru frumusețe cu dorința de a împărtăși cunoștințe și de a sprijini alți profesioniști să se dezvolte.',
+      philosophyRu: 'Объединяю страсть к красоте с желанием делиться знаниями и поддерживать других профессионалов в развитии.',
+      image: '/src/assets/dumitrita-gabuja.jpg'
     }
   ];
 
   const achievements = [
-    { number: '500+', label: 'Clienți mulțumiți', labelRu: 'Довольных клиентов' },
-    { number: '200+', label: 'Cursanți absolvenți', labelRu: 'Выпускников курсов' },
-    { number: '1000+', label: 'Produse premium', labelRu: 'Премиум продуктов' },
-    { number: '5+', label: 'Ani de experiență', labelRu: 'Лет опыта' }
+    { number: '500+', label: t('about.achievements.clients'), labelRu: t('about.achievements.clients') },
+    { number: '200+', label: t('about.achievements.students'), labelRu: t('about.achievements.students') },
+    { number: '1000+', label: t('about.achievements.products'), labelRu: t('about.achievements.products') },
+    { number: '5+', label: t('about.achievements.experience'), labelRu: t('about.achievements.experience') }
   ];
 
   return (
@@ -96,16 +86,14 @@ const AboutPage = () => {
       <section className="relative py-20 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary mb-6">
-            Despre Adress Beauty
+            {t('about.title')}
           </h1>
           <div className="max-w-4xl mx-auto space-y-6">
             <p className="text-xl text-foreground font-medium">
-              Adress Beauty este mai mult decât un brand – este o misiune.
+              {t('about.subtitle')}
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Ne-am propus să oferim cele mai bune produse, cele mai bine structurate cursuri 
-              și cele mai apreciate servicii beauty din Moldova. Suntem dedicați să transformăm 
-              pasiunea pentru frumusețe într-o carieră de succes pentru fiecare client.
+              {t('about.description')}
             </p>
           </div>
           
@@ -133,14 +121,12 @@ const AboutPage = () => {
               <CardHeader>
                 <CardTitle className="font-heading text-2xl text-primary flex items-center gap-3">
                   <Target className="h-6 w-6" />
-                  Misiunea Noastră
+                  {t('about.mission.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Să oferim educație de înaltă calitate, produse premium și servicii excepționale 
-                  în domeniul beauty, creând o comunitate de profesioniști pasionați care 
-                  transformă vietile oamenilor prin frumusețe și încredere în sine.
+                  {t('about.mission.description')}
                 </p>
               </CardContent>
             </Card>
@@ -149,14 +135,12 @@ const AboutPage = () => {
               <CardHeader>
                 <CardTitle className="font-heading text-2xl text-primary flex items-center gap-3">
                   <Star className="h-6 w-6" />
-                  Viziunea Noastră
+                  {t('about.vision.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Să devenim cea mai respectată și iubită academie beauty din Moldova, 
-                  recunoscută pentru standardele înalte de calitate, inovație și 
-                  dedicarea către succesul fiecărui student și client.
+                  {t('about.vision.description')}
                 </p>
               </CardContent>
             </Card>
@@ -169,10 +153,10 @@ const AboutPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
-              Valorile Noastre
+              {t('about.values.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Principiile care ne ghidează în fiecare zi și în fiecare interacțiune cu clienții noștri
+              {t('about.values.subtitle')}
             </p>
           </div>
 
@@ -203,14 +187,15 @@ const AboutPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
-              Echipa Noastră
+              {t('about.team.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Profesioniști dedicați cu experiență vastă și pasiune pentru perfecțiune
+              {t('about.team.subtitle')}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="flex justify-center">
+            <div className="max-w-sm w-full">
             {teamMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden hover:shadow-lg transition-all hover:scale-105">
                 <div className="aspect-square overflow-hidden">
@@ -228,14 +213,32 @@ const AboutPage = () => {
                     {language === 'RO' ? member.role : member.roleRu}
                   </Badge>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>{language === 'RO' ? member.experience : member.experienceRu}</p>
-                    <p className="font-medium">
+                    <p className="font-medium text-primary">
+                      {language === 'RO' ? member.experience : member.experienceRu}
+                    </p>
+                    <p>
                       {language === 'RO' ? member.specialization : member.specializationRu}
                     </p>
+                    {member.education && (
+                      <p className="text-xs">
+                        <span className="font-medium">{t('about.education')}</span> {language === 'RO' ? member.education : member.educationRu}
+                      </p>
+                    )}
+                    {member.age && (
+                      <p className="text-xs">
+                        <span className="font-medium">{t('about.age')}</span> {language === 'RO' ? member.age : member.ageRu}
+                      </p>
+                    )}
+                    {member.philosophy && (
+                      <p className="text-xs italic mt-3 pt-3 border-t border-gray-200">
+                        "{language === 'RO' ? member.philosophy : member.philosophyRu}"
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
         </div>
       </section>
@@ -245,21 +248,19 @@ const AboutPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
-              Salonul Nostru
+              {t('about.salon.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Un spațiu modern, curat și relaxant, conceput pentru confortul și satisfacția clienților
+              {t('about.salon.subtitle')}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=300&fit=crop',
-              'https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=300&fit=crop',
-              'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=300&fit=crop',
-              'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=300&fit=crop',
-              'https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=300&fit=crop',
-              'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=300&fit=crop'
+              salonImage1,
+              salonImage2,
+              salonImage3,
+              salonImage4
             ].map((image, index) => (
               <div key={index} className="aspect-[4/3] overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <img
@@ -277,27 +278,26 @@ const AboutPage = () => {
       <section className="py-16 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-6">
-            Alătură-te Comunității Adress Beauty
+            {t('about.cta.title')}
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Fie că vrei să înveți, să cumperi produse premium sau să beneficiezi de serviciile noastre, 
-            suntem aici pentru tine!
+            {t('about.cta.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/cursuri">
               <Button size="lg" className="min-w-[200px]">
-                Vezi Cursurile
+                {t('about.cta.courses')}
               </Button>
             </Link>
             <Link to="/magazin">
               <Button variant="outline" size="lg" className="min-w-[200px]">
-                Explorează Magazinul
+                {t('about.cta.shop')}
               </Button>
             </Link>
             <Link to="/contact">
               <Button variant="outline" size="lg" className="min-w-[200px]">
                 <Phone className="h-5 w-5 mr-2" />
-                Contactează-ne
+                {t('about.cta.contact')}
               </Button>
             </Link>
           </div>

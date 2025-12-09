@@ -72,7 +72,85 @@ function generateUUID(): string {
 class OrderService {
 
   /**
-   * Creează o comandă nouă în baza de date
+   * Actualizează stocul produselor după plasarea unei comenzi
+   */
+  private async updateProductStock(items: OrderItem[]): Promise<void> {
+    try {
+      // Lista tabelelor din baza de date unde sunt stocate produsele
+      const productTables = [
+        'gene',
+        'adezive', 
+        'preparate',
+        'ingrijire-personala',
+        'accesorii',
+        'consumabile',
+        'ustensile',
+        'tehnologie_led',
+        'hena_sprancene',
+        'vopsele_profesionale',
+        'pensule_instrumente_speciale',
+        'solutii_laminare',
+        'adezive_laminare',
+        'accesorii_specifice'
+      ];
+
+      // Pentru fiecare produs din comandă
+      for (const item of items) {
+        const productId = item.productId;
+        const quantity = item.quantity;
+
+        // Căutăm produsul în toate tabelele
+        for (const tableName of productTables) {
+          try {
+            // Obținem produsul curent din tabelă
+            const { data: product, error: fetchError } = await supabase
+              .from(tableName)
+              .select('id, store_stock, total_stock')
+              .eq('id', productId)
+              .single();
+
+            if (fetchError) {
+              // Produsul nu există în această tabelă, continuăm cu următoarea
+              continue;
+            }
+
+            if (product) {
+              // Calculăm noul stoc
+              const newStoreStock = Math.max(0, (product.store_stock || 0) - quantity);
+              const newTotalStock = Math.max(0, (product.total_stock || 0) - quantity);
+
+              // Actualizăm stocul în baza de date
+              const { error: updateError } = await supabase
+                .from(tableName)
+                .update({
+                  store_stock: newStoreStock,
+                  total_stock: newTotalStock
+                })
+                .eq('id', productId);
+
+              if (updateError) {
+                console.error(`Eroare la actualizarea stocului pentru produsul ${productId} din tabela ${tableName}:`, updateError);
+              } else {
+                console.log(`Stoc actualizat pentru produsul ${productId} din tabela ${tableName}: store_stock=${newStoreStock}, total_stock=${newTotalStock}`);
+              }
+
+              // Produsul a fost găsit și actualizat, ieșim din bucla tabelelor
+              break;
+            }
+          } catch (tableError) {
+            console.error(`Eroare la procesarea tabelului ${tableName} pentru produsul ${productId}:`, tableError);
+            continue;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Eroare la actualizarea stocului produselor:', error);
+      // Nu aruncăm eroarea pentru a nu afecta procesarea comenzii
+    }
+  }
+
+  /**
+   * Creează o comandă nouă în baza de date și actualizează stocul produselor
    */
   async createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<OrderResponse> {
     try {
@@ -112,6 +190,9 @@ class OrderService {
           error: `Eroare la salvarea comenzii: ${error.message}`
         };
       }
+
+      // Actualizăm stocul produselor după plasarea comenzii cu succes
+      await this.updateProductStock(orderData.items);
 
       // Construim obiectul Order pentru răspuns
       const createdOrder: Order = {

@@ -5,6 +5,7 @@ import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 import type { AdminProductRow } from './AdminProductsTable';
 
 interface ProductEditDialogProps {
@@ -15,6 +16,7 @@ interface ProductEditDialogProps {
 }
 
 const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChange, row, onSaved }) => {
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     name: '',
     descriere: '',
@@ -152,31 +154,31 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="descriere">Descriere</Label>
+            <Label htmlFor="descriere">{t('product.edit.description')}</Label>
             <textarea 
               id="descriere" 
               value={form.descriere} 
               onChange={(e) => handleChange('descriere', e.target.value)}
               className="w-full min-h-[80px] sm:min-h-[100px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical text-sm sm:text-base"
-              placeholder="Introduceți descrierea produsului..."
+              placeholder={t('product.edit.description.placeholder')}
             />
           </div>
 
           <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 sm:gap-4 md:gap-5">
             <div className="space-y-2">
-              <Label htmlFor="sale_price" className="text-xs sm:text-sm">Preț (MDL)</Label>
+              <Label htmlFor="sale_price" className="text-xs sm:text-sm">{t('product.edit.price')}</Label>
               <Input id="sale_price" type="number" step="0.01" value={form.sale_price} onChange={(e) => handleChange('sale_price', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="discount" className="text-xs sm:text-sm">Discount (%)</Label>
+              <Label htmlFor="discount" className="text-xs sm:text-sm">{t('product.edit.discount')}</Label>
               <Input id="discount" type="number" step="1" value={form.discount} onChange={(e) => handleChange('discount', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="store_stock" className="text-xs sm:text-sm">Stoc magazin</Label>
+              <Label htmlFor="store_stock" className="text-xs sm:text-sm">{t('product.edit.store.stock')}</Label>
               <Input id="store_stock" type="number" step="1" value={form.store_stock} onChange={(e) => handleChange('store_stock', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="total_stock" className="text-xs sm:text-sm">Stoc total</Label>
+              <Label htmlFor="total_stock" className="text-xs sm:text-sm">{t('product.edit.total.stock')}</Label>
               <Input id="total_stock" type="number" step="1" value={form.total_stock} onChange={(e) => handleChange('total_stock', e.target.value)} className="py-2 sm:py-3 text-sm sm:text-base" />
             </div>
           </div>
@@ -213,7 +215,7 @@ const ProductEditDialog: React.FC<ProductEditDialogProps> = ({ open, onOpenChang
               value={form.image_url} 
               onChange={(e) => handleChange('image_url', e.target.value)}
               className="w-full min-h-[60px] sm:min-h-[80px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical font-mono text-xs sm:text-sm"
-              placeholder="Introduceți URL-ul imaginii sau datele Base64..."
+              placeholder={t('product.edit.image.placeholder')}
             />
             {form.image_url && (
               <div className="mt-2 p-2 border rounded-lg">

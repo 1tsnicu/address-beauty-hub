@@ -65,7 +65,7 @@ const OnlineStore = () => {
     {
       to: '/magazin/categorie/all',
       Icon: LayoutGrid,
-      title: 'Toate',
+      title: t('store.categories.all'),
       containerClass:
         'bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-indigo-500 hover:to-blue-700 border border-blue-300/30',
       iconClass: 'text-white group-hover:scale-110',
@@ -78,8 +78,8 @@ const OnlineStore = () => {
     {
       to: '/magazin/categorie/lashes',
       Icon: Scissors,
-      title: 'Gene',
-      subtitle: 'Extensii & Accesorii',
+      title: t('store.categories.lashes'),
+      subtitle: t('store.categories.lashes.subtitle'),
       containerClass:
         'bg-gradient-to-br from-blue-50 via-slate-50 to-blue-100 hover:from-blue-100 hover:via-blue-50 hover:to-indigo-100 border-2 border-blue-200/60 hover:border-blue-300/80',
       iconClass: 'text-blue-600 group-hover:text-blue-700',
@@ -91,8 +91,8 @@ const OnlineStore = () => {
     {
       to: '/magazin/categorie/brows',
       Icon: Brush,
-      title: 'Sprâncene',
-      subtitle: 'Henă & Vopsele',
+      title: t('store.categories.brows'),
+      subtitle: t('store.categories.brows.subtitle'),
       containerClass:
         'bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-100 hover:from-indigo-100 hover:via-blue-100 hover:to-slate-50 border-2 border-indigo-200/60 hover:border-indigo-300/80',
       iconClass: 'text-indigo-600 group-hover:text-indigo-700',
@@ -104,8 +104,8 @@ const OnlineStore = () => {
     {
       to: '/magazin/categorie/lamination',
       Icon: Zap,
-      title: 'Laminare',
-      subtitle: 'Soluții & Kit-uri',
+      title: t('store.categories.lamination'),
+      subtitle: t('store.categories.lamination.subtitle'),
       containerClass:
         'bg-gradient-to-br from-slate-50 via-blue-50 to-purple-100 hover:from-blue-100 hover:via-purple-50 hover:to-slate-100 border-2 border-purple-200/60 hover:border-purple-300/80',
       iconClass: 'text-purple-600 group-hover:text-purple-700',
@@ -117,8 +117,8 @@ const OnlineStore = () => {
     {
       to: '/magazin/categorie/cosmetics',
       Icon: Heart,
-      title: 'Îngrijire',
-      subtitle: 'Cosmetice & Skincare',
+      title: t('store.categories.care'),
+      subtitle: t('store.categories.care.subtitle'),
       containerClass:
         'bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-100 hover:from-cyan-100 hover:via-blue-50 hover:to-slate-100 border-2 border-cyan-200/60 hover:border-cyan-300/80',
       iconClass: 'text-cyan-600 group-hover:text-cyan-700',
@@ -179,10 +179,10 @@ const OnlineStore = () => {
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-20 relative z-10">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-foreground mb-6">
-            Magazin Online
+            {t('store.title')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
-            Descoperă produse profesionale pentru gene false de cea mai înaltă calitate
+            {t('store.description')}
           </p>
         </div>
       </section>

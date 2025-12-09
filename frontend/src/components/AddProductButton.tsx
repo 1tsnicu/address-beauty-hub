@@ -17,6 +17,7 @@ import {
 } from '@/lib/admin/schemas';
 import { createByCategory } from '@/lib/admin/adapters';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Plus } from 'lucide-react';
 import { uploadImageFile } from '@/lib/admin/uploadImage';
 
@@ -82,6 +83,7 @@ function FieldRenderer({
 }
 
 export default function AddProductButton({ onAdded }: { onAdded?: () => void }) {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [category, setCategory] = useState<CategoryKey | ''>('');
@@ -167,14 +169,14 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogTrigger asChild>
         <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
-          <Plus className="mr-2 h-4 w-4" /> Adaugă produs
+          <Plus className="mr-2 h-4 w-4" /> {t('add.product.title')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] flex flex-col">
         <DialogHeader className="flex-shrink-0">
-          <DialogTitle>Adaugă produs</DialogTitle>
+          <DialogTitle>{t('add.product.title')}</DialogTitle>
           <p className="sr-only" id="add-product-desc">
-            Completează datele produsului
+            {t('add.product.description')}
           </p>
         </DialogHeader>
 
@@ -182,7 +184,7 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
           <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             <div className="space-y-4">
               <div className="space-y-1">
-                <Label htmlFor="category">Categorie</Label>
+                <Label htmlFor="category">{t('add.product.category')}</Label>
                 <select
                   id="category"
                   value={category}
@@ -190,7 +192,7 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
                   className="w-full rounded-md border border-blue-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
                   <option value="" disabled>
-                    Selectează categoria
+                    {t('add.product.category.placeholder')}
                   </option>
                   {CATEGORY_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -201,8 +203,8 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
               </div>
 
               <div className="flex justify-end pt-4 border-t bg-white sticky bottom-0">
-                <Button onClick={() => setStep(2)} disabled={!category} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Continuă
+                <Button onClick={() => setStep(2)} disabled={!category} className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
+                  {t('add.product.continue')}
                 </Button>
               </div>
             </div>
@@ -212,7 +214,7 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
         {step === 2 && category && (
           <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {fields.map((f) => (
                   <FieldRenderer key={f.name} field={f} value={values[f.name]} onChange={onChange} />
                 ))}
@@ -229,11 +231,11 @@ export default function AddProductButton({ onAdded }: { onAdded?: () => void }) 
                 )}
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t bg-white sticky bottom-0">
-                <Button variant="outline" onClick={() => setStep(1)}>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t bg-white sticky bottom-0">
+                <Button variant="outline" onClick={() => setStep(1)} className="w-full sm:w-auto">
                   Înapoi
                 </Button>
-                <Button onClick={onSubmit} disabled={submitting} className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button onClick={onSubmit} disabled={submitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
                   {submitting ? 'Se salvează...' : 'Salvează'}
                 </Button>
               </div>
