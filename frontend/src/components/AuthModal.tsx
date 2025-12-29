@@ -236,13 +236,13 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="city">{t('auth.city')}</Label>
-                    <Input
-                      id="city"
+                  <Input
+                    id="city"
                       placeholder={t('auth.city.placeholder')}
-                      value={registerData.city}
-                      onChange={(e) => setRegisterData(prev => ({ ...prev, city: e.target.value }))}
-                      required
-                    />
+                    value={registerData.city}
+                    onChange={(e) => setRegisterData(prev => ({ ...prev, city: e.target.value }))}
+                    required
+                  />
                 </div>
                 
                 <div className="space-y-2">

@@ -14,13 +14,13 @@ const TermsPage = () => {
       titleRu: 'Определения и Термины',
       icon: FileText,
       content: [
-        'Adress Beauty - furnizorul de servicii și cursuri beauty.',
+        'Address Beauty - furnizorul de servicii și cursuri beauty.',
         'Utilizator/Client - persoana care folosește serviciile noastre.',
         'Servicii - cursurile, produsele și serviciile beauty oferite.',
         'Site - platforma web addressbeauty.md și aplicațiile asociate.'
       ],
       contentRu: [
-        'Adress Beauty - поставщик beauty услуг и курсов.',
+        'Address Beauty - поставщик beauty услуг и курсов.',
         'Пользователь/Клиент - лицо, использующее наши услуги.',
         'Услуги - курсы, продукты и beauty услуги, которые мы предлагаем.',
         'Сайт - веб-платформа addressbeauty.md и связанные приложения.'
@@ -82,16 +82,16 @@ const TermsPage = () => {
       titleRu: 'Интеллектуальная Собственность',
       icon: Shield,
       content: [
-        'Toate materialele cursurilor sunt proprietatea Adress Beauty.',
+        'Toate materialele cursurilor sunt proprietatea Address Beauty.',
         'Este interzisă reproducerea sau distribuirea fără acordul scris.',
         'Utilizarea comercială a materialelor necesită licență separată.',
-        'Marca "Adress Beauty" este protejată legal.'
+        'Marca "Address Beauty" este protejată legal.'
       ],
       contentRu: [
-        'Все материалы курсов являются собственностью Adress Beauty.',
+        'Все материалы курсов являются собственностью Address Beauty.',
         'Запрещено воспроизведение или распространение без письменного согласия.',
         'Коммерческое использование материалов требует отдельной лицензии.',
-        'Торговая марка "Adress Beauty" защищена законом.'
+        'Торговая марка "Address Beauty" защищена законом.'
       ]
     },
     {
@@ -99,13 +99,13 @@ const TermsPage = () => {
       titleRu: 'Ограничение Ответственности',
       icon: AlertTriangle,
       content: [
-        'Adress Beauty nu este responsabilă pentru rezultatele comerciale ale absolvenților.',
+        'Address Beauty nu este responsabilă pentru rezultatele comerciale ale absolvenților.',
         'Informațiile furnizate sunt pentru scop educațional.',
         'Clientul este responsabil pentru aplicarea corectă a cunoștințelor.',
         'Nu garantăm succesul comercial în urma cursurilor.'
       ],
       contentRu: [
-        'Adress Beauty не несет ответственности за коммерческие результаты выпускников.',
+        'Address Beauty не несет ответственности за коммерческие результаты выпускников.',
         'Предоставляемая информация предназначена для образовательных целей.',
         'Клиент несет ответственность за правильное применение знаний.',
         'Мы не гарантируем коммерческий успех после курсов.'
@@ -128,8 +128,8 @@ const TermsPage = () => {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
             {language === 'RO' 
-              ? 'Termenii și condițiile generale de utilizare a serviciilor Adress Beauty. Actualizat la 11 iulie 2025.'
-              : 'Общие условия использования услуг Adress Beauty. Обновлено 11 июля 2025 года.'
+              ? 'Termenii și condițiile generale de utilizare a serviciilor Address Beauty. Actualizat la 11 iulie 2025.'
+              : 'Общие условия использования услуг Address Beauty. Обновлено 11 июля 2025 года.'
             }
           </p>
         </div>

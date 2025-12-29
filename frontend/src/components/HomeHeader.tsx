@@ -40,17 +40,17 @@ const HomeHeader = () => {
   ];
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50">
-      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+    <header className="fixed top-0 left-0 right-0 z-[1000] h-20 bg-[rgba(255,255,255,0.85)] backdrop-blur-[12px] border-b border-[rgba(0,0,0,0.05)] animate-slide-down">
+      <div className="container mx-auto px-5 h-full flex items-center">
         {/* Single row with all elements */}
         <div className="flex justify-between items-center">
           {/* Left side: Language and Currency */}
           <div className="flex items-center gap-2 sm:gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2 text-white hover:bg-white/20 hover:text-white h-9 px-2 sm:px-3">
-                  <Globe className="h-4 w-4" />
-                  <span className="hidden xs:inline">{language}</span>
+                <Button variant="ghost" size="sm" className="gap-2 text-[rgba(0,0,0,0.7)] hover:bg-[rgba(0,0,0,0.05)] h-9 px-2 sm:px-3">
+                  <Globe className="h-6 w-6" />
+                  <span className="hidden xs:inline text-base font-medium">{language}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
@@ -63,18 +63,20 @@ const HomeHeader = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <CurrencySelector className="text-white border-white/30 hover:border-white/50 focus:border-white bg-white/20 sm:bg-white/10 sm:backdrop-blur-sm" />
+            <CurrencySelector className="text-[rgba(0,0,0,0.7)] border-[rgba(0,0,0,0.1)] hover:border-[rgba(0,0,0,0.2)] focus:border-[rgba(0,0,0,0.3)] bg-transparent" />
           </div>
 
           {/* Right side: Cart, Profile, and Menu */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <ShoppingCart className="text-white hover:bg-white/20 hover:text-white" />
+            <div className="text-[rgba(0,0,0,0.7)] hover:bg-[rgba(0,0,0,0.05)] rounded-full p-2 transition-colors">
+              <ShoppingCart className="text-[rgba(0,0,0,0.7)] hover:text-[rgba(0,0,0,0.9)]" />
+            </div>
             
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="gap-2 text-white hover:bg-white/20 hover:text-white h-9 px-2 sm:px-3">
-                    <User className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" className="gap-2 text-[rgba(0,0,0,0.7)] hover:bg-[rgba(0,0,0,0.05)] h-9 px-2 sm:px-3">
+                    <User className="h-6 w-6" />
                     <span className="hidden sm:inline">
                       {user.name}
                       {user.discountPercentage > 0 && (
@@ -107,10 +109,10 @@ const HomeHeader = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="gap-2 text-white hover:bg-white/20 hover:text-white h-9 px-2 sm:px-3"
+                className="gap-2 text-[rgba(0,0,0,0.7)] hover:bg-[rgba(0,0,0,0.05)] h-9 px-2 sm:px-3"
                 onClick={() => setAuthModalOpen(true)}
               >
-                <User className="h-4 w-4" />
+                <User className="h-6 w-6" />
                 <span className="hidden sm:inline">
                   {t('header.account')}
                 </span>
@@ -120,14 +122,14 @@ const HomeHeader = () => {
             {/* Mobile menu */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden text-white hover:bg-white/20 hover:text-white h-9 px-2">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="lg:hidden text-[rgba(0,0,0,0.7)] hover:bg-[rgba(0,0,0,0.05)] h-9 px-2">
+                  <Menu className="h-6 w-6" />
                   <span className="sr-only">Deschide meniul</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <SheetHeader>
-                  <SheetTitle className="font-heading text-primary">Adress Beauty</SheetTitle>
+                  <SheetTitle className="font-heading text-primary">Address Beauty</SheetTitle>
                   <SheetDescription>
                     {t('header.motto')}
                   </SheetDescription>

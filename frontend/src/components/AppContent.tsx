@@ -11,6 +11,8 @@ import ContactPage from './ContactPage';
 import DeliveryPage from './DeliveryPage';
 import TermsPage from '../pages/TermsPage';
 import PrivacyPage from '../pages/PrivacyPage';
+import PaymentTermsPage from '../pages/PaymentTermsPage';
+import MaibCallbackPage from './MaibCallbackPage';
 import NotFound from '../pages/NotFound';
 import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
@@ -47,6 +49,8 @@ const AppContent: React.FC = () => {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/termeni" element={<TermsPage />} />
           <Route path="/confidentialitate" element={<PrivacyPage />} />
+          <Route path="/termeni-plata" element={<PaymentTermsPage />} />
+          <Route path="/api/payment/maib/callback" element={<MaibCallbackPage />} />
 
           {/* Test Setup (for development) */}
           <Route path="/test-setup" element={<TestSetup />} />

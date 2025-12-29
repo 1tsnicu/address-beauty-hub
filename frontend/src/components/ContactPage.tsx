@@ -101,7 +101,7 @@ const ContactPage = () => {
       name: 'Facebook',
       url: '#',
       icon: Facebook,
-      handle: 'Adress Beauty'
+      handle: 'Address Beauty'
     }
   ];
 
@@ -161,10 +161,10 @@ const ContactPage = () => {
       {/* Header */}
       <section className="py-16 bg-gradient-to-r from-primary/10 via-light-blue/20 to-primary/10">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary mb-6">
+          <h1 className="font-heading text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
             {t('contact.title')}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-[#1a1a1a] max-w-2xl mx-auto">
             {t('contact.description')}
           </p>
         </div>
@@ -214,11 +214,11 @@ const ContactPage = () => {
                         <info.icon className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold mb-1">
+                        <h3 className="font-semibold mb-1 text-[#1a1a1a]">
                           {language === 'RO' ? info.title : info.titleRu}
                         </h3>
                         {info.details.map((detail, idx) => (
-                          <p key={idx} className="text-sm text-muted-foreground">
+                          <p key={idx} className="text-sm text-[#1a1a1a]">
                             {info.action ? (
                               <a 
                                 href={info.action} 
@@ -255,8 +255,8 @@ const ContactPage = () => {
                     >
                       <social.icon className="h-5 w-5 text-primary" />
                       <div>
-                        <div className="font-medium">{social.name}</div>
-                        <div className="text-sm text-muted-foreground">{social.handle}</div>
+                        <div className="font-medium text-[#1a1a1a]">{social.name}</div>
+                        <div className="text-sm text-[#1a1a1a]">{social.handle}</div>
                       </div>
                     </a>
                   ))}
@@ -287,8 +287,8 @@ const ContactPage = () => {
                     <div className="flex items-start gap-3">
                       <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="font-medium text-sm text-primary mb-1">{t('contact.address.title')}</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-sm text-[#1a1a1a] mb-1">{t('contact.address.title')}</p>
+                        <p className="text-sm text-[#1a1a1a]">
                           {t('contact.address.location')}<br />
                           {t('contact.address.street')}
                         </p>
@@ -415,10 +415,10 @@ const ContactPage = () => {
       <section className="py-12 bg-background border-t">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="font-heading text-2xl font-bold text-primary mb-4">
+            <h2 className="font-heading text-2xl font-bold text-[#1a1a1a] mb-4">
               Politici și Informații Legale
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-[#1a1a1a]">
               Pentru transparență și protecția datelor tale
             </p>
           </div>
@@ -429,8 +429,8 @@ const ContactPage = () => {
                 <CardTitle className="text-lg">Termeni și Condiții</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Termenii și condițiile generale de utilizare a serviciilor Adress Beauty.
+                <p className="text-sm text-[#1a1a1a] mb-4">
+                  Termenii și condițiile generale de utilizare a serviciilor Address Beauty.
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
                   Citește Termenii
@@ -443,7 +443,7 @@ const ContactPage = () => {
                 <CardTitle className="text-lg">Politica de Retur</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-[#1a1a1a] mb-4">
                   Condițiile de retur pentru produsele cosmetice și de îngrijire personală.
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
@@ -457,7 +457,7 @@ const ContactPage = () => {
                 <CardTitle className="text-lg">Confidențialitate</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-[#1a1a1a] mb-4">
                   Cum colectăm, folosim și protejăm informațiile tale personale.
                 </p>
                 <Button variant="outline" size="sm" className="w-full">

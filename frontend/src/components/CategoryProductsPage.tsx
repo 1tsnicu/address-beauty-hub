@@ -192,26 +192,18 @@ const CategoryProductsPage = () => {
                 {getCategoryIcon(categoryId!)}
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-3">
+            <h1 className="text-3xl md:text-4xl font-heading font-bold text-[#1a1a1a] mb-3">
               {currentCategory.name}
             </h1>
             {currentCategory.description && (
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg text-[#1a1a1a] max-w-2xl mx-auto">
                 {currentCategory.description}
               </p>
             )}
           </div>
 
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto relative mt-6">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder={t('category.search.placeholder')}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 h-10 rounded-xl border focus:border-primary/50"
-            />
-          </div>
+          {/* Search Bar - Hidden on category page, moved to header or removed */}
+          {/* Search functionality can be accessed via filters or removed entirely */}
         </div>
       </section>
 
@@ -228,108 +220,55 @@ const CategoryProductsPage = () => {
       {subcategories.length > 0 && (
         <section className="py-6 bg-gradient-to-b from-slate-50/50 via-blue-50/30 to-indigo-50/20">
           <div className="container mx-auto px-4">
-            {/* Desktop: Show all subcategories directly */}
-            <div className="hidden md:flex flex-wrap gap-3 justify-center">
-              <Button
-                variant={selectedSubcategory === '' ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedSubcategory('')}
-                className="rounded-xl px-4 py-3 h-auto flex flex-col items-center gap-2 min-w-[140px] hover:scale-105 transition-transform"
-              >
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
-                  <LayoutGrid className="h-4 w-4" />
-                </div>
-                <span className="text-xs font-medium text-center">{t('category.show.all')} {currentCategory.name}</span>
-              </Button>
-              
+            {/* Desktop: Show all subcategories directly - More subtle and elegant design */}
+            <div className="hidden md:flex flex-wrap gap-2 justify-center">
               {subcategories.map((subcategory) => (
                 <Button
                   key={subcategory.id}
                   variant={selectedSubcategory === subcategory.id ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubcategory(subcategory.id)}
-                  className="rounded-xl px-4 py-3 h-auto flex flex-col items-center gap-2 min-w-[140px] hover:scale-105 transition-transform"
+                  className="rounded-lg px-3 py-2 h-auto flex items-center gap-2 text-xs hover:scale-105 transition-transform border border-gray-200 hover:border-primary/50"
                 >
-                  <div className={`flex items-center justify-center w-6 h-6 rounded-full ${
+                  <div className={`flex items-center justify-center w-5 h-5 rounded-full ${
                     selectedSubcategory === subcategory.id
                       ? 'bg-white/20'
                       : 'bg-primary/10'
                   }`}>
                     {getSubcategoryIcon(subcategory.id)}
                   </div>
-                  <span className="text-xs font-medium text-center leading-tight">
+                  <span className="font-medium text-center leading-tight">
                     {subcategory.name}
                   </span>
                 </Button>
               ))}
             </div>
 
-            {/* Mobile: Carousel behavior */}
+            {/* Mobile: Subtle subcategories list */}
             <div className="md:hidden">
-              {/* Visible subcategories (only "Toate Gene") */}
-              <div className="flex flex-col gap-3 justify-center">
-                <Button
-                  variant={selectedSubcategory === '' ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedSubcategory('')}
-                  className="rounded-xl px-4 py-3 h-auto flex flex-row items-center gap-3 w-full"
-                >
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
-                    <LayoutGrid className="h-4 w-4" />
-                  </div>
-                  <span className="text-xs font-medium text-left flex-1">Toate {currentCategory.name}</span>
-                </Button>
-              </div>
-
-              {/* Show more/less button for mobile */}
-              {subcategories.length > 0 && (
-                <div className="flex justify-center mt-4">
+              {/* Show all subcategories directly - more compact and elegant */}
+              <div className="flex flex-col gap-2">
+                {subcategories.map((subcategory) => (
                   <Button
-                    variant="ghost"
+                    key={subcategory.id}
+                    variant={selectedSubcategory === subcategory.id ? "default" : "ghost"}
                     size="sm"
-                    onClick={() => setShowAllSubcategories(!showAllSubcategories)}
-                    className="flex items-center gap-2 text-primary hover:text-primary/80"
+                    onClick={() => setSelectedSubcategory(subcategory.id)}
+                    className="rounded-lg px-3 py-2 h-auto flex flex-row items-center gap-3 w-full justify-start border-b border-gray-100 last:border-b-0 hover:bg-primary/5 transition-colors"
                   >
-                    {showAllSubcategories ? (
-                      <>
-                        <ChevronUp className="h-4 w-4" />
-                        {t('category.show.less')}
-                      </>
-                    ) : (
-                      <>
-                        <ChevronDown className="h-4 w-4" />
-                        {t('category.show.all.subcategories')} ({subcategories.length} {t('category.subcategories.count')})
-                      </>
-                    )}
+                    <div className={`flex items-center justify-center w-5 h-5 rounded-full ${
+                      selectedSubcategory === subcategory.id
+                        ? 'bg-primary/20'
+                        : 'bg-gray-100'
+                    }`}>
+                      {getSubcategoryIcon(subcategory.id)}
+                    </div>
+                    <span className="text-xs font-medium text-left leading-tight flex-1 text-[#1a1a1a]">
+                      {subcategory.name}
+                    </span>
                   </Button>
-                </div>
-              )}
-
-              {/* Hidden subcategories (expandable on mobile) */}
-              {showAllSubcategories && subcategories.length > 0 && (
-                <div className="flex flex-col gap-3 justify-center mt-4 animate-in slide-in-from-top-2 duration-300">
-                  {subcategories.map((subcategory) => (
-                    <Button
-                      key={subcategory.id}
-                      variant={selectedSubcategory === subcategory.id ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedSubcategory(subcategory.id)}
-                      className="rounded-xl px-4 py-3 h-auto flex flex-row items-center gap-3 w-full hover:scale-105 transition-transform"
-                    >
-                      <div className={`flex items-center justify-center w-6 h-6 rounded-full ${
-                        selectedSubcategory === subcategory.id
-                          ? 'bg-white/20'
-                          : 'bg-primary/10'
-                      }`}>
-                        {getSubcategoryIcon(subcategory.id)}
-                      </div>
-                      <span className="text-xs font-medium text-left leading-tight flex-1">
-                        {subcategory.name}
-                      </span>
-                    </Button>
-                  ))}
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           </div>
         </section>

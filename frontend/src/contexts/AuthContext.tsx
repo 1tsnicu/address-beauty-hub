@@ -67,16 +67,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
         } else {
           // No active session, try to load from localStorage as fallback
-          const savedUserData = localStorage.getItem('addressBeautyUser');
-          if (savedUserData) {
-            try {
-              const parsedUser = JSON.parse(savedUserData);
-              // Convert string date back to Date object if registration bonus exists
-              if (parsedUser.registrationBonus && parsedUser.registrationBonus.expiresAt) {
-                parsedUser.registrationBonus.expiresAt = new Date(parsedUser.registrationBonus.expiresAt);
-              }
-              setUser(parsedUser);
-            } catch (error) {
+    const savedUserData = localStorage.getItem('addressBeautyUser');
+    if (savedUserData) {
+      try {
+        const parsedUser = JSON.parse(savedUserData);
+        // Convert string date back to Date object if registration bonus exists
+        if (parsedUser.registrationBonus && parsedUser.registrationBonus.expiresAt) {
+          parsedUser.registrationBonus.expiresAt = new Date(parsedUser.registrationBonus.expiresAt);
+        }
+        setUser(parsedUser);
+      } catch (error) {
               setUser(null);
             }
           }
@@ -97,8 +97,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const { data: userProfile, error } = await getUserProfile(session.user.id);
         if (userProfile && userProfile.length > 0 && !error) {
           setUser(userProfile[0]);
-        }
       }
+    }
     });
 
     return () => {

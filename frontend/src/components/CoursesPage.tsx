@@ -182,8 +182,8 @@ const courses: Course[] = [
     available: true,
     features: ['12+ modele reale', 'Branding personal', 'Mentorat 3 luni'],
     featuresRu: ['12+ реальных моделей', 'Личный брендинг', 'Менторство 3 месяца'],
-    detailedDescription: 'Academia completă pentru viitoarele meștere de elită. Acesta este cel mai avansat program de formare din cadrul Adress Beauty — dedicat celor care își doresc o carieră în domeniul lash, nu doar un hobby. Cursul acoperă toate etapele profesionale: tehnică, practică, imagine, branding și strategii de dezvoltare.',
-    detailedDescriptionRu: 'Полная академия для будущих мастеров элитного уровня. Это самая продвинутая программа обучения в Adress Beauty — для тех, кто хочет построить карьеру в сфере lash, а не просто хобби. Курс охватывает все профессиональные этапы: технику, практику, имидж, брендинг и стратегии развития.',
+    detailedDescription: 'Academia completă pentru viitoarele meștere de elită. Acesta este cel mai avansat program de formare din cadrul Address Beauty — dedicat celor care își doresc o carieră în domeniul lash, nu doar un hobby. Cursul acoperă toate etapele profesionale: tehnică, practică, imagine, branding și strategii de dezvoltare.',
+    detailedDescriptionRu: 'Полная академия для будущих мастеров элитного уровня. Это самая продвинутая программа обучения в Address Beauty — для тех, кто хочет построить карьеру в сфере lash, а не просто хобби. Курс охватывает все профессиональные этапы: технику, практику, имидж, брендинг и стратегии развития.',
     whatYouLearn: [
       'Teorie completă + aplicare practică pe peste 12 modele reale',
       'Izolare, simetrie, mixări, texturi comerciale',

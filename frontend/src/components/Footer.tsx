@@ -109,7 +109,7 @@ const Footer = () => {
               <div className="mb-8">
                 <Link to="/" className="inline-block">
                   <h2 className="font-heading text-3xl font-bold text-primary mb-3">
-                    Adress Beauty
+                    Address Beauty
                   </h2>
                 </Link>
                 <p className="text-muted-foreground leading-relaxed">

@@ -14,13 +14,13 @@ const PrivacyPage = () => {
       titleRu: 'Общая Информация',
       icon: Shield,
       content: [
-        'Adress Beauty respectă confidențialitatea și protecția datelor personale.',
+        'Address Beauty respectă confidențialitatea și protecția datelor personale.',
         'Această politică explică cum colectăm, folosim și protejăm informațiile tale.',
         'Politica este conformă cu GDPR și legislația din Moldova.',
         'Prin utilizarea serviciilor noastre, accepți această politică.'
       ],
       contentRu: [
-        'Adress Beauty уважает конфиденциальность и защиту персональных данных.',
+        'Address Beauty уважает конфиденциальность и защиту персональных данных.',
         'Эта политика объясняет, как мы собираем, используем и защищаем вашу информацию.',
         'Политика соответствует GDPR и законодательству Молдовы.',
         'Используя наши услуги, вы принимаете эту политику.'

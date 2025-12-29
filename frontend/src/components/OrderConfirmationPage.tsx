@@ -1,5 +1,5 @@
-import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { Button } from '@/components/ui/button';
@@ -56,7 +56,30 @@ const OrderConfirmationPage = () => {
   const { t } = useLanguage();
   const { getCurrencySymbol } = useCurrency();
   const location = useLocation();
-  const order = location.state?.order as Order;
+  const [searchParams] = useSearchParams();
+  const [order, setOrder] = useState<Order | null>(location.state?.order as Order || null);
+  const [loading, setLoading] = useState(false);
+
+  // Dacă avem orderId în query params (de la MAIB callback), încercăm să încărcăm comanda
+  useEffect(() => {
+    const orderId = searchParams.get('orderId');
+    if (orderId && !order) {
+      setLoading(true);
+      // Aici ar trebui să încărcăm comanda din baza de date
+      // Pentru moment, doar setăm loading la false
+      setLoading(false);
+    }
+  }, [searchParams, order]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">Se încarcă comanda...</h1>
+        </div>
+      </div>
+    );
+  }
 
   if (!order) {
     return (

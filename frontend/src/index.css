@@ -24,7 +24,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 0%;
 
     --muted: 214 32% 91%;
-    --muted-foreground: 0 0% 45%;
+    --muted-foreground: 0 0% 25%;
 
     --accent: 214 100% 95%;
     --accent-foreground: 214 100% 60%;
@@ -210,5 +210,229 @@ All colors MUST be HSL.
   /* Gradient backgrounds */
   .bg-hero {
     background: var(--gradient-hero);
+  }
+
+  /* Glossy Button Styles - Exact specification from design */
+  .glossy-button {
+    width: 280px;
+    height: 58px;
+    background: linear-gradient(135deg, #5DD5D5 0%, #7DE8E8 100%);
+    border: 3px solid #FFFFFF;
+    border-radius: 29px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 8px 24px rgba(93, 213, 213, 0.4),
+      inset -3px -3px 10px rgba(0, 0, 0, 0.08),
+      inset 3px 3px 10px rgba(255, 255, 255, 0.7);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    color: #000000;
+    letter-spacing: 0.5px;
+    text-align: center;
+    will-change: transform;
+    opacity: 0;
+    animation: fadeInScale 0.7s ease-out forwards;
+  }
+
+  .glossy-button::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 22px;
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  .glossy-button::after {
+    content: '';
+    position: absolute;
+    top: 17px;
+    left: 42px;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    filter: blur(1.5px);
+    pointer-events: none;
+  }
+
+  .glossy-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+      0 12px 32px rgba(93, 213, 213, 0.5),
+      inset -3px -3px 10px rgba(0, 0, 0, 0.08),
+      inset 3px 3px 10px rgba(255, 255, 255, 0.7);
+  }
+
+  .glossy-button:active {
+    transform: translateY(-1px) scale(1);
+    box-shadow: 
+      0 6px 16px rgba(93, 213, 213, 0.35),
+      inset -3px -3px 10px rgba(0, 0, 0, 0.08),
+      inset 3px 3px 10px rgba(255, 255, 255, 0.7);
+  }
+
+  /* Animations */
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.85) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.6s ease-out;
+  }
+
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.7s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.7s ease-out forwards;
+  }
+
+  /* Logo typography */
+  .logo-address {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 34px;
+    color: #000000;
+    line-height: 1;
+  }
+
+  .logo-beauty {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 30px;
+    color: #000000;
+    line-height: 1;
+  }
+
+  .logo-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  /* Responsive adjustments for buttons */
+  @media (max-width: 375px) {
+    .glossy-button {
+      width: 260px;
+      font-size: 20px;
+    }
+    
+    .logo-address {
+      font-size: 30px;
+    }
+    
+    .logo-beauty {
+      font-size: 26px;
+    }
+  }
+
+  @media (min-width: 429px) {
+    .glossy-button {
+      width: 300px;
+    }
+  }
+
+  @media (orientation: landscape) and (max-height: 600px) {
+    .glossy-button {
+      top: 30% !important;
+    }
+    
+    .glossy-button:nth-of-type(2) {
+      top: 50% !important;
+    }
+    
+    .glossy-button:nth-of-type(3) {
+      top: 70% !important;
+    }
+    
+    [style*="bottom: 8%"] {
+      bottom: 5% !important;
+    }
+  }
+
+  /* Hero section background positioning */
+  .hero-section-bg {
+    background-position: center top;
+    background-size: cover;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section-bg {
+      background-position: center 20%;
+      background-size: cover;
+      object-fit: contain;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-section-bg {
+      background-position: center 25%;
+      background-size: cover;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hero-section-bg {
+      background-position: center 30%;
+      background-size: cover;
+    }
+  }
+
+  /* Desktop: Horizontal button layout */
+  @media (min-width: 768px) {
+    .glossy-button {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      transform: none !important;
+    }
   }
 }

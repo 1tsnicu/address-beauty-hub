@@ -27,6 +27,9 @@ export interface DeliveryInfo {
 
 export interface PaymentInfo {
   method: 'card' | 'cash' | 'transfer';
+  maibPayId?: string;
+  maibTransactionId?: string;
+  maibPaymentStatus?: 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED';
 }
 
 export interface OrderTotals {
@@ -173,6 +176,9 @@ class OrderService {
         notes: orderData.notes || null,
         status: orderData.status,
         items: orderData.items,
+        maib_pay_id: orderData.payment.maibPayId || null,
+        maib_transaction_id: orderData.payment.maibTransactionId || null,
+        maib_payment_status: orderData.payment.maibPaymentStatus || null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
@@ -407,6 +413,99 @@ class OrderService {
       return {
         success: false,
         error: 'A apărut o eroare neașteptată la obținerea comenzilor'
+      };
+    }
+  }
+
+  /**
+   * Actualizează statusul plății MAIB pentru o comandă
+   */
+  async updateMaibPaymentStatus(
+    orderId: string,
+    payId: string,
+    transactionId: string | undefined,
+    paymentStatus: 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED',
+    callbackData?: Record<string, any>
+  ): Promise<OrderResponse> {
+    try {
+      const updateData: any = {
+        maib_pay_id: payId,
+        maib_payment_status: paymentStatus,
+        updated_at: new Date().toISOString()
+      };
+
+      if (transactionId) {
+        updateData.maib_transaction_id = transactionId;
+      }
+
+      if (callbackData) {
+        updateData.maib_callback_data = callbackData;
+      }
+
+      // Dacă plata este SUCCESS, actualizăm și statusul comenzii la 'confirmed'
+      if (paymentStatus === 'SUCCESS') {
+        updateData.status = 'confirmed';
+      }
+
+      const { data, error } = await supabase
+        .from('orders')
+        .update(updateData)
+        .eq('id', orderId)
+        .select()
+        .single();
+
+      if (error) {
+        return {
+          success: false,
+          error: `Eroare la actualizarea statusului plății: ${error.message}`
+        };
+      }
+
+      // Construim obiectul Order actualizat
+      const updatedOrder: Order = {
+        id: data.id,
+        customer: {
+          firstName: data.customer_first_name,
+          lastName: data.customer_last_name,
+          email: data.customer_email,
+          phone: data.customer_phone,
+          address: {
+            street: data.customer_address_street,
+            city: data.customer_address_city,
+            postalCode: data.customer_address_postal_code,
+          }
+        },
+        items: data.items,
+        delivery: {
+          method: data.delivery_method,
+          price: data.delivery_price
+        },
+        payment: {
+          method: data.payment_method,
+          maibPayId: data.maib_pay_id,
+          maibTransactionId: data.maib_transaction_id,
+          maibPaymentStatus: data.maib_payment_status
+        },
+        totals: {
+          subtotal: data.subtotal,
+          delivery: data.delivery_cost,
+          total: data.total_amount
+        },
+        notes: data.notes,
+        status: data.status,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at
+      };
+
+      return {
+        success: true,
+        order: updatedOrder
+      };
+
+    } catch (error) {
+      return {
+        success: false,
+        error: 'A apărut o eroare neașteptată la actualizarea statusului plății'
       };
     }
   }

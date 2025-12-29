@@ -41,18 +41,18 @@ const OnlineStore = () => {
     dotClass,
     overlayFrom,
   }) => (
-    <Link to={to} aria-label={title} className="group transform hover:scale-[1.02] transition-all duration-300">
-      <div className={`relative overflow-hidden h-48 w-64 sm:w-64 rounded-3xl p-6 flex flex-col items-center justify-center cursor-pointer backdrop-blur-sm transition-all ${containerClass}`}>
+    <Link to={to} aria-label={title} className="group transform hover:scale-[1.02] transition-all duration-300 w-full">
+      <div className={`relative overflow-hidden h-40 sm:h-48 w-full max-w-[280px] sm:max-w-none sm:w-64 rounded-3xl p-4 sm:p-6 flex flex-col items-center justify-center cursor-pointer backdrop-blur-sm transition-all ${containerClass}`}>
         {dotClass ? <div className={`absolute top-3 right-3 w-3 h-3 ${dotClass} rounded-full`}></div> : null}
 
         {/* Consistent icon wrapper */}
-        <div className="mb-4 rounded-3xl p-4 bg-white/70 backdrop-blur ring-1 ring-white/20 group-hover:bg-white/80 group-hover:ring-white/30 transition-all">
-          <Icon className={`h-12 w-12 transition-colors ${iconClass}`} />
+        <div className="mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl p-3 sm:p-4 bg-white/70 backdrop-blur ring-1 ring-white/20 group-hover:bg-white/80 group-hover:ring-white/30 transition-all">
+          <Icon className={`h-8 w-8 sm:h-12 sm:w-12 transition-colors ${iconClass}`} />
         </div>
 
-        <span className={`text-base font-bold text-center leading-tight mb-1 ${titleClass}`}>{title}</span>
+        <span className={`text-sm sm:text-base font-bold text-center leading-tight mb-1 ${titleClass}`}>{title}</span>
         {subtitle ? (
-          <span className={`text-xs text-center opacity-90 font-medium leading-relaxed ${subtitleClass ?? ''}`}>{subtitle}</span>
+          <span className={`text-[10px] sm:text-xs text-center opacity-90 font-medium leading-relaxed ${subtitleClass ?? ''}`}>{subtitle}</span>
         ) : null}
 
         <div className={`absolute inset-0 bg-gradient-to-br ${overlayFrom ?? 'from-blue-100/20'} to-transparent pointer-events-none transition-all duration-300`}></div>
@@ -178,10 +178,10 @@ const OnlineStore = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-20 relative z-10">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-heading font-bold text-foreground mb-6">
+          <h1 className="text-4xl md:text-6xl font-heading font-bold text-[#1a1a1a] mb-6">
             {t('store.title')}
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
+          <p className="text-xl text-[#1a1a1a] max-w-2xl mx-auto mb-12">
             {t('store.description')}
           </p>
         </div>
@@ -239,8 +239,8 @@ const OnlineStore = () => {
                   </div>
                   
         <div className="container mx-auto px-4 relative z-10">
-          {/* Beauty Premium Categories Grid */}
-          <div className="flex flex-col sm:flex-row sm:flex-nowrap justify-center items-center gap-4 sm:overflow-x-auto pb-4 mb-8">
+          {/* Beauty Premium Categories Grid - 2 columns layout */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 justify-items-center pb-4 mb-8">
             {featuredCategories.map((cfg) => (
               <CategoryCard key={cfg.to} {...cfg} />
             ))}
@@ -255,8 +255,8 @@ const OnlineStore = () => {
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-200/40 to-transparent" />
               </div>
               
-              {/* Additional Categories Grid */}
-              <div className="flex flex-col sm:flex-row sm:flex-nowrap justify-center items-center gap-4 sm:overflow-x-auto pb-4">
+              {/* Additional Categories Grid - 2 columns layout */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 justify-items-center pb-4">
                 {additionalCategories.map((category, index) => {
                   const beautyColors = [
                     'from-sky-50 via-blue-50 to-indigo-100 border-sky-200/60 hover:border-sky-300/80 text-sky-600 hover:shadow-sky-500/20 bg-sky-300/50',

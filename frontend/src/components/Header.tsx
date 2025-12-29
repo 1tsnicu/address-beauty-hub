@@ -143,7 +143,7 @@ const Header = () => {
           {/* Central Logo and motto */}
           <div className="flex flex-col items-center">
             <Link to="/" className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-primary">
-              Adress Beauty
+              Address Beauty
             </Link>
             <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
               {t('header.motto')}
@@ -160,7 +160,7 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] sm:w-[350px]">
               <SheetHeader>
-                <SheetTitle className="font-heading text-primary">Adress Beauty</SheetTitle>
+                <SheetTitle className="font-heading text-primary">Address Beauty</SheetTitle>
                 <SheetDescription>
                   {t('header.motto')}
                 </SheetDescription>

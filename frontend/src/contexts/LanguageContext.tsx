@@ -24,12 +24,12 @@ const translations = {
     'header.motto': 'Inspirație, educație și produse într-un singur loc!',
     
     // Homepage
-    'home.hero.title': 'Adress Beauty',
+    'home.hero.title': 'Address Beauty',
     'home.hero.motto': 'Inspirație, educație și produse într-un singur loc!',
     'home.hero.shop': 'Magazin Online',
     'home.hero.courses': 'Cursuri Profesionale',
     'home.hero.contact': 'Contacte',
-    'home.why.title': 'De ce să alegi Adress Beauty?',
+    'home.why.title': 'De ce să alegi Address Beauty?',
     'home.why.subtitle': 'Suntem mai mult decât un brand – suntem o misiune de a oferi cele mai bune produse și servicii beauty din Moldova.',
     'home.shop.title': 'Magazin Profesional',
     'home.shop.description': 'Peste 1000 de produse premium pentru extensii de gene, sprâncene și cosmetice profesionale.',
@@ -67,7 +67,7 @@ const translations = {
     
     // Courses
     'courses.title': 'Cursuri Beauty',
-    'courses.subtitle': 'La Adress Beauty credem în puterea educației de calitate.',
+    'courses.subtitle': 'La Address Beauty credem în puterea educației de calitate.',
     'courses.description': 'Cursurile noastre sunt concepute pentru a oferi nu doar informații, ci și o transformare profesională reală.',
     'courses.level.beginner': 'Începător',
     'courses.level.intermediate': 'Intermediar',
@@ -91,8 +91,8 @@ const translations = {
     'courses.write.us': 'Scrie-ne: addressbeauty@mail.ru',
     
     // About
-    'about.title': 'Despre Adress Beauty',
-    'about.subtitle': 'Adress Beauty este mai mult decât un brand – este o misiune.',
+    'about.title': 'Despre Address Beauty',
+    'about.subtitle': 'Address Beauty este mai mult decât un brand – este o misiune.',
     'about.description': 'Ne-am propus să oferim cele mai bune produse, cele mai bine structurate cursuri și cele mai apreciate servicii beauty din Moldova. Suntem dedicați să transformăm pasiunea pentru frumusețe într-o carieră de succes pentru fiecare client.',
     'about.achievements.clients': 'Clienți mulțumiți',
     'about.achievements.students': 'Cursanți absolvenți',
@@ -110,7 +110,7 @@ const translations = {
     'about.age': 'Vârsta:',
     'about.salon.title': 'Salonul Nostru',
     'about.salon.subtitle': 'Un spațiu modern, curat și relaxant, conceput pentru confortul și satisfacția clienților',
-    'about.cta.title': 'Alătură-te Comunității Adress Beauty',
+    'about.cta.title': 'Alătură-te Comunității Address Beauty',
     'about.cta.description': 'Fie că vrei să înveți, să cumperi produse premium sau să beneficiezi de serviciile noastre, suntem aici pentru tine!',
     'about.cta.courses': 'Vezi Cursurile',
     'about.cta.shop': 'Explorează Magazinul',
@@ -131,7 +131,7 @@ const translations = {
     'contact.map.interactive': 'Hartă interactivă',
     'contact.map.google': 'Google Maps va fi integrată',
     'contact.map.button': 'Vezi pe Google Maps',
-    'contact.address.title': 'Adress Beauty',
+    'contact.address.title': 'Address Beauty',
     'contact.address.location': 'mun. Chișinău, sec. Buiucani',
     'contact.address.street': 'str. Costin Nicolae',
     'contact.form.title': 'Trimite-ne un Mesaj',
@@ -253,7 +253,7 @@ const translations = {
     'auth.village': 'Sat',
     'auth.address': 'Adresa',
     'auth.bonus.message': 'Felicitări! Ai primit un bonus de 15% pentru prima comandă în următoarele 2 ore!',
-    'auth.modal.title': 'Contul tău Adress Beauty',
+    'auth.modal.title': 'Contul tău Address Beauty',
     'auth.modal.description': 'Autentifică-te sau creează un cont nou pentru a continua cumpărăturile',
     'auth.email': 'Email',
     'auth.password': 'Parola',
@@ -345,12 +345,12 @@ const translations = {
     'header.motto': 'Вдохновение, образование и продукты в одном месте!',
     
     // Homepage
-    'home.hero.title': 'Adress Beauty',
+    'home.hero.title': 'Address Beauty',
     'home.hero.motto': 'Вдохновение, образование и продукты в одном месте!',
     'home.hero.shop': 'Онлайн Магазин',
     'home.hero.courses': 'Профессиональные Курсы',
     'home.hero.contact': 'Контакты',
-    'home.why.title': 'Почему выбирают Adress Beauty?',
+    'home.why.title': 'Почему выбирают Address Beauty?',
     'home.why.subtitle': 'Мы больше чем бренд – мы миссия по предоставлению лучших продуктов и beauty услуг в Молдове.',
     'home.shop.title': 'Профессиональный Магазин',
     'home.shop.description': 'Более 1000 премиум продуктов для наращивания ресниц, бровей и профессиональной косметики.',
@@ -388,7 +388,7 @@ const translations = {
     
     // Courses
     'courses.title': 'Beauty Курсы',
-    'courses.subtitle': 'В Adress Beauty мы верим в силу качественного образования.',
+    'courses.subtitle': 'В Address Beauty мы верим в силу качественного образования.',
     'courses.description': 'Наши курсы созданы для того, чтобы предоставить не только информацию, но и реальную профессиональную трансформацию.',
     'courses.level.beginner': 'Начинающий',
     'courses.level.intermediate': 'Средний',
@@ -412,8 +412,8 @@ const translations = {
     'courses.write.us': 'Напишите нам: addressbeauty@mail.ru',
     
     // About
-    'about.title': 'О Adress Beauty',
-    'about.subtitle': 'Adress Beauty - это больше чем бренд – это миссия.',
+    'about.title': 'О Address Beauty',
+    'about.subtitle': 'Address Beauty - это больше чем бренд – это миссия.',
     'about.description': 'Мы поставили цель предоставить лучшие продукты, наиболее структурированные курсы и наиболее ценимые beauty услуги в Молдове. Мы посвящены тому, чтобы превратить страсть к красоте в успешную карьеру для каждого клиента.',
     'about.achievements.clients': 'Довольных клиентов',
     'about.achievements.students': 'Выпускников курсов',
@@ -431,7 +431,7 @@ const translations = {
     'about.age': 'Возраст:',
     'about.salon.title': 'Наш Салон',
     'about.salon.subtitle': 'Современное, чистое и расслабляющее пространство, созданное для комфорта и удовлетворения клиентов',
-    'about.cta.title': 'Присоединяйтесь к Сообществу Adress Beauty',
+    'about.cta.title': 'Присоединяйтесь к Сообществу Address Beauty',
     'about.cta.description': 'Хотите ли вы учиться, покупать премиум продукты или пользоваться нашими услугами, мы здесь для вас!',
     'about.cta.courses': 'Посмотреть Курсы',
     'about.cta.shop': 'Изучить Магазин',
@@ -452,7 +452,7 @@ const translations = {
     'contact.map.interactive': 'Интерактивная карта',
     'contact.map.google': 'Google Maps будет интегрирована',
     'contact.map.button': 'Посмотреть в Google Maps',
-    'contact.address.title': 'Adress Beauty',
+    'contact.address.title': 'Address Beauty',
     'contact.address.location': 'г. Кишинев, сек. Буюканы',
     'contact.address.street': 'ул. Костаке Негрие',
     'contact.form.title': 'Отправить нам Сообщение',
@@ -574,7 +574,7 @@ const translations = {
     'auth.village': 'Село',
     'auth.address': 'Адрес',
     'auth.bonus.message': 'Поздравляем! Вы получили бонус 15% на первый заказ в следующие 2 часа!',
-    'auth.modal.title': 'Ваш аккаунт Adress Beauty',
+    'auth.modal.title': 'Ваш аккаунт Address Beauty',
     'auth.modal.description': 'Войдите или создайте новый аккаунт для продолжения покупок',
     'auth.email': 'Электронная почта',
     'auth.password': 'Пароль',

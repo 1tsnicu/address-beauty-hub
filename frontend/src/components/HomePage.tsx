@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { ShoppingBag, GraduationCap, Phone, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ShoppingBag, GraduationCap, Phone, MapPin, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import HomeHeader from './HomeHeader';
-import heroImage from '@/assets/hero-lashes-new.jpg';
+import heroImage from '@/assets/2025-12-23 10.12.32.jpg';
 import beautyProductsImage from '@/assets/beauty-products.jpg';
 import beautyCourseImage from '@/assets/beauty-course.jpg';
 import lashesImage from '@/assets/lashes-beauty-1.jpg';
+import logoImage from '@/assets/primul.png';
 
 const HomePage = () => {
   const { t } = useLanguage();
@@ -70,64 +71,133 @@ const HomePage = () => {
       {/* HomeHeader */}
       <HomeHeader />
       
-      {/* Hero Section */}
+      {/* Hero Section - Full viewport with exact positioning */}
       <section 
-        className="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat overflow-hidden"
+        className="relative h-screen w-full flex flex-col overflow-hidden hero-section-bg"
         style={{
           backgroundImage: `url(${heroImage})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat'
         }}
       >
-        {/* Overlay layer with responsive blur and opacity */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/30 to-white/20 sm:from-white/30 sm:via-white/20 sm:to-white/10"></div>
-        
-        {/* Additional overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/40 to-transparent sm:from-white/50 sm:via-white/30 sm:to-transparent"></div>
-        
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          {/* Logo */}
-          <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-4">
-            {t('home.hero.title')}
-          </h1>
-          
-          {/* Motto */}
-          <p className="text-xl md:text-2xl lg:text-3xl text-white font-bold mb-12 max-w-3xl mx-auto drop-shadow-lg">
-            {t('home.hero.motto')}
-          </p>
+        {/* Buttons Container - Mobile: Staggered, Desktop: Horizontal row */}
+        <div className="relative flex-1 w-full flex items-center justify-center">
+          {/* Mobile: Staggered layout (scara/zig-zag) */}
+          <div className="md:hidden relative w-full h-full">
+            {/* Button 1 - "Magazin Online" - Left, lower position */}
+            <Link 
+              to="/magazin" 
+              className="glossy-button absolute"
+              style={{
+                top: '55%',
+                left: '3%',
+                transform: 'translateY(-50%)',
+                zIndex: 10,
+                animationDelay: '0.2s'
+              }}
+              aria-label={t('home.hero.shop')}
+            >
+              {t('home.hero.shop')}
+            </Link>
 
-          {/* Main Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full max-w-2xl mx-auto">
-            <Link to="/magazin" className="w-full sm:w-auto">
-              <Button 
-                variant="hero" 
-                size="hero" 
-                className="group w-full sm:w-[280px] shadow-lg hover:shadow-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300"
-              >
-                <ShoppingBag className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+            {/* Button 2 - "Cursuri" - Center, middle position */}
+            <Link 
+              to="/cursuri" 
+              className="glossy-button absolute"
+              style={{
+                top: '65%',
+                left: '10%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 10,
+                animationDelay: '0.35s'
+              }}
+              aria-label={t('home.hero.courses')}
+            >
+              {t('home.hero.courses')}
+            </Link>
+
+            {/* Button 3 - "Contacte" - Right, lower position */}
+            <Link 
+              to="/contact" 
+              className="glossy-button absolute"
+              style={{
+                top: '75%',
+                right: '12%',
+                transform: 'translateY(-50%)',
+                zIndex: 10,
+                animationDelay: '0.5s'
+              }}
+              aria-label={t('home.hero.contact')}
+            >
+              {t('home.hero.contact')}
+            </Link>
+          </div>
+
+          {/* Desktop: Horizontal row layout - positioned in bottom center */}
+          <div className="hidden md:flex items-center justify-center gap-8 w-full px-8 absolute bottom-[25%] left-0 right-0 z-10">
+            <Link 
+              to="/magazin" 
+              className="glossy-button relative"
+              style={{
+                animationDelay: '0.2s'
+              }}
+              aria-label={t('home.hero.shop')}
+            >
                 {t('home.hero.shop')}
-              </Button>
             </Link>
             
-            <Link to="/cursuri" className="w-full sm:w-auto">
-              <Button 
-                variant="hero" 
-                size="hero" 
-                className="group w-full sm:w-[280px] shadow-lg hover:shadow-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300"
-              >
-                <GraduationCap className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+            <Link 
+              to="/cursuri" 
+              className="glossy-button relative"
+              style={{
+                animationDelay: '0.35s'
+              }}
+              aria-label={t('home.hero.courses')}
+            >
                 {t('home.hero.courses')}
-              </Button>
             </Link>
             
-            <Link to="/contact" className="w-full sm:w-auto">
-              <Button 
-                variant="hero" 
-                size="hero" 
-                className="group w-full sm:w-[280px] shadow-lg hover:shadow-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300"
-              >
-                <Phone className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+            <Link 
+              to="/contact" 
+              className="glossy-button relative"
+              style={{
+                animationDelay: '0.5s'
+              }}
+              aria-label={t('home.hero.contact')}
+            >
                 {t('home.hero.contact')}
-              </Button>
             </Link>
+          </div>
+        </div>
+
+        {/* Logo Section - Different positioning for mobile and desktop */}
+        {/* Mobile: Bottom left */}
+        <div className="md:hidden absolute bottom-[-40px] left-0 px-4 z-10 opacity-0"
+          style={{
+            animation: 'fadeInUp 0.7s ease-out 0.65s forwards'
+          }}
+        >
+          <div className="flex items-center">
+            <img 
+              src={logoImage} 
+              alt="Address Beauty Logo" 
+              className="w-[300px] h-[300px] object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Desktop: Different position and size */}
+        <div className="hidden md:block absolute bottom-[-3%] left-[40%] z-10 opacity-0"
+          style={{
+            animation: 'fadeInUp 0.7s ease-out 0.65s forwards'
+          }}
+        >
+          <div className="flex items-center">
+            <img 
+              src={logoImage} 
+              alt="Address Beauty Logo" 
+              className="w-[300px] h-[300px] object-contain drop-shadow-2xl"
+            />
           </div>
         </div>
       </section>
@@ -136,10 +206,10 @@ const HomePage = () => {
       <section className="py-16 bg-gradient-to-b from-background to-light-blue/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-4">
               {t('home.carousel.title')}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-[#1a1a1a] max-w-2xl mx-auto">
               {t('home.carousel.description')}
             </p>
           </div>
@@ -161,7 +231,7 @@ const HomePage = () => {
                 >
                   <div className="relative h-full">
                     {/* Background Image */}
-                    <img
+                  <img 
                       src={item.image}
                       alt={item.title}
                       className="w-full h-full object-cover"
