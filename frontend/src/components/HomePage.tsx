@@ -171,8 +171,8 @@ const HomePage = () => {
         </div>
 
         {/* Logo Section - Different positioning for mobile and desktop */}
-        {/* Mobile: Bottom left */}
-        <div className="md:hidden absolute bottom-[-40px] left-0 px-4 z-10 opacity-0"
+        {/* Mobile: Bottom left - positioned below buttons */}
+        <div className="md:hidden absolute bottom-[-80px] left-0 px-4 z-0 opacity-0"
           style={{
             animation: 'fadeInUp 0.7s ease-out 0.65s forwards'
           }}
@@ -186,13 +186,13 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Desktop: Different position and size */}
-        <div className="hidden md:block absolute bottom-[-3%] left-[40%] z-10 opacity-0"
+        {/* Desktop: Logo positioned below buttons, centered */}
+        <div className="hidden md:block absolute bottom-[8%] left-1/2 -translate-x-1/2 z-0 opacity-0"
           style={{
             animation: 'fadeInUp 0.7s ease-out 0.65s forwards'
           }}
         >
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <img 
               src={logoImage} 
               alt="Address Beauty Logo" 
