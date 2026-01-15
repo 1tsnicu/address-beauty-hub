@@ -187,7 +187,7 @@ const HomePage = () => {
         </div>
 
         {/* Desktop: Logo positioned below buttons, centered */}
-        <div className="hidden md:block absolute bottom-[8%] left-1/2 -translate-x-1/2 z-0 opacity-0"
+        <div className="hidden md:block absolute bottom-[-5%] left-[40%] -translate-x-1/2 z-0 opacity-0"
           style={{
             animation: 'fadeInUp 0.7s ease-out 0.65s forwards'
           }}
