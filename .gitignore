@@ -29,6 +29,14 @@ next-env.d.ts
 /build
 dist/
 dist
+frontend/build/
+frontend/dist/
+
+# Large image files (should use CDN or Git LFS)
+# Uncomment if you want to ignore large images
+# frontend/src/assets/*.jpg
+# frontend/src/assets/*.png
+# frontend/src/assets/*.jpeg
 
 # Environment files (comprehensive coverage)
 

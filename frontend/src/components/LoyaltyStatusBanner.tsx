@@ -18,7 +18,7 @@ export function LoyaltyStatusBanner() {
   const getNextLoyaltyLevelInfo = () => {
     if (!user) return null;
     
-    const currentTotal = user.totalSpent;
+    const currentTotal = user.totalSpent || 0;
     
     if (currentTotal < 5001) {
       return {
@@ -80,7 +80,7 @@ export function LoyaltyStatusBanner() {
           </div>
           <Badge variant="outline" className="flex gap-1 items-center">
             <Award className="h-3 w-3" />
-            Nivel {user.loyaltyLevel}
+            Nivel {user.loyaltyLevel || 0}
           </Badge>
         </div>
       </CardHeader>
@@ -90,11 +90,11 @@ export function LoyaltyStatusBanner() {
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm font-medium">Reducerea ta curentă:</span>
               <Badge variant="secondary" className="text-primary font-bold">
-                {user.discountPercentage}%
+                {user.discountPercentage || 0}%
               </Badge>
             </div>
             <div className="text-sm text-muted-foreground">
-              Total achiziții: {formatPrice(user.totalSpent)}
+              Total achiziții: {formatPrice(user.totalSpent || 0)}
             </div>
             
             {nextLevel ? (
@@ -119,23 +119,23 @@ export function LoyaltyStatusBanner() {
           <div className="bg-background/50 p-3 rounded-lg">
             <h4 className="text-sm font-medium mb-2">Sistem de fidelizare:</h4>
             <ul className="text-xs space-y-1">
-              <li className={`flex justify-between ${user.totalSpent >= 5001 ? 'text-primary font-medium' : ''}`}>
+              <li className={`flex justify-between ${(user.totalSpent || 0) >= 5001 ? 'text-primary font-medium' : ''}`}>
                 <span>De la suma de 5,001:</span>
                 <span>5% reducere</span>
               </li>
-              <li className={`flex justify-between ${user.totalSpent >= 10001 ? 'text-primary font-medium' : ''}`}>
+              <li className={`flex justify-between ${(user.totalSpent || 0) >= 10001 ? 'text-primary font-medium' : ''}`}>
                 <span>De la suma de 10,001:</span>
                 <span>6% reducere</span>
               </li>
-              <li className={`flex justify-between ${user.totalSpent >= 20001 ? 'text-primary font-medium' : ''}`}>
+              <li className={`flex justify-between ${(user.totalSpent || 0) >= 20001 ? 'text-primary font-medium' : ''}`}>
                 <span>De la suma de 20,001:</span>
                 <span>7% reducere</span>
               </li>
-              <li className={`flex justify-between ${user.totalSpent >= 30001 ? 'text-primary font-medium' : ''}`}>
+              <li className={`flex justify-between ${(user.totalSpent || 0) >= 30001 ? 'text-primary font-medium' : ''}`}>
                 <span>De la suma de 30,001:</span>
                 <span>8% reducere</span>
               </li>
-              <li className={`flex justify-between ${user.totalSpent >= 50001 ? 'text-primary font-medium' : ''}`}>
+              <li className={`flex justify-between ${(user.totalSpent || 0) >= 50001 ? 'text-primary font-medium' : ''}`}>
                 <span>De la suma de 50,001:</span>
                 <span>10% reducere</span>
               </li>

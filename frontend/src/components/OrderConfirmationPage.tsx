@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { orderService } from '@/services/orderService';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { 
   CheckCircle, ShoppingCart, MapPin, Phone, Mail, 
-  Calendar, Clock, Package, ArrowLeft, Download, Share2
+  Calendar, Clock, Package, ArrowLeft, Download, Share2, Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -60,14 +61,28 @@ const OrderConfirmationPage = () => {
   const [order, setOrder] = useState<Order | null>(location.state?.order as Order || null);
   const [loading, setLoading] = useState(false);
 
-  // Dacă avem orderId în query params (de la MAIB callback), încercăm să încărcăm comanda
+  // Dacă avem orderId în query params (de la MAIB callback sau redirect), încercăm să încărcăm comanda
   useEffect(() => {
     const orderId = searchParams.get('orderId');
     if (orderId && !order) {
       setLoading(true);
-      // Aici ar trebui să încărcăm comanda din baza de date
-      // Pentru moment, doar setăm loading la false
-      setLoading(false);
+      const loadOrder = async () => {
+        try {
+          const result = await orderService.getOrderById(orderId);
+          if (result.success && result.order) {
+            setOrder(result.order);
+          } else {
+            console.error('Eroare la încărcarea comenzii:', result.error);
+            toast.error(result.error || 'Comanda nu a fost găsită');
+          }
+        } catch (error) {
+          console.error('Eroare la încărcarea comenzii:', error);
+          toast.error('A apărut o eroare la încărcarea comenzii');
+        } finally {
+          setLoading(false);
+        }
+      };
+      loadOrder();
     }
   }, [searchParams, order]);
 
@@ -75,7 +90,9 @@ const OrderConfirmationPage = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
+          <Loader2 className="h-12 w-12 mx-auto mb-4 text-primary animate-spin" />
           <h1 className="text-2xl font-bold text-foreground mb-4">Se încarcă comanda...</h1>
+          <p className="text-muted-foreground">Te rugăm să aștepți...</p>
         </div>
       </div>
     );

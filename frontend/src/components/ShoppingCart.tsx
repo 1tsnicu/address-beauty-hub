@@ -33,7 +33,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
   const getNextLoyaltyLevelInfo = () => {
     if (!user) return null;
     
-    const currentTotal = user.totalSpent;
+    const currentTotal = user.totalSpent || 0;
     
     if (currentTotal < 5001) {
       return {
@@ -224,11 +224,11 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
                   <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 mt-2">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">Nivel fidelitate:</span>
-                      <span className="font-semibold text-primary">{user.loyaltyLevel} ({user.discountPercentage}%)</span>
+                      <span className="font-semibold text-primary">{user.loyaltyLevel || 0} ({user.discountPercentage || 0}%)</span>
                     </div>
                     
                     <div className="text-xs text-muted-foreground">
-                      Total cumpărături: {formatPrice(user.totalSpent)}
+                      Total cumpărături: {formatPrice(user.totalSpent || 0)}
                     </div>
                     
                     {nextLevelInfo && (
@@ -238,7 +238,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ className = "" }) => {
                           <div 
                             className="bg-primary h-1.5 rounded-full" 
                             style={{ 
-                              width: `${Math.min(100, (user.totalSpent / nextLevelInfo.threshold) * 100)}%` 
+                              width: `${Math.min(100, ((user.totalSpent || 0) / nextLevelInfo.threshold) * 100)}%` 
                             }}
                           ></div>
                         </div>

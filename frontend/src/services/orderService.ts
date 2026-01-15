@@ -176,9 +176,10 @@ class OrderService {
         notes: orderData.notes || null,
         status: orderData.status,
         items: orderData.items,
-        maib_pay_id: orderData.payment.maibPayId || null,
-        maib_transaction_id: orderData.payment.maibTransactionId || null,
-        maib_payment_status: orderData.payment.maibPaymentStatus || null,
+        // Nu salvăm informații despre plată MAIB în baza de date
+        // maib_pay_id: null,
+        // maib_transaction_id: null,
+        // maib_payment_status: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
@@ -391,7 +392,8 @@ class OrderService {
           price: item.delivery_price
         },
         payment: {
-          method: item.payment_method
+          method: item.payment_method,
+          maibPayId: item.maib_pay_id || undefined
         },
         totals: {
           subtotal: item.subtotal,
@@ -418,34 +420,19 @@ class OrderService {
   }
 
   /**
-   * Actualizează statusul plății MAIB pentru o comandă
+   * Actualizează statusul comenzii după confirmarea plății MAIB
+   * NU salvăm date despre plată în baza de date
    */
-  async updateMaibPaymentStatus(
-    orderId: string,
-    payId: string,
-    transactionId: string | undefined,
-    paymentStatus: 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED',
-    callbackData?: Record<string, any>
-  ): Promise<OrderResponse> {
+  async confirmOrderAfterPayment(orderId: string, payId?: string): Promise<OrderResponse> {
     try {
+      // Actualizăm doar statusul comenzii la 'confirmed'
+      // NU salvăm payId sau alte date despre plată în baza de date
       const updateData: any = {
-        maib_pay_id: payId,
-        maib_payment_status: paymentStatus,
+        status: 'confirmed',
         updated_at: new Date().toISOString()
       };
-
-      if (transactionId) {
-        updateData.maib_transaction_id = transactionId;
-      }
-
-      if (callbackData) {
-        updateData.maib_callback_data = callbackData;
-      }
-
-      // Dacă plata este SUCCESS, actualizăm și statusul comenzii la 'confirmed'
-      if (paymentStatus === 'SUCCESS') {
-        updateData.status = 'confirmed';
-      }
+      
+      // payId va fi salvat în localStorage (nu în baza de date)
 
       const { data, error } = await supabase
         .from('orders')
@@ -455,10 +442,24 @@ class OrderService {
         .single();
 
       if (error) {
+        console.error('Error updating order status:', error);
         return {
           success: false,
-          error: `Eroare la actualizarea statusului plății: ${error.message}`
+          error: `Eroare la actualizarea comenzii: ${error.message}`
         };
+      }
+
+      if (!data) {
+        console.error('No data returned after update');
+        return {
+          success: false,
+          error: 'Nu s-au returnat date după actualizare'
+        };
+      }
+
+      // Verificăm că statusul a fost actualizat corect
+      if (data.status !== 'confirmed') {
+        console.warn(`Order status not updated correctly. Expected 'confirmed', got '${data.status}'`);
       }
 
       // Construim obiectul Order actualizat
@@ -481,10 +482,7 @@ class OrderService {
           price: data.delivery_price
         },
         payment: {
-          method: data.payment_method,
-          maibPayId: data.maib_pay_id,
-          maibTransactionId: data.maib_transaction_id,
-          maibPaymentStatus: data.maib_payment_status
+          method: data.payment_method
         },
         totals: {
           subtotal: data.subtotal,
@@ -492,7 +490,7 @@ class OrderService {
           total: data.total_amount
         },
         notes: data.notes,
-        status: data.status,
+        status: data.status, // Ar trebui să fie 'confirmed' după actualizare
         createdAt: data.created_at,
         updatedAt: data.updated_at
       };
@@ -505,7 +503,7 @@ class OrderService {
     } catch (error) {
       return {
         success: false,
-        error: 'A apărut o eroare neașteptată la actualizarea statusului plății'
+        error: 'A apărut o eroare neașteptată la actualizarea comenzii'
       };
     }
   }

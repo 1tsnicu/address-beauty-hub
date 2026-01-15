@@ -162,55 +162,98 @@ const CheckoutPage = () => {
         status: 'pending' as const
       };
 
-      // Save order to database first
-      const result = await orderService.createOrder(orderData);
+      // If payment method is card, NU salvăm comanda în DB până când plata este confirmată
+      // Pentru alte metode de plată, salvăm imediat
+      if (formData.paymentMethod !== 'card') {
+        // Save order to database for non-card payments
+        const result = await orderService.createOrder(orderData);
 
-      if (!result.success) {
-        toast.error(result.error || 'A apărut o eroare la salvarea comenzii');
+        if (!result.success) {
+          toast.error(result.error || 'A apărut o eroare la salvarea comenzii');
+          return;
+        }
+
+        // Salvează ID-ul comenzii în localStorage pentru pagina "Comenzile Mele"
+        if (result.order?.id) {
+          const STORAGE_KEY = 'my_orders_ids';
+          try {
+            const existingIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            if (!existingIds.includes(result.order.id)) {
+              existingIds.push(result.order.id);
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(existingIds));
+            }
+          } catch (error) {
+            console.error('Error saving order ID to localStorage:', error);
+          }
+        }
+
+        // Success - clear cart and redirect to confirmation page
+        clearCart();
+        toast.success('Comanda a fost plasată cu succes!');
+        navigate('/comanda-confirmata', { state: { order: result.order } });
         return;
       }
 
-      // If payment method is card, redirect to MAIB payment
-      if (formData.paymentMethod === 'card' && result.order?.id) {
+      // For card payments, proceed to MAIB payment
+      // NU salvăm comanda în baza de date până când plata este confirmată
+      if (formData.paymentMethod === 'card') {
         try {
-          const orderId = result.order.id;
+          // Generăm un orderId temporar pentru MAIB (nu îl salvăm în DB)
+          const tempOrderId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
           const totalAmount = getTotal();
-          const orderDescription = `Comandă #${orderId.substring(0, 8)} - ${cartItems.length} produs(e)`;
+          const orderDescription = `Comandă - ${cartItems.length} produs(e)`;
           
           // Get base URL for callbacks (folosim variabila de mediu sau fallback la window.location.origin)
           const baseUrl = import.meta.env.VITE_APP_URL || window.location.origin;
           const callbackUrl = `${baseUrl}/api/payment/maib/callback`;
-          const redirectUrl = `${baseUrl}/comanda-confirmata?orderId=${orderId}`;
+          const successUrl = `${baseUrl}/plata-succes`;
+          const failUrl = `${baseUrl}/plata-esuata`;
 
-          // Create MAIB payment session
+          // Păstrăm datele comenzii în sessionStorage pentru a le salva după confirmarea plății
+          sessionStorage.setItem('pendingOrder', JSON.stringify({
+            orderData,
+            cartItems: cartItems.map(item => ({
+              id: item.id,
+              name: item.name,
+              quantity: item.quantity,
+              price: item.price,
+              variants: item.variants
+            }))
+          }));
+
+          // Create MAIB payment session cu toate opțiunile disponibile
           const paymentSession = await maibPaymentService.createPaymentSession({
             amount: totalAmount,
             currency: currency === 'MDL' ? 'MDL' : 'RON', // MAIB acceptă MDL sau RON
-            orderId: orderId,
+            orderId: tempOrderId,
             orderDescription: orderDescription,
             customerEmail: formData.email,
             customerPhone: formData.phone,
             customerName: `${formData.firstName} ${formData.lastName}`,
             callbackUrl: callbackUrl,
-            redirectUrl: redirectUrl,
+            redirectUrl: successUrl,
+            failUrl,
+            language: 'ro', // Limba interfeței de plată
+            billingAddress: {
+              street: formData.address,
+              city: formData.city,
+              country: 'MD', // Moldova
+              postalCode: formData.postalCode,
+            },
+            // Trimitem items pentru transparență în request
+            items: cartItems.map(item => ({
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+            })),
           });
 
-          // Update order with MAIB payId
-          if (paymentSession.payId) {
-            try {
-              await orderService.updateMaibPaymentStatus(
-                orderId,
-                paymentSession.payId,
-                undefined,
-                'PENDING'
-              );
-            } catch (error) {
-              console.error('Error saving MAIB payId:', error);
-              // Continuăm oricum cu redirect-ul
-            }
-          }
-
           // Redirect to MAIB payment form
+          // NU salvăm payId sau alte informații despre plată
+          if (paymentSession.payId) {
+            sessionStorage.setItem('lastPayId', paymentSession.payId);
+          }
           window.location.href = paymentSession.formUrl || paymentSession.redirectUrl;
           return; // Don't clear cart yet - will be cleared after successful payment
         } catch (paymentError) {

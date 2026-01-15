@@ -79,7 +79,7 @@ const HomeHeader = () => {
                     <User className="h-6 w-6" />
                     <span className="hidden sm:inline">
                       {user.name}
-                      {user.discountPercentage > 0 && (
+                      {(user.discountPercentage || 0) > 0 && (
                         <span className="ml-1 text-xs bg-primary/20 text-primary px-1 py-0.5 rounded-full">
                           {user.discountPercentage}%
                         </span>
@@ -93,9 +93,9 @@ const HomeHeader = () => {
                     <span className="text-xs text-muted-foreground">{user.email}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem disabled className="flex flex-col items-start">
-                    <span className="text-xs">Nivel fidelitate: {user.loyaltyLevel}</span>
-                    <span className="text-xs">Reducere: {user.discountPercentage}%</span>
-                    <span className="text-xs">Total achiziții: {user.totalSpent.toLocaleString()} LEI</span>
+                    <span className="text-xs">Nivel fidelitate: {user.loyaltyLevel || 0}</span>
+                    <span className="text-xs">Reducere: {user.discountPercentage || 0}%</span>
+                    <span className="text-xs">Total achiziții: {(user.totalSpent || 0).toLocaleString('ro-RO')} LEI</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setAuthModalOpen(true)}>
                     Contul meu

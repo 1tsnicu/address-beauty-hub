@@ -12,7 +12,11 @@ import DeliveryPage from './DeliveryPage';
 import TermsPage from '../pages/TermsPage';
 import PrivacyPage from '../pages/PrivacyPage';
 import PaymentTermsPage from '../pages/PaymentTermsPage';
+import PaymentSuccessPage from '../pages/PaymentSuccessPage';
+import PaymentFailPage from '../pages/PaymentFailPage';
 import MaibCallbackPage from './MaibCallbackPage';
+import RefundPage from './RefundPage';
+import MyOrdersPage from '@/pages/MyOrdersPage';
 import NotFound from '../pages/NotFound';
 import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
@@ -43,6 +47,8 @@ const AppContent: React.FC = () => {
           <Route path="/magazin/categorie/:categoryId" element={<CategoryProductsPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/comanda-confirmata" element={<OrderConfirmationPage />} />
+          <Route path="/plata-succes" element={<PaymentSuccessPage />} />
+          <Route path="/plata-esuata" element={<PaymentFailPage />} />
           <Route path="/cursuri" element={<CoursesPage />} />
           <Route path="/despre" element={<AboutPage />} />
           <Route path="/livrare" element={<DeliveryPage />} />
@@ -51,6 +57,8 @@ const AppContent: React.FC = () => {
           <Route path="/confidentialitate" element={<PrivacyPage />} />
           <Route path="/termeni-plata" element={<PaymentTermsPage />} />
           <Route path="/api/payment/maib/callback" element={<MaibCallbackPage />} />
+          <Route path="/comenzile-mele" element={<MyOrdersPage />} />
+          <Route path="/admin/refund" element={<RefundPage />} />
 
           {/* Test Setup (for development) */}
           <Route path="/test-setup" element={<TestSetup />} />

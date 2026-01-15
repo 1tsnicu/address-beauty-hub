@@ -29,48 +29,78 @@ const MaibCallbackPage = () => {
 
         setOrderId(orderIdParam);
 
-        // Verificăm statusul plății
-        const paymentStatus = await maibPaymentService.checkPaymentStatus(payId);
+        // Verificăm statusul plății folosind procesarea callback-ului
+        // MAIB trimite datele direct în URL params, le procesăm corect
+        const callbackData: Record<string, any> = {
+          orderId: orderIdParam,
+          payId: payId,
+          status: statusParam || 'FAILED',
+        };
+
+        // Adăugăm toți parametrii din URL
+        searchParams.forEach((value, key) => {
+          if (key !== 'orderId' && key !== 'payId' && key !== 'status') {
+            callbackData[key] = value;
+          }
+        });
+
+        // Procesăm callback-ul cu verificare semnătură
+        const paymentStatus = await maibPaymentService.processCallback(callbackData);
 
         if (paymentStatus.status === 'SUCCESS') {
-          // Actualizăm comanda în baza de date cu statusul de plată
+          // Plata a fost confirmată - acum salvăm comanda în baza de date
+          // NU salvăm informații despre plată (payId, transactionId, etc.)
           try {
-            await orderService.updateMaibPaymentStatus(
-              orderIdParam,
-              payId,
-              paymentStatus.transactionId,
-              'SUCCESS',
-              paymentStatus as any
-            );
-            setStatus('success');
-            clearCart();
-            toast.success('Plata a fost procesată cu succes!');
+            // Recuperăm datele comenzii din sessionStorage
+            const pendingOrderData = sessionStorage.getItem('pendingOrder');
             
-            // Redirecționăm către pagina de confirmare după 2 secunde
-            setTimeout(() => {
-              navigate(`/comanda-confirmata?orderId=${orderIdParam}`);
-            }, 2000);
+            if (pendingOrderData) {
+              const { orderData } = JSON.parse(pendingOrderData);
+              
+              // Salvăm comanda în baza de date doar după confirmarea plății
+              const result = await orderService.createOrder(orderData);
+              
+              if (result.success) {
+                // Ștergem datele temporare
+                sessionStorage.removeItem('pendingOrder');
+                
+                // Actualizăm statusul comenzii la confirmed
+                if (result.order?.id) {
+                  await orderService.confirmOrderAfterPayment(result.order.id);
+                }
+                
+                setStatus('success');
+                clearCart();
+                toast.success('Plata a fost procesată cu succes!');
+                
+                // Redirecționăm către pagina de confirmare
+                setTimeout(() => {
+                  navigate(`/comanda-confirmata?orderId=${result.order?.id}`);
+                }, 2000);
+              } else {
+                throw new Error(result.error || 'Eroare la salvarea comenzii');
+              }
+            } else {
+              // Dacă nu avem date în sessionStorage, doar confirmăm plata
+              setStatus('success');
+              clearCart();
+              toast.success('Plata a fost procesată cu succes!');
+              setTimeout(() => {
+                navigate('/comanda-confirmata');
+              }, 2000);
+            }
           } catch (error) {
-            console.error('Error updating order:', error);
-            setStatus('success'); // Plata a fost procesată, chiar dacă actualizarea comenzii a eșuat
+            console.error('Error saving order after payment:', error);
+            setStatus('success'); // Plata a fost procesată, chiar dacă salvarea comenzii a eșuat
             toast.success('Plata a fost procesată cu succes!');
+            sessionStorage.removeItem('pendingOrder');
             setTimeout(() => {
-              navigate(`/comanda-confirmata?orderId=${orderIdParam}`);
+              navigate('/comanda-confirmata');
             }, 2000);
           }
         } else {
-          // Actualizăm statusul plății ca FAILED
-          try {
-            await orderService.updateMaibPaymentStatus(
-              orderIdParam,
-              payId,
-              paymentStatus.transactionId,
-              paymentStatus.status === 'CANCELLED' ? 'CANCELLED' : 'FAILED',
-              paymentStatus as any
-            );
-          } catch (error) {
-            console.error('Error updating payment status:', error);
-          }
+          // Plata a eșuat - ștergem datele temporare
+          sessionStorage.removeItem('pendingOrder');
           
           setStatus('failed');
           toast.error(

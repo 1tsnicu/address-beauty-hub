@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Plus, Edit, Trash, RefreshCw } from 'lucide-react';
@@ -202,6 +202,9 @@ const CategoryManager: React.FC = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Adaugă categorie nouă</DialogTitle>
+            <DialogDescription>
+              Completează informațiile pentru categoria nouă
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -252,6 +255,9 @@ const CategoryManager: React.FC = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Editează categoria</DialogTitle>
+            <DialogDescription>
+              Modifică informațiile categoriei
+            </DialogDescription>
           </DialogHeader>
           {currentCategory && (
             <div className="space-y-4 py-4">
@@ -303,6 +309,9 @@ const CategoryManager: React.FC = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmare ștergere</DialogTitle>
+            <DialogDescription>
+              Ești sigur că vrei să ștergi această categorie? Această acțiune nu poate fi anulată.
+            </DialogDescription>
           </DialogHeader>
           {currentCategory && (
             <div className="py-4">
