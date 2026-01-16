@@ -21,6 +21,7 @@ import NotFound from '../pages/NotFound';
 import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
 import AdminGuard from './AdminGuard';
+import AdminCoursesPage from '@/pages/AdminCoursesPage';
 import TestSetup from './TestSetup';
 import CategoryProductsPage from './CategoryProductsPage';
 import CheckoutPage from './CheckoutPage';
@@ -70,6 +71,14 @@ const AppContent: React.FC = () => {
             element={
               <AdminGuard>
                 <AdminDashboard />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/cursuri"
+            element={
+              <AdminGuard>
+                <AdminCoursesPage />
               </AdminGuard>
             }
           />

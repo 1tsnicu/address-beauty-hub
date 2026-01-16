@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Plus, Package, LogOut } from 'lucide-react';
+import { Plus, Package, LogOut, GraduationCap } from 'lucide-react';
 import AdminProductsTable, { AdminProductRow } from './AdminProductsTable';
 import ProductEditDialog from './ProductEditDialog';
 
 const AdminDashboard: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<AdminProductRow | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
@@ -29,9 +31,14 @@ const AdminDashboard: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl font-heading text-primary truncate">Admin Dashboard</h1>
           <p className="text-muted-foreground text-xs sm:text-sm truncate">Conectat ca: {user?.email}</p>
         </div>
-        <Button variant="outline" onClick={logout} className="w-full sm:w-auto">
-          <LogOut className="h-4 w-4 mr-2" /> Deconectare
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate('/admin/cursuri')} className="w-full sm:w-auto">
+            <GraduationCap className="h-4 w-4 mr-2" /> Cursuri
+          </Button>
+          <Button variant="outline" onClick={logout} className="w-full sm:w-auto">
+            <LogOut className="h-4 w-4 mr-2" /> Deconectare
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="products" className="w-full">

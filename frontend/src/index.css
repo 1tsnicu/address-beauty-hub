@@ -317,6 +317,17 @@ All colors MUST be HSL.
     }
   }
 
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .animate-slide-down {
     animation: slideDown 0.6s ease-out;
   }
@@ -434,5 +445,310 @@ All colors MUST be HSL.
       right: auto !important;
       transform: none !important;
     }
+  }
+
+  /* Hero Split Screen - Desktop Styles */
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Hero Content Card Animation */
+  .hero-content-card {
+    animation: fadeInUp 0.8s ease-out 0.3s backwards;
+    transform-origin: center;
+  }
+
+  /* Hero Content Card Styled - Enhanced */
+  .hero-content-card-styled {
+    animation: fadeInUp 0.8s ease-out 0.3s backwards;
+    transform-origin: center;
+  }
+
+  /* Hero Action Buttons - New Design */
+  .hero-action-button {
+    background: linear-gradient(135deg, #6DD5ED 0%, #2193B0 100%);
+    border: 2px solid transparent;
+    box-shadow: 0 8px 20px rgba(109, 213, 237, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-action-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .hero-action-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(109, 213, 237, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #2193B0 0%, #6DD5ED 100%);
+  }
+
+  .hero-action-button:hover::before {
+    left: 100%;
+  }
+
+  .hero-action-button:active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(109, 213, 237, 0.3);
+  }
+
+  /* Hero Action Buttons V2 - Minimalist Elegant */
+  .hero-action-button-v2 {
+    background: linear-gradient(135deg, hsl(214, 100%, 60%) 0%, hsl(214, 90%, 65%) 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-action-button-v2::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, hsl(214, 90%, 65%) 0%, hsl(214, 100%, 60%) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .hero-action-button-v2:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+  }
+
+  .hero-action-button-v2:hover::before {
+    opacity: 1;
+  }
+
+  .hero-action-button-v2:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+  }
+
+  .hero-action-button-v2 > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero Action Button Styled - Premium Enhanced */
+  .hero-action-button-styled {
+    background: linear-gradient(135deg, hsl(214, 100%, 60%) 0%, hsl(214, 90%, 65%) 100%);
+    border: none;
+    box-shadow: 
+      0 4px 12px rgba(33, 150, 243, 0.25),
+      0 2px 4px rgba(33, 150, 243, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    height: 72px;
+  }
+
+  .hero-action-button-styled::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, hsl(214, 90%, 65%) 0%, hsl(214, 100%, 60%) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .hero-action-button-styled:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+      0 8px 24px rgba(33, 150, 243, 0.35),
+      0 4px 8px rgba(33, 150, 243, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .hero-action-button-styled:hover::before {
+    opacity: 1;
+  }
+
+  .hero-action-button-styled:active {
+    transform: translateY(-1px);
+    box-shadow: 
+      0 4px 12px rgba(33, 150, 243, 0.25),
+      0 2px 4px rgba(33, 150, 243, 0.1);
+  }
+
+  .hero-action-button-styled > *:not(.absolute) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Tablet adjustments for split screen */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .hero-content-card {
+      padding: 40px 35px !important;
+    }
+    
+    .hero-action-button {
+      height: 60px !important;
+      font-size: 17px !important;
+    }
+  }
+
+  /* Mobile Hero - Optimized Premium Design */
+  .hero-mobile-bg {
+    animation: subtleZoom 1.2s ease-out;
+  }
+
+  @keyframes subtleZoom {
+    from {
+      transform: scale(1.05);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .hero-mobile-overlay {
+    animation: fadeIn 0.6s ease-out 0.2s backwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Mobile Hero Buttons - Glassmorphism Premium */
+  .hero-mobile-button {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+      0 8px 32px rgba(31, 38, 135, 0.15),
+      inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    background-image: linear-gradient(
+      135deg, 
+      rgba(109, 213, 237, 0.3) 0%, 
+      rgba(33, 147, 176, 0.3) 100%
+    );
+    position: relative;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  /* Ripple Effect */
+  .hero-mobile-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    pointer-events: none;
+  }
+
+  .hero-mobile-button:active::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Active/Touch State */
+  .hero-mobile-button:active {
+    transform: scale(0.97);
+    background: rgba(255, 255, 255, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+      0 4px 16px rgba(31, 38, 135, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  }
+
+  /* Button Icon Styling */
+  .hero-button-icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-mobile-button:active .hero-button-icon {
+    transform: scale(1.1);
+  }
+
+  /* Staggered Animations for Buttons */
+  .hero-button-1 {
+    animation: slideInUp 0.6s ease-out 0.3s backwards;
+  }
+
+  .hero-button-2 {
+    animation: slideInUp 0.6s ease-out 0.5s backwards;
+  }
+
+  .hero-button-3 {
+    animation: slideInUp 0.6s ease-out 0.7s backwards;
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile Logo - Optimized */
+  .hero-mobile-logo {
+    animation: fadeInLogo 0.8s ease-out 0.9s backwards;
+  }
+
+  @keyframes fadeInLogo {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .hero-logo-image {
+    filter: 
+      drop-shadow(0 8px 30px rgba(0, 0, 0, 0.8))
+      drop-shadow(0 6px 20px rgba(0, 0, 0, 0.7))
+      drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6))
+      drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5))
+      drop-shadow(0 0 24px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 16px rgba(255, 255, 255, 0.5))
+      drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+  }
+
+  /* Focus States for Accessibility */
+  .hero-mobile-button:focus-visible {
+    outline: 3px solid rgba(109, 213, 237, 0.8);
+    outline-offset: 4px;
   }
 }

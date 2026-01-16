@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { courseService, Course } from '@/services/courseService';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -33,38 +34,32 @@ import {
   Mail
 } from 'lucide-react';
 
-interface Course {
-  id: string;
-  name: string;
-  nameRu: string;
-  shortDescription: string;
-  shortDescriptionRu: string;
-  duration: string;
-  durationRu: string;
-  price: number;
-  currency: string;
-  priceAlt: string;
-  level: 'beginner' | 'intermediate' | 'advanced';
-  available: boolean;
-  features: string[];
-  featuresRu: string[];
-  detailedDescription: string;
-  detailedDescriptionRu: string;
-  whatYouLearn: string[];
-  whatYouLearnRu: string[];
-  effects: string[];
-  effectsRu: string[];
-  whatYouGet: string[];
-  whatYouGetRu: string[];
-  practiceModels: number;
-  supportDays: number;
-  includesBranding: boolean;
-  includesCareerStrategy: boolean;
-  includesPortfolio: boolean;
-  diploma: 'participation' | 'completion' | 'professional';
-}
+const CoursesPage = () => {
+  const { t, language } = useLanguage();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
-const courses: Course[] = [
+  useEffect(() => {
+    loadCourses();
+  }, []);
+
+  const loadCourses = async () => {
+    try {
+      setLoading(true);
+      const data = await courseService.getAllCourses();
+      setCourses(data);
+    } catch (error) {
+      console.error('Error loading courses:', error);
+      // Fallback la array gol dacă există eroare
+      setCourses([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fallback data pentru cazul în care nu există cursuri în baza de date
+  const fallbackCourses: Course[] = [
   {
     id: 'startup',
     name: 'Start-Up',
@@ -353,9 +348,8 @@ const courses: Course[] = [
   }
 ];
 
-const CoursesPage = () => {
-  const { t, language } = useLanguage();
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  // Folosim cursurile din baza de date sau fallback dacă nu există
+  const displayCourses = courses.length > 0 ? courses : fallbackCourses;
 
   const getCourseTitle = (course: Course) => language === 'RO' ? course.name : course.nameRu;
   const getCourseDescription = (course: Course) => language === 'RO' ? course.shortDescription : course.shortDescriptionRu;
@@ -412,8 +406,13 @@ const CoursesPage = () => {
       </div>
 
       {/* Course Cards Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-        {courses.map((course) => (
+      {loading ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Se încarcă cursurile...</p>
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {displayCourses.map((course) => (
           <Card 
             key={course.id} 
             className={`relative overflow-hidden transition-all hover:shadow-lg ${
@@ -447,7 +446,7 @@ const CoursesPage = () => {
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  <span>{course.practiceModels} {t('courses.models')}</span>
+                  <span>{course.practiceModels || 0} {t('courses.models')}</span>
                 </div>
               </div>
 
@@ -466,7 +465,7 @@ const CoursesPage = () => {
                     <div className="text-2xl font-bold text-primary">
                       {course.price > 0 ? `${course.price} ${course.currency}` : 'TBD'}
                     </div>
-                    {course.priceAlt !== 'TBD' && (
+                    {course.priceAlt && course.priceAlt !== 'TBD' && (
                       <div className="text-sm text-muted-foreground">
                         {course.priceAlt}
                       </div>
@@ -568,8 +567,9 @@ const CoursesPage = () => {
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Comparison Table */}
       <Card className="mb-12">
@@ -595,7 +595,7 @@ const CoursesPage = () => {
                     <TableCell className="font-medium">
                       {language === 'RO' ? feature.label : feature.labelRu}
                     </TableCell>
-                    {courses.slice(0, 3).map((course) => {
+                    {displayCourses.slice(0, 3).map((course) => {
                       const value = getFeatureValue(course, feature.key);
                       return (
                         <TableCell key={course.id} className="text-center">

@@ -1,3 +1,16 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { useCategories } from '@/hooks/useCategories';
+import { Search, RefreshCw, Cloud } from 'lucide-react';
+import { useProductFiltering, FilterState } from '@/hooks/useProductFiltering';
+import ProductCard from './ProductCard';
+import { Button } from './ui/button';
+import PaginationControls from './PaginationControls';
+import ProductsPerPageSelector from './ProductsPerPageSelector';
+import { toast } from 'sonner';
+import { Product } from '@/types/Product';
+import { supabase } from '@/lib/supabaseClient';
+import { GeneVariantService } from '@/services/geneVariantService';
+
 // Funcție pentru extragere semantică din denumirea produsului
 function extractProductDetails(name: string) {
   // Curbură
@@ -18,18 +31,6 @@ function extractProductDetails(name: string) {
 const asString = (value: unknown): string => typeof value === 'string' ? value : '';
 const asNumber = (value: unknown): number => typeof value === 'number' ? value : (typeof value === 'string' && !isNaN(Number(value)) ? Number(value) : 0);
 const asStringOrNull = (value: unknown): string | null => typeof value === 'string' ? value : null;
-import React, { useState, useEffect, useCallback } from 'react';
-import { useCategories } from '@/hooks/useCategories';
-import { Search, RefreshCw, Cloud } from 'lucide-react';
-import { useProductFiltering, FilterState } from '@/hooks/useProductFiltering';
-import ProductCard from './ProductCard';
-import { Button } from './ui/button';
-import PaginationControls from './PaginationControls';
-import ProductsPerPageSelector from './ProductsPerPageSelector';
-import { toast } from 'sonner';
-import { Product } from '@/types/Product';
-import { supabase } from '@/lib/supabaseClient';
-import { GeneVariantService } from '@/services/geneVariantService';
 
 interface SemanticFilterState {
   curvature?: string[] | number[];
@@ -183,39 +184,114 @@ const ProductGrid: React.FC<ProductGridProps> = ({
 
       // Încarcă produsele din tabelele filtrate (excluzând gene care e gestionat separat)
       const nonGeneTables = tablesToLoad.filter(table => table !== 'gene');
-      const allProducts: Product[] = [];
+      
+      // Early return dacă nu avem tabele de încărcat
+      if (nonGeneTables.length === 0 && !shouldLoadGeneGroups) {
+        setProducts([]);
+        setIsLoading(false);
+        return;
+      }
 
-      for (const table of nonGeneTables) {
+      // Helper pentru normalizare brand (mapare filtre -> valori reale)
+      const normalizeBrand = (filterBrand: string): string => {
+        const brandMap: Record<string, string> = {
+          'addressbeauty': 'Address Beauty',
+          'luxeglam': 'Luxe Glam',
+          'glamlash': 'Glam Lash',
+          'bellalash': 'Bella Lash',
+        };
+        return brandMap[filterBrand.toLowerCase()] || filterBrand;
+      };
+
+      // Încarcă tabelele în paralel pentru performanță mai bună
+      const loadTableProducts = async (table: string): Promise<Product[]> => {
+        const tableProducts: Product[] = [];
         try {
-          // Încarcă toate produsele din tabelă cu paginare
-          let hasMore = true;
-          let offset = 0;
-          const limit = 100;
+          // Select coloanele comune + coloanele specifice dacă există în tabel
+          // Verificăm dacă tabelul are coloane specifice (doar gene le are)
+          const hasSpecificFields = table === 'gene';
+          const commonFields = 'id, name, sale_price, image_url, store_stock, total_stock, discount, descriere, sku';
+          const specificFields = hasSpecificFields ? ', curbura, lungime, grosime, brand, type, culoare' : '';
+          const fields = commonFields + specificFields;
           
-          while (hasMore) {
-            const { data, error } = await supabase
-              .from(table)
-              .select('*')
-              .range(offset, offset + limit - 1)
-              .order('id', { ascending: true });
+          // Construim query-ul cu filtre aplicate direct în baza de date
+          let query = supabase
+            .from(table)
+            .select(fields);
+          
+          // Aplică filtre direct în query (doar pentru coloanele care există în tabel)
+          if (hasSpecificFields) {
+            // Filtrare după curbură (doar pentru tabelul gene)
+            if (filters?.curvature && Array.isArray(filters.curvature) && filters.curvature.length > 0) {
+              query = query.in('curbura', filters.curvature as string[]);
+            }
+            
+            // Filtrare după grosime (doar pentru tabelul gene)
+            if (filters?.thickness && Array.isArray(filters.thickness) && filters.thickness.length > 0) {
+              query = query.in('grosime', filters.thickness as string[]);
+            }
+            
+            // Filtrare după lungime (doar pentru tabelul gene)
+            // Notă: lungimea este stocată ca string în DB, deci trebuie să filtrăm manual
+            // Vom filtra după încărcare pentru acuratețe
+            
+            // Filtrare după brand (doar pentru tabelul gene)
+            if (filters?.brand && Array.isArray(filters.brand) && filters.brand.length > 0) {
+              const normalizedBrands = (filters.brand as string[]).map(normalizeBrand);
+              query = query.in('brand', normalizedBrands);
+            }
+          }
+          
+          // Filtrare după searchTerm (caută în nume)
+          if (searchTerm && searchTerm.trim() !== '') {
+            query = query.ilike('name', `%${searchTerm.trim()}%`);
+          }
+          
+          // Filtrare după stoc (dacă showOutOfStock este false)
+          if (!showOutOfStock) {
+            query = query.or('store_stock.gt.0,total_stock.gt.0');
+          }
+          
+          // Aplică limit optimizat - reducem drastic numărul de produse încărcate
+          // Dacă avem filtre active sau searchTerm, limităm mai mult pentru performanță
+          const hasActiveFilters = (filters && Object.keys(filters).length > 0) || (searchTerm && searchTerm.trim() !== '');
+          // Calculăm câte produse sunt necesare pentru paginare
+          // Încărcăm doar câte avem nevoie + un buffer mic (max 50-80 produse per tabel)
+          const neededProducts = currentPage * productsPerPage;
+          const limit = hasActiveFilters 
+            ? Math.min(neededProducts + productsPerPage, 80) // Max 80 cu filtre
+            : Math.min(neededProducts + productsPerPage, 50); // Max 50 fără filtre
+          
+          const { data, error } = await query
+            .limit(limit)
+            .order('id', { ascending: true });
           
           if (error) {
-              hasMore = false;
-              break;
+            console.warn(`Eroare la încărcarea tabelului ${table}:`, error);
+            return [];
           }
           
           if (data && Array.isArray(data) && data.length > 0) {
             data.forEach((prod: Record<string, unknown>) => {
               const details = extractProductDetails(asString(prod.name));
-
-              allProducts.push({
-                id: asNumber(prod.id) + (tablesToLoad.indexOf(table) * 100000), // ID unic numeric
+              
+              // Filtrare manuală după lungime (dacă e necesar, pentru tabelul gene)
+              if (hasSpecificFields && filters?.length && Array.isArray(filters.length) && filters.length.length === 2) {
+                const [min, max] = filters.length.map(Number);
+                const prodLength = Number(asString(prod.lungime) || details.length || 0);
+                if (isNaN(prodLength) || prodLength < min || prodLength > max) {
+                  return; // Skip acest produs dacă nu se potrivește cu filtrul de lungime
+                }
+              }
+              
+              tableProducts.push({
+                id: asNumber(prod.id) + (tablesToLoad.indexOf(table) * 100000),
                 name: asString(prod.name),
                 price: asNumber(prod.sale_price),
                 originalPrice: asNumber(prod.sale_price) || null,
                 image: asString(prod.image_url) || '/placeholder.svg',
-                  rating: 4.0 + Math.random(), // Rating ridicat între 4.0-5.0
-                  reviews: Math.floor(Math.random() * 50) + 20, // Review-uri între 20-70
+                rating: 4.0 + Math.random(),
+                reviews: Math.floor(Math.random() * 50) + 20,
                 inStock: asNumber(prod.store_stock || prod.total_stock) > 0,
                 stockQuantity: asNumber(prod.store_stock || prod.total_stock),
                 isNew: false,
@@ -227,33 +303,28 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 specifications: {},
                 variants: [],
                 attributes: {
-                  // Folosim datele direct din baza de date, cu fallback la extractProductDetails
                   curvature: asString(prod.curbura) || details.curvature,
                   length: asString(prod.lungime) || details.length,
                   thickness: asString(prod.grosime) || details.thickness,
                   brand: asString(prod.brand) || details.brand,
                   type: asString(prod.type) || details.type,
                   color: asString(prod.culoare),
-              },
+                },
+              });
             });
-          });
-              
-              // Verifică dacă mai sunt produse de încărcat
-              if (data.length < limit) {
-                hasMore = false;
-              } else {
-                offset += limit;
-              }
-          } else {
-              hasMore = false;
-            }
           }
-          
         } catch (tableError) {
-          // Loghează eroarea specifică pentru această tabelă
-          continue;
+          console.warn(`Eroare la procesarea tabelului ${table}:`, tableError);
         }
-      }
+        return tableProducts;
+      };
+      
+      // Încarcă tabelele în paralel, dar limităm numărul pentru performanță
+      // Dacă avem multe tabele, le limităm la primele 5-6 pentru viteză
+      const tablesToProcess = nonGeneTables.slice(0, 6); // Max 6 tabele simultan
+      const tablePromises = tablesToProcess.map(table => loadTableProducts(table));
+      const tableResults = await Promise.all(tablePromises);
+      const allProducts: Product[] = tableResults.flat();
 
       // Convertește grupurile gene în "pseudo-produse" pentru grid
       // Filtrează grupurile gene pe baza subcategoriei selectate
@@ -306,7 +377,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [category, subcategory]);
+  }, [category, subcategory, filters, searchTerm, showOutOfStock]);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -320,43 +391,20 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   // Add a key to force re-filtering when category changes
   const filterKey = `${category}-${subcategory}-${searchTerm}`;
   
-  // DEBUG: Afișează toate produsele fără filtrare
-  // Filtrare după categorie și subcategorie selectată
-  // Filtrare semantică pe baza filtrelor extrase
+  // Produsele sunt deja filtrate în baza de date, doar aplicăm filtrarea după categorie
+  // (care este deja aplicată prin selecția tabelelor, dar verificăm pentru siguranță)
   const filteredAndSortedProducts = products.filter(product => {
-  // Filtrare după searchTerm (caută în nume, brand, tip, descriere)
-  if (searchTerm && searchTerm.trim() !== '') {
-    const term = searchTerm.trim().toLowerCase();
-    const inName = product.name?.toLowerCase().includes(term);
-    const inBrand = product.brand?.toLowerCase().includes(term);
-    const inType = product.type?.toLowerCase().includes(term);
-    const inDesc = product.description?.toLowerCase().includes(term);
-    if (!inName && !inBrand && !inType && !inDesc) return false;
-  }
-  // Filtrare semantică (ex: activeFilters)
-  if (filters?.curvature && (filters.curvature as string[]).length > 0 && !(filters.curvature as string[]).includes(product.attributes?.curvature || '')) return false;
-  // Filtrare lungime pe interval numeric
-  if (filters?.length && Array.isArray(filters.length) && filters.length.length === 2) {
-    const [min, max] = filters.length.map(Number);
-    const prodLength = Number(product.attributes?.length || 0);
-    if (isNaN(prodLength) || prodLength < min || prodLength > max) return false;
-  }
-  if (filters?.thickness && (filters.thickness as string[]).length > 0 && !(filters.thickness as string[]).includes(product.attributes?.thickness || '')) return false;
-  if (filters?.brand && (filters.brand as string[]).length > 0 && !(filters.brand as string[]).includes(product.attributes?.brand || '')) return false;
-  if (filters?.type && (filters.type as string[]).length > 0 && !(filters.type as string[]).includes(product.attributes?.type || '')) return false;
-  // Filtrare după subcategorie (id din context)
-  // Eliminat filtrarea după subcategorie
-  // Filtrare după categorie (id din context)
-  if (category && category !== 'all') {
-    const catName = categories.find(c => c.id === category)?.name ?? category;
-    if (catName === 'Laminarea' || catName === 'Laminare') {
-      if (product.category !== 'Laminare') return false;
-    } else {
-      if (product.category !== catName) return false;
+    // Filtrare după categorie (pentru siguranță, deși deja filtrat prin selecția tabelelor)
+    if (category && category !== 'all') {
+      const catName = categories.find(c => c.id === category)?.name ?? category;
+      if (catName === 'Laminarea' || catName === 'Laminare') {
+        if (product.category !== 'Laminare') return false;
+      } else {
+        if (product.category !== catName) return false;
+      }
     }
-  }
-  return true;
-});
+    return true;
+  });
 
 // Sortare după sortBy și filtrele active
 const sortedProducts = (() => {

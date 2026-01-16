@@ -166,12 +166,12 @@ const CheckoutPage = () => {
       // Pentru alte metode de plată, salvăm imediat
       if (formData.paymentMethod !== 'card') {
         // Save order to database for non-card payments
-        const result = await orderService.createOrder(orderData);
+      const result = await orderService.createOrder(orderData);
 
-        if (!result.success) {
-          toast.error(result.error || 'A apărut o eroare la salvarea comenzii');
-          return;
-        }
+      if (!result.success) {
+        toast.error(result.error || 'A apărut o eroare la salvarea comenzii');
+        return;
+      }
 
         // Salvează ID-ul comenzii în localStorage pentru pagina "Comenzile Mele"
         if (result.order?.id) {
