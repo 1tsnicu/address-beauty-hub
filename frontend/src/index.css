@@ -547,17 +547,18 @@ All colors MUST be HSL.
     z-index: 1;
   }
 
-  /* Hero Action Button Styled - Premium Enhanced */
+  /* Hero Action Button Styled - Premium Enhanced (matching mobile style) */
   .hero-action-button-styled {
-    background: linear-gradient(135deg, hsl(214, 100%, 60%) 0%, hsl(214, 90%, 65%) 100%);
+    background: linear-gradient(135deg, #4da6ff 0%, #3b9eff 50%, #5eaeff 100%);
     border: none;
-    box-shadow: 
-      0 4px 12px rgba(33, 150, 243, 0.25),
-      0 2px 4px rgba(33, 150, 243, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 8px 32px rgba(77, 166, 255, 0.35),
+      0 4px 12px rgba(77, 166, 255, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
-    height: 72px;
+    height: 65px;
+    border-radius: 9999px !important;
   }
 
   .hero-action-button-styled::before {
@@ -567,17 +568,17 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(214, 90%, 65%) 0%, hsl(214, 100%, 60%) 100%);
+    background: linear-gradient(135deg, #5eaeff 0%, #4da6ff 50%, #3b9eff 100%);
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
   }
 
   .hero-action-button-styled:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-      0 8px 24px rgba(33, 150, 243, 0.35),
-      0 4px 8px rgba(33, 150, 243, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow:
+      0 12px 40px rgba(77, 166, 255, 0.4),
+      0 6px 16px rgba(77, 166, 255, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 
   .hero-action-button-styled:hover::before {
@@ -585,10 +586,10 @@ All colors MUST be HSL.
   }
 
   .hero-action-button-styled:active {
-    transform: translateY(-1px);
-    box-shadow: 
-      0 4px 12px rgba(33, 150, 243, 0.25),
-      0 2px 4px rgba(33, 150, 243, 0.1);
+    transform: translateY(0);
+    box-shadow:
+      0 4px 16px rgba(77, 166, 255, 0.3),
+      0 2px 8px rgba(77, 166, 255, 0.15);
   }
 
   .hero-action-button-styled > *:not(.absolute) {

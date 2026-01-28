@@ -60,21 +60,8 @@ const OnlineStore = () => {
     </Link>
   );
 
-  // Featured categories (static)
+  // Featured categories (static) - "Toate" moved to end
   const featuredCategories: Array<Omit<CategoryCardProps, 'Icon'> & { Icon: LucideIcon }> = [
-    {
-      to: '/magazin/categorie/all',
-      Icon: LayoutGrid,
-      title: t('store.categories.all'),
-      containerClass:
-        'bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-indigo-500 hover:to-blue-700 border border-blue-300/30',
-      iconClass: 'text-white group-hover:scale-110',
-      titleClass: 'text-white',
-      subtitle: undefined,
-      subtitleClass: 'text-white/90',
-      dotClass: 'bg-white/30',
-      overlayFrom: 'from-white/10',
-    },
     {
       to: '/magazin/categorie/lashes',
       Icon: Scissors,
@@ -127,6 +114,19 @@ const OnlineStore = () => {
       dotClass: 'bg-cyan-300/50',
       overlayFrom: 'from-cyan-100/20',
     },
+    {
+      to: '/magazin/categorie/all',
+      Icon: LayoutGrid,
+      title: t('store.categories.all'),
+      containerClass:
+        'bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-indigo-500 hover:to-blue-700 border border-blue-300/30',
+      iconClass: 'text-white group-hover:scale-110',
+      titleClass: 'text-white',
+      subtitle: undefined,
+      subtitleClass: 'text-white/90',
+      dotClass: 'bg-white/30',
+      overlayFrom: 'from-white/10',
+    },
   ];
 
   // Additional categories derived from activeCategories
@@ -137,7 +137,7 @@ const OnlineStore = () => {
     .slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="bg-background relative overflow-hidden">
       {/* Global Beauty Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Hero Section Decorations */}
@@ -175,18 +175,6 @@ const OnlineStore = () => {
         <div className="absolute bottom-1/3 left-1/5 w-3 h-6 bg-gradient-to-b from-cyan-200/15 to-transparent rounded-full transform rotate-12 animate-sway delay-500"></div>
       </div>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-20 relative z-10">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-heading font-bold text-[#1a1a1a] mb-6">
-            {t('store.title')}
-          </h1>
-          <p className="text-xl text-[#1a1a1a] max-w-2xl mx-auto mb-12">
-            {t('store.description')}
-          </p>
-        </div>
-      </section>
-
       {/* Loyalty Banner - Only shown to authenticated users */}
       {isAuthenticated && (
         <section className="py-4 relative z-10">
@@ -197,7 +185,7 @@ const OnlineStore = () => {
       )}
 
       {/* Categories Grid - Beauty Premium Design */}
-      <section className="py-12 bg-gradient-to-b from-slate-50/50 via-blue-50/30 to-indigo-50/20 relative overflow-hidden z-10">
+      <section className="pt-8 pb-12 bg-gradient-to-b from-slate-50/50 via-blue-50/30 to-indigo-50/20 relative overflow-hidden z-10">
         {/* Enhanced Local Decorative Beauty Elements */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Floating sparkles */}

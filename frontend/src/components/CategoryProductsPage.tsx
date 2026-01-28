@@ -141,19 +141,19 @@ const CategoryProductsPage = () => {
   const getSubcategoryIcon = (subcategoryId: string) => {
     switch (subcategoryId) {
       case 'lashes-individual':
-        return <Scissors className="h-4 w-4" />;
+        return <Scissors className="h-5 w-5" />;
       case 'lashes-adhesives':
-        return <Droplets className="h-4 w-4" />;
+        return <Droplets className="h-5 w-5" />;
       case 'lashes-care':
-        return <Heart className="h-4 w-4" />;
+        return <Heart className="h-5 w-5" />;
       case 'lashes-consumables':
-        return <Package className="h-4 w-4" />;
+        return <Package className="h-5 w-5" />;
       case 'lashes-tools':
-        return <Wrench className="h-4 w-4" />;
+        return <Wrench className="h-5 w-5" />;
       case 'lashes-led':
-        return <Lightbulb className="h-4 w-4" />;
+        return <Lightbulb className="h-5 w-5" />;
       default:
-        return <LayoutGrid className="h-4 w-4" />;
+        return <LayoutGrid className="h-5 w-5" />;
     }
   };
 
@@ -244,26 +244,25 @@ const CategoryProductsPage = () => {
               ))}
             </div>
 
-            {/* Mobile: Subtle subcategories list */}
+            {/* Mobile: Subcategories list - larger and more tappable */}
             <div className="md:hidden">
-              {/* Show all subcategories directly - more compact and elegant */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {subcategories.map((subcategory) => (
                   <Button
                     key={subcategory.id}
                     variant={selectedSubcategory === subcategory.id ? "default" : "ghost"}
-                    size="sm"
+                    size="lg"
                     onClick={() => setSelectedSubcategory(subcategory.id)}
-                    className="rounded-lg px-3 py-2 h-auto flex flex-row items-center gap-3 w-full justify-start border-b border-gray-100 last:border-b-0 hover:bg-primary/5 transition-colors"
+                    className="rounded-xl px-4 py-4 h-auto flex flex-row items-center gap-4 w-full justify-start border border-gray-200 hover:border-primary/50 hover:bg-primary/5 transition-all"
                   >
-                    <div className={`flex items-center justify-center w-5 h-5 rounded-full ${
+                    <div className={`flex items-center justify-center w-10 h-10 rounded-xl ${
                       selectedSubcategory === subcategory.id
-                        ? 'bg-primary/20'
-                        : 'bg-gray-100'
+                        ? 'bg-white/20'
+                        : 'bg-primary/10'
                     }`}>
                       {getSubcategoryIcon(subcategory.id)}
                     </div>
-                    <span className="text-xs font-medium text-left leading-tight flex-1 text-[#1a1a1a]">
+                    <span className="text-base font-medium text-left leading-tight flex-1 text-[#1a1a1a]">
                       {subcategory.name}
                     </span>
                   </Button>

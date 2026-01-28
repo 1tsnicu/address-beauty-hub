@@ -235,52 +235,49 @@ const HomePage = () => {
 
               {/* Buttons Container - Enhanced */}
               <div className="space-y-5 mb-14">
-                <Link 
-                  to="/magazin" 
-                  className="hero-action-button-styled block w-full rounded-xl transition-all duration-500 flex items-center justify-center group relative overflow-hidden"
+                <Link
+                  to="/magazin"
+                  className="hero-action-button-styled w-full rounded-full transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
                   style={{
                     animation: 'fadeInUp 0.6s ease-out 1s backwards'
                   }}
                   aria-label={t('home.hero.shop')}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <ShoppingBag className="w-5 h-5 mr-3 text-white relative z-10 transition-transform duration-300 group-hover:scale-110" />
                   <span className="text-lg font-semibold text-white relative z-10" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {t('home.hero.shop')}
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </Link>
 
-                <Link 
-                  to="/cursuri" 
-                  className="hero-action-button-styled block w-full rounded-xl transition-all duration-500 flex items-center justify-center group relative overflow-hidden"
+                <Link
+                  to="/cursuri"
+                  className="hero-action-button-styled w-full rounded-full transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
                   style={{
                     animation: 'fadeInUp 0.6s ease-out 1.2s backwards'
                   }}
                   aria-label={t('home.hero.courses')}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <GraduationCap className="w-5 h-5 mr-3 text-white relative z-10 transition-transform duration-300 group-hover:scale-110" />
                   <span className="text-lg font-semibold text-white relative z-10" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {t('home.hero.courses')}
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </Link>
 
-                <Link 
-                  to="/contact" 
-                  className="hero-action-button-styled block w-full rounded-xl transition-all duration-500 flex items-center justify-center group relative overflow-hidden"
+                <Link
+                  to="/contact"
+                  className="hero-action-button-styled w-full rounded-full transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
                   style={{
                     animation: 'fadeInUp 0.6s ease-out 1.4s backwards'
                   }}
                   aria-label={t('home.hero.contact')}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <Phone className="w-5 h-5 mr-3 text-white relative z-10 transition-transform duration-300 group-hover:scale-110" />
                   <span className="text-lg font-semibold text-white relative z-10" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {t('home.hero.contact')}
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </Link>
               </div>
 
