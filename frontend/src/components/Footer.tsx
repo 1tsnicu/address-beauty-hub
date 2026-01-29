@@ -282,7 +282,15 @@ const Footer = () => {
               </div>
               <div className="hidden md:block w-px h-4 bg-border"></div>
               <div className="text-xs text-muted-foreground">
-                {language === 'RO' ? 'Creat cu' : 'Создано с'} <Heart className="inline h-3 w-3 text-red-500" /> {language === 'RO' ? 'în Moldova' : 'в Молдове'}
+              Creat de{' '}
+                <a
+                  href="https://megapromoting.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors"
+                >
+                  Mega Promoting
+                </a>
               </div>
             </div>
             
